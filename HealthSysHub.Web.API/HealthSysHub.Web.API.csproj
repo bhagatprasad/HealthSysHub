@@ -6,4 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DBConfiguration\" />
+    <Folder Include="Models\" />
+    <Folder Include="Managers\" />
+    <Folder Include="DataManagers\" />
+  </ItemGroup>
+
 </Project>
