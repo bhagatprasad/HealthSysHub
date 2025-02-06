@@ -86,5 +86,10 @@
     <Build Include="Tables\Medicine.sql" />
     <Build Include="Tables\Department.sql" />
     <Build Include="Tables\Specialization.sql" />
+    <Build Include="Programmability\Functions\DatabaseScalarFunction1.sql" />
+    <Build Include="Programmability\Stored Procedures\Procedure1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Programmability\Triggers\Script1.sql" />
   </ItemGroup>
 </Project>
