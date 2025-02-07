@@ -86,12 +86,12 @@ namespace HealthSysHub.Web.API
                     {
                         Name = "HealthSysHub.Web.API Service",
                         Email = "contact@bdprasad.in",
-                        Url = new Uri("bdprasad.in")
+                        Url = new Uri("https://bdprasad.in")
                     },
                     License = new OpenApiLicense
                     {
                         Name = "contact@bdprasad.in",
-                        Url = new Uri("bdprasad.in")
+                        Url = new Uri("https://bdprasad.in")
                     }
 
                 });

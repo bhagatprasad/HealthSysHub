@@ -196,7 +196,7 @@ USING (
 ON target.[MedicineName] = source.[MedicineName]
 WHEN NOT MATCHED THEN
     INSERT ([MedicineName], [GenericName], [DosageForm], [Strength], [Manufacturer], [BatchNumber], [ExpiryDate], [PricePerUnit], [StockQuantity], [CreatedBy], [CreatedOn], [ModifiedBy], [ModifiedOn], [IsActive])
-    VALUES (source.[MedicineName], source.[GenericName], source.[DosageForm], source.[Strength], source.[ Manufacturer], source.[BatchNumber], source.[ExpiryDate], source.[PricePerUnit], source.[StockQuantity], NULL, SYSDATETIMEOFFSET(), NULL, NULL, 1)
+    VALUES (source.[MedicineName], source.[GenericName], source.[DosageForm], source.[Strength], source.[Manufacturer], source.[BatchNumber], source.[ExpiryDate], source.[PricePerUnit], source.[StockQuantity], NULL, SYSDATETIMEOFFSET(), NULL, NULL, 1)
 WHEN MATCHED THEN
     UPDATE SET 
         target.[GenericName] = source.[GenericName],
