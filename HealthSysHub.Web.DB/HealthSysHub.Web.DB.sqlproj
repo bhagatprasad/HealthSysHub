@@ -64,6 +64,7 @@
     <Folder Include="Programmability\Stored Procedures" />
     <Folder Include="Programmability\Functions" />
     <Folder Include="Programmability\Triggers" />
+    <Folder Include="Backups" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Pre-Deploymenet\Script.PreDeployment.sql" />

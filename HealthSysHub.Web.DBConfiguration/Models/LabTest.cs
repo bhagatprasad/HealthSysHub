@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace HealthSysHub.Web.DBConfiguration.Models
 {
-    [Table("Role")]
-    public class Role
+    [Table("LabTest")]
+    public class LabTest
     {
         [Key]
-        public Guid RoleId { get; set; }
-        public string? Name { get; set; }
-        public string? Code { get; set; }
+        public Guid TestId { get; set; }
+        public string? TestName { get; set; }
+        public string? TestDescription { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTimeOffset? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }

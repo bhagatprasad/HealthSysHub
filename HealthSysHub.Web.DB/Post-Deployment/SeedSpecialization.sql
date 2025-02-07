@@ -119,14 +119,14 @@ USING (
         ('Pediatric Genetics', 'Genetic counseling and treatment for children'),
         ('Pediatric Rehabilitation', 'Rehabilitation services for children'),
         ('Pediatric Palliative Care', 'End-of-life care for children')
-) AS source ([SpecialtyName], [Description])
-ON target.[SpecialtyName] = source.[SpecialtyName]
+) AS source ([SpecializationName], [SpecializationDescription])
+ON target.[SpecializationName] = source.[SpecializationName]
 WHEN NOT MATCHED THEN
-    INSERT ([SpecialtyName], [Description], [CreatedBy], [CreatedOn], [ModifiedBy], [ModifiedOn], [IsActive])
-    VALUES (source.[SpecialtyName], source.[Description], NULL, SYSDATETIMEOFFSET(), NULL, NULL, 1)
+    INSERT ([SpecializationName], [SpecializationDescription], [CreatedBy], [CreatedOn], [ModifiedBy], [ModifiedOn], [IsActive])
+    VALUES (source.[SpecializationName], source.[SpecializationDescription], NULL, SYSDATETIMEOFFSET(), NULL, NULL, 1)
 WHEN MATCHED THEN
     UPDATE SET 
-        target.[Description] = source.[Description],
+        target.[SpecializationDescription] = source.[SpecializationDescription],
         target.[ModifiedBy] = NULL,
         target.[ModifiedOn] = SYSDATETIMEOFFSET(),
         target.[IsActive] = 1;
