@@ -31,4 +31,8 @@
     <ProjectReference Include="..\HealthSysHub.Web.DBConfiguration\HealthSysHub.Web.DBConfiguration.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CustomFilters\" />
+  </ItemGroup>
+
 </Project>
