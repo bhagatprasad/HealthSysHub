@@ -30,3 +30,6 @@ Post-Deployment Script Template
 
 -- Include seed data for Medicine
 :r .\SeedMedicine.sql
+
+-- Include seed data for SeedHospitalType
+:r .\SeedHospitalType.sql

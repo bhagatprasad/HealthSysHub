@@ -78,6 +78,7 @@
     <None Include="Post-Deployment\SeedPatientType.sql" />
     <None Include="Post-Deployment\SeedPaymentType.sql" />
     <None Include="Post-Deployment\SeedMedicine.sql" />
+    <None Include="Post-Deployment\SeedHospitalType.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Role.sql" />
@@ -89,6 +90,12 @@
     <Build Include="Tables\Specialization.sql" />
     <Build Include="Programmability\Functions\DatabaseScalarFunction1.sql" />
     <Build Include="Programmability\Stored Procedures\Procedure1.sql" />
+    <Build Include="Tables\HospitalType.sql" />
+    <Build Include="Tables\Hospital.sql" />
+    <Build Include="Tables\HospitalSpecialty.sql" />
+    <Build Include="Tables\HospitalDepartment.sql" />
+    <Build Include="Tables\HospitalContent.sql" />
+    <Build Include="Doctor.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
