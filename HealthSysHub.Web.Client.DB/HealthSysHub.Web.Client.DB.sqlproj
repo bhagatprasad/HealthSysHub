@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>HealthSysHub.Web.DB</Name>
+    <Name>HealthSysHub.Web.Client.DB</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{9fd4fef1-0a8a-4b88-8c22-aa021b3b60a2}</ProjectGuid>
+    <ProjectGuid>{292de257-8efb-4b76-9bf6-083ba0a77592}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>HealthSysHub.Web.DB</RootNamespace>
-    <AssemblyName>HealthSysHub.Web.DB</AssemblyName>
+    <RootNamespace>HealthSysHub.Web.Client.DB</RootNamespace>
+    <AssemblyName>HealthSysHub.Web.Client.DB</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -56,49 +56,5 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Tables" />
-    <Folder Include="Post-Deployment" />
-    <Folder Include="Pre-Deploymenet" />
-    <Folder Include="Pre-Compare" />
-    <Folder Include="Programmability" />
-    <Folder Include="Programmability\Stored Procedures" />
-    <Folder Include="Programmability\Functions" />
-    <Folder Include="Programmability\Triggers" />
-    <Folder Include="Backups" />
-  </ItemGroup>
-  <ItemGroup>
-    <PreDeploy Include="Pre-Deploymenet\Script.PreDeployment.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Post-Deployment\Script.PostDeployment.sql" />
-    <None Include="Post-Deployment\SeedSpecialization.sql" />
-    <None Include="Post-Deployment\SeedDepartment.sql" />
-    <None Include="Post-Deployment\SeedLabTest.sql" />
-    <None Include="Post-Deployment\SeedRole.sql" />
-    <None Include="Post-Deployment\SeedPatientType.sql" />
-    <None Include="Post-Deployment\SeedPaymentType.sql" />
-    <None Include="Post-Deployment\SeedMedicine.sql" />
-    <None Include="Post-Deployment\SeedHospitalType.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Tables\Role.sql" />
-    <Build Include="Tables\PatientType.sql" />
-    <Build Include="Tables\PaymentType.sql" />
-    <Build Include="Tables\LabTest.sql" />
-    <Build Include="Tables\Medicine.sql" />
-    <Build Include="Tables\Department.sql" />
-    <Build Include="Tables\Specialization.sql" />
-    <Build Include="Programmability\Functions\DatabaseScalarFunction1.sql" />
-    <Build Include="Programmability\Stored Procedures\Procedure1.sql" />
-    <Build Include="Tables\HospitalType.sql" />
-    <Build Include="Tables\Hospital.sql" />
-    <Build Include="Tables\HospitalSpecialty.sql" />
-    <Build Include="Tables\HospitalDepartment.sql" />
-    <Build Include="Tables\HospitalContent.sql" />
-    <Build Include="Tables\Doctor.sql" />
-    <Build Include="Tables\HospitalContact.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Programmability\Triggers\Script1.sql" />
   </ItemGroup>
 </Project>
