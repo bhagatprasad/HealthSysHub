@@ -15,12 +15,23 @@ namespace HealthSysHub.Web.DBConfiguration
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Department> departments { get; set; }
-        public DbSet<Role> roles { get; set; }
-        public DbSet<LabTest> labTests { get; set; }
-        public DbSet<Medicine> medicines { get; set; }
-        public DbSet<PatientType> patientTypes { get; set; }
-        public DbSet<PaymentType> paymentTypes { get; set; }
-        public DbSet<Specialization> specializations { get; set; }
+
+        public DbSet<Hospital> hospitals { get; set; }
+        public DbSet<HospitalContent> hospitalContents { get; set; }
+        public DbSet<HospitalContact> hospitalContacts { get; set; }
+        public DbSet<HospitalDepartment> hospitalDepartments { get; set; }
+        public DbSet<HospitalSpecialty> hospitalSpecialties { get; set; }
         public DbSet<HospitalType> hospitalTypes { get; set; }
+
+        public DbSet<LabTest> labTests { get; set; }
+
+        public DbSet<Medicine> medicines { get; set; }
+
+        public DbSet<PaymentType> paymentTypes { get; set; }
+        public DbSet<PatientType> patientTypes { get; set; }
+
+        public DbSet<Role> roles { get; set; }
+
+        public DbSet<Specialization> specializations { get; set; }
     }
 }

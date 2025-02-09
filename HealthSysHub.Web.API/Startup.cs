@@ -40,13 +40,20 @@ namespace HealthSysHub.Web.API
 
             services.AddMvc().AddXmlSerializerFormatters();
 
-            services.AddScoped<IRoleManager, RoleDataManager>();
             services.AddScoped<IDepartmentManager, DepartmentDataManager>();
+
+            services.AddScoped<IHospitalManager, HospitalDataManager>();
             services.AddScoped<IHospitalTypeManager, HospitalTypeDataManager>();
+
             services.AddScoped<ILabTestManager, LabTestDataManager>();
+
             services.AddScoped<IMedicineManager, MedicineDataManager>();
+
             services.AddScoped<IPatientTypeManager, PatientTypeDataManager>();
             services.AddScoped<IPaymentTypeManager, PaymentTypeDataManager>();
+
+            services.AddScoped<IRoleManager, RoleDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

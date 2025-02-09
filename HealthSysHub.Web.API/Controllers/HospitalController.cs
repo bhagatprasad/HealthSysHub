@@ -7,22 +7,22 @@ namespace HealthSysHub.Web.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class HospitalController : ControllerBase
     {
-        private readonly IDepartmentManager _departmentManager;
+        private readonly IHospitalManager _hospitalManager;
 
-        public DepartmentController(IDepartmentManager departmentManager)
+        public HospitalController(IHospitalManager hospitalManager)
         {
-            _departmentManager = departmentManager;
+            _hospitalManager = hospitalManager;
         }
 
         [HttpGet]
-        [Route("GetDepartmentsAsync")]
-        public async Task<IActionResult> GetDepartmentsAsync()
+        [Route("GetHospitalsAsync")]
+        public async Task<IActionResult> GetHospitalsAsync()
         {
             try
             {
-                var response = await _departmentManager.GetDepartmentsAsync();
+                var response = await _hospitalManager.GetHospitalsAsync();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -32,12 +32,12 @@ namespace HealthSysHub.Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetDepartmentByIdAsync/{departmentId}")]
-        public async Task<IActionResult> GetDepartmentByIdAsync(Guid departmentId)
+        [Route("GetHospitalByIdAsync/{hospitalId}")]
+        public async Task<IActionResult> GetHospitalByIdAsync(Guid hospitalId)
         {
             try
             {
-                var response = await _departmentManager.GetDepartmentByIdAsync(departmentId);
+                var response = await _hospitalManager.GetHospitalByIdAsync(hospitalId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -47,12 +47,12 @@ namespace HealthSysHub.Web.API.Controllers
         }
 
         [HttpPost]
-        [Route("InsertOrUpdateDepartment")]
-        public async Task<IActionResult> InsertOrUpdateDepartment(Department department)
+        [Route("InsertOrUpdateHospital")]
+        public async Task<IActionResult> InsertOrUpdateHospital(Hospital hospital)
         {
             try
             {
-                var response = await _departmentManager.InsertOrUpdateDepartmentAsync(department);
+                var response = await _hospitalManager.InsertOrUpdateHospitalAsync(hospital);
                 return Ok(response);
             }
             catch (Exception ex)

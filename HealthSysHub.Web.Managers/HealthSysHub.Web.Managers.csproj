@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HealthSysHub.Web.DBConfiguration\HealthSysHub.Web.DBConfiguration.csproj" />
+    <ProjectReference Include="..\HealthSysHub.Web.Utility\HealthSysHub.Web.Utility.csproj" />
   </ItemGroup>
 
 </Project>
