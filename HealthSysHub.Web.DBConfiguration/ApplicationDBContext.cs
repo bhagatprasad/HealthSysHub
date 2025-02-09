@@ -21,5 +21,6 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<PatientType> patientTypes { get; set; }
         public DbSet<PaymentType> paymentTypes { get; set; }
         public DbSet<Specialization> specializations { get; set; }
+        public DbSet<HospitalType> hospitalTypes { get; set; }
     }
 }

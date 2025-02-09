@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Hospital]
 (
-    [HospitalID]                     UNIQUEIDENTIFIER   NOT NULL PRIMARY KEY DEFAULT NEWID(),  -- Unique identifier for the hospital
+    [HospitalId]                     UNIQUEIDENTIFIER   NOT NULL PRIMARY KEY DEFAULT NEWID(),  -- Unique identifier for the hospital
     [HospitalName]                   VARCHAR(100)       NULL,                               -- Name of the hospital
     [HospitalCode]                   VARCHAR(100)       NULL,                               -- Name of the hospital
     [RegistrationNumber]             VARCHAR(50)       NULL,                               -- Registration number of the hospital
