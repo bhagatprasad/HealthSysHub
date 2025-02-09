@@ -19,7 +19,7 @@ namespace HealthSysHub.Web.API
         {
             _configuration = configuration;
         }
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
@@ -41,7 +41,12 @@ namespace HealthSysHub.Web.API
             services.AddMvc().AddXmlSerializerFormatters();
 
             services.AddScoped<IRoleManager, RoleDataManager>();
-           
+            services.AddScoped<IDepartmentManager, DepartmentDataManager>();
+            services.AddScoped<IHospitalTypeManager, HospitalTypeDataManager>();
+            services.AddScoped<ILabTestManager, LabTestDataManager>();
+            services.AddScoped<IMedicineManager, MedicineDataManager>();
+            services.AddScoped<IPatientTypeManager, PatientTypeDataManager>();
+            services.AddScoped<IPaymentTypeManager, PaymentTypeDataManager>();
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

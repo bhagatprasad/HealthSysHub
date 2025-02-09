@@ -95,7 +95,7 @@
     <Build Include="Tables\HospitalSpecialty.sql" />
     <Build Include="Tables\HospitalDepartment.sql" />
     <Build Include="Tables\HospitalContent.sql" />
-    <Build Include="Doctor.sql" />
+    <Build Include="Tables\Doctor.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
