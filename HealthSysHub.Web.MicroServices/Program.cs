@@ -1,13 +1,40 @@
-using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.EntityFrameworkCore;
+using HealthSysHub.Web.DBConfiguration;
+using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.DataManagers;
 
-var builder = FunctionsApplication.CreateBuilder(args);
+var host = new HostBuilder()
+    .ConfigureFunctionsWebApplication()
+    .ConfigureServices(services =>
+    {
 
-builder.ConfigureFunctionsWebApplication();
+        services.AddApplicationInsightsTelemetryWorkerService();
 
-// Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
-// builder.Services
-//     .AddApplicationInsightsTelemetryWorkerService()
-//     .ConfigureFunctionsApplicationInsights();
+        var sqlConnection = Environment.GetEnvironmentVariable("SqlConnectionString");
+        services.AddDbContext<ApplicationDBContext>(options =>
+            options.UseSqlServer(sqlConnection));
 
-builder.Build().Run();
+        // Register your data managers as scoped
+        services.AddScoped<IRoleManager, RoleDataManager>();
+        services.AddScoped<IDepartmentManager, DepartmentDataManager>();
+        services.AddScoped<IHospitalTypeManager, HospitalTypeDataManager>();
+        services.AddScoped<ILabTestManager, LabTestDataManager>();
+        services.AddScoped<IMedicineManager, MedicineDataManager>();
+        services.AddScoped<IPatientTypeManager, PatientTypeDataManager>();
+        services.AddScoped<IPaymentTypeManager, PaymentTypeDataManager>();
+
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+                builder.WithOrigins("http://localhost:4200")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+            );
+        });
+    })
+    .Build();
+
+host.Run();
