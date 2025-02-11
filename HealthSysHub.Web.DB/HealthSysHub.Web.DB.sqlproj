@@ -64,7 +64,6 @@
     <Folder Include="Programmability\Functions" />
     <Folder Include="Programmability\Triggers" />
     <Folder Include="Backups" />
-    <Folder Include="Post-Deployment" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Pre-Deploymenet\Script.PreDeployment.sql" />
@@ -88,19 +87,8 @@
     <Build Include="Tables\HospitalContact.sql" />
     <Build Include="Tables\HospitalStaff.sql" />
     <Build Include="Tables\User.sql" />
-    <Build Include="Post-Deployment\SeedDepartment.sql" />
-    <Build Include="Post-Deployment\SeedHospitalType.sql" />
-    <Build Include="Post-Deployment\SeedLabTest.sql" />
-    <Build Include="Post-Deployment\SeedMedicine.sql" />
-    <Build Include="Post-Deployment\SeedPatientType.sql" />
-    <Build Include="Post-Deployment\SeedPaymentType.sql" />
-    <Build Include="Post-Deployment\SeedRole.sql" />
-    <Build Include="Post-Deployment\SeedSpecialization.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Post-Deployment\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>

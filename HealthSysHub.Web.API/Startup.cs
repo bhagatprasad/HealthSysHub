@@ -40,6 +40,8 @@ namespace HealthSysHub.Web.API
 
             services.AddMvc().AddXmlSerializerFormatters();
 
+            services.AddScoped<IAuthenticationManager, AuthenticationDataManager>();
+
             services.AddScoped<IDepartmentManager, DepartmentDataManager>();
 
             services.AddScoped<IHospitalManager, HospitalDataManager>();

@@ -1,15 +1,5 @@
 ﻿function AccountController() {
     var self = this;
-    var requests = [];
-    var actions = [];
-    var dataObjects = [];
-    self.dbActivities = [];
-    self.dbFeatures = [];
-    self.dbPermissions = [];
-    actions.push(API_URLS.FetchRolePermissionsAsync);
-    actions.push(API_URLS.FetchFeaturesAsync);
-    actions.push(API_URLS.FetchActivitiesAsync);
-    actions.push(API_URLS.FetchTenantDetailsAsync);
     self.userResponceData = {};
     self.init = function () {
         var form = $('#formAuthentication');
