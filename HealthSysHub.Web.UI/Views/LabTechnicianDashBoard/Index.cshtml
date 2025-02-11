@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Lab Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body card-body-padding">
+                <div id="LabOrdersGrid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/LabTechnicianDashBoardController.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var ctrl = new LabTechnicianDashBoardController();
+        ctrl.init();
+    });
+</script>

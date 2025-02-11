@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Pharmacy Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body card-body-padding">
+                <div id="PharmacyOrdersGrid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/PharmacistDashBoardController.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var ctrl = new PharmacistDashBoardController();
+        ctrl.init();
+    });
+</script>
