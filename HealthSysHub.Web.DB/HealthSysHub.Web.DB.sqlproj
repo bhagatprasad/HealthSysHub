@@ -57,7 +57,6 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
-    <Folder Include="Post-Deployment" />
     <Folder Include="Pre-Deploymenet" />
     <Folder Include="Pre-Compare" />
     <Folder Include="Programmability" />
@@ -65,20 +64,10 @@
     <Folder Include="Programmability\Functions" />
     <Folder Include="Programmability\Triggers" />
     <Folder Include="Backups" />
+    <Folder Include="Post-Deployment" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Pre-Deploymenet\Script.PreDeployment.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Post-Deployment\Script.PostDeployment.sql" />
-    <None Include="Post-Deployment\SeedSpecialization.sql" />
-    <None Include="Post-Deployment\SeedDepartment.sql" />
-    <None Include="Post-Deployment\SeedLabTest.sql" />
-    <None Include="Post-Deployment\SeedRole.sql" />
-    <None Include="Post-Deployment\SeedPatientType.sql" />
-    <None Include="Post-Deployment\SeedPaymentType.sql" />
-    <None Include="Post-Deployment\SeedMedicine.sql" />
-    <None Include="Post-Deployment\SeedHospitalType.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Role.sql" />
@@ -97,8 +86,21 @@
     <Build Include="Tables\HospitalContent.sql" />
     <Build Include="Tables\Doctor.sql" />
     <Build Include="Tables\HospitalContact.sql" />
+    <Build Include="Tables\HospitalStaff.sql" />
+    <Build Include="Tables\User.sql" />
+    <Build Include="Post-Deployment\SeedDepartment.sql" />
+    <Build Include="Post-Deployment\SeedHospitalType.sql" />
+    <Build Include="Post-Deployment\SeedLabTest.sql" />
+    <Build Include="Post-Deployment\SeedMedicine.sql" />
+    <Build Include="Post-Deployment\SeedPatientType.sql" />
+    <Build Include="Post-Deployment\SeedPaymentType.sql" />
+    <Build Include="Post-Deployment\SeedRole.sql" />
+    <Build Include="Post-Deployment\SeedSpecialization.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post-Deployment\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>

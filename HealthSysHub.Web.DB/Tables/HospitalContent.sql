@@ -8,5 +8,5 @@
     [ModifiedBy]                                UNIQUEIDENTIFIER NULL,
     [ModifiedOn]                                DATETIMEOFFSET NULL,
     [IsActive]                                  BIT DEFAULT 1,
-    CONSTRAINT FK_HospitalContent_Hospital FOREIGN KEY (HospitalId) REFERENCES [dbo].[Hospital](HospitalID)
+    CONSTRAINT FK_HospitalContent_Hospital FOREIGN KEY (HospitalId) REFERENCES [dbo].[Hospital](HospitalId)
 )
