@@ -10,5 +10,9 @@
         public string? Phone { get; set; }
         public Guid? RoleId { get; set; }
         public string? RoleName { get; set; }
+        public Guid? HospitalId { get; set; }
+        public Guid? StaffId { get; set; }
+        public string? HospitalName { get; set; }
+        public string? Designation { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HealthSysHub.Web.UI.Factory;
 using HealthSysHub.Web.UI.Interfaces;
+using HealthSysHub.Web.UI.Models;
 
 namespace HealthSysHub.Web.UI.Services
 {

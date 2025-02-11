@@ -25,7 +25,7 @@ namespace HealthSysHub.Web.UI.Services
 
         public async Task<PatientType> InsertOrUpdatePatientTypeAsync(PatientType patientType)
         {
-            return await _repository.SendAsync<PatientType, PatientType>(HttpMethod.Post, "PatientType/InsertOrUpdatePatientTypeAsync", hospitalType);
+            return await _repository.SendAsync<PatientType, PatientType>(HttpMethod.Post, "PatientType/InsertOrUpdatePatientTypeAsync", patientType);
         }
     }
 }

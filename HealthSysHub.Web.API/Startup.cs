@@ -44,6 +44,7 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IHospitalManager, HospitalDataManager>();
             services.AddScoped<IHospitalTypeManager, HospitalTypeDataManager>();
+            services.AddScoped<IStaffManager, StaffDataManager>();
 
             services.AddScoped<ILabTestManager, LabTestDataManager>();
 

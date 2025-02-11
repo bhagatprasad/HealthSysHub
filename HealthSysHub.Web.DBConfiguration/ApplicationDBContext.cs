@@ -22,6 +22,7 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<HospitalDepartment> hospitalDepartments { get; set; }
         public DbSet<HospitalSpecialty> hospitalSpecialties { get; set; }
         public DbSet<HospitalType> hospitalTypes { get; set; }
+        public DbSet<HospitalStaff> hospitalStaffs { get; set; }
 
         public DbSet<LabTest> labTests { get; set; }
 
@@ -33,5 +34,6 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<Role> roles { get; set; }
 
         public DbSet<Specialization> specializations { get; set; }
+        public DbSet<User> users { get; set; }
     }
 }
