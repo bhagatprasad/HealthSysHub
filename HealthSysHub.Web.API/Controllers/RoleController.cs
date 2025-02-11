@@ -32,7 +32,7 @@ namespace HealthSysHub.Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetRoleByIdAsync")]
+        [Route("GetRoleByIdAsync/{roleId}")]
         public async Task<IActionResult> GetRoleByIdAsync(Guid roleId)
         {
             try
@@ -48,8 +48,8 @@ namespace HealthSysHub.Web.API.Controllers
         }
 
         [HttpPost]
-        [Route("InsertOrUpdateRole")]
-        public async Task<IActionResult> InsertOrUpdateRole(Role role)
+        [Route("InsertOrUpdateRoleAsync")]
+        public async Task<IActionResult> InsertOrUpdateRoleAsync(Role role)
         {
             try
             {

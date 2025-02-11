@@ -32,7 +32,7 @@ namespace HealthSysHub.Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetHospitalTypeByIdAsync")]
+        [Route("GetHospitalTypeByIdAsync/{hospitalTypeId}")]
         public async Task<IActionResult> GetHospitalTypeByIdAsync(Guid hospitalTypeId)
         {
             try
