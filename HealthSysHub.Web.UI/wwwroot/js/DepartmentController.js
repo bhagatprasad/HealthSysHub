@@ -1,17 +1,22 @@
-﻿function RoleController() {
+﻿function DepartmentController() {
     var self = this;
+
     self.selectedRows = [];
-    self.currectSelectedRole = {};
+
+    self.currectSelectedDepartment = {};
+
     self.todayDate = new Date();
+
     self.fileUploadModal = $("#fileUploadModal");
-    self.ImportedRoles = [];
+
+    self.ImportedDepartments = [];
+
     self.init = function () {
-        $("#permissionBtn").removeClass("permission-hidden");
-        var table = new Tabulator("#rolesGrid", {
+        var table = new Tabulator("#DepartmentGrid", {
             height: "770px",
             layout: "fitColumns",
             resizableColumnFit: true,
-            ajaxURL: '/Role/FetchUserRoles',
+            ajaxURL: '/Department/FetchDepartments',
             ajaxParams: {},
             ajaxConfig: {
                 method: 'GET',
@@ -24,7 +29,7 @@
             },
             columns: [
                 {
-                    title: "<div class='centered-checkbox'><input type='checkbox' id='parentRoleChkbox' style='margin-top: 22px;'></div>",
+                    title: "<div class='centered-checkbox'><input type='checkbox' id='parentDepartmentChkbox' style='margin-top: 22px;'></div>",
                     field: "select",
                     headerSort: false,
                     hozAlign: "center",
@@ -34,8 +39,8 @@
                     formatter: function (cell, formatterParams, onRendered) {
                         onRendered(function () {
                             var row = cell.getRow();
-                            var rowId = row.getData().RoleId;
-                            cell.getElement().innerHTML = `<div class='centered-checkbox'><input type='checkbox' id='childRoleChkbox-${rowId}' class='childRoleChkbox' data-row-id='${rowId}'/></div>`;
+                            var rowId = row.getData().DepartmentId;
+                            cell.getElement().innerHTML = `<div class='centered-checkbox'><input type='checkbox' id='childDepartmentChkbox-${rowId}' class='childDepartmentChkbox' data-row-id='${rowId}'/></div>`;
                             cell.getElement().querySelector('input[type="checkbox"]').checked = row.isSelected();
                         });
                         return "";
@@ -44,18 +49,18 @@
                         cell.getRow().toggleSelect();
                     }
                 },
-                { title: "Name", field: "Name" },
-                { title: "Code", field: "Code"},
+                { title: "Department Name", field: "DepartmentName" },
+                { title: "Department Description", field: "DepartmentDescription" },
                 { title: "Created By", field: "CreatedBy"},
-                { title: "Created On", field: "CreatedOn" },
-                { title: "Modified By", field: "ModifiedBy"},
+                { title: "Created On", field: "CreatedOn"},
+                { title: "Modified By", field: "ModifiedBy" },
                 { title: "Modified On", field: "ModifiedOn" },
-                { title: "IsActive", field: "IsActive"}
+                { title: "IsActive", field: "IsActive" }
 
             ],
             rowSelectionChanged: function (data, rows) {
                 var allSelected = rows.length && rows.every(row => row.isSelected());
-                $('#parentRoleChkbox').prop('checked', allSelected);
+                $('#parentDepartmentChkbox').prop('checked', allSelected);
                 disableAllButtons();
 
                 // Enable buttons based on selection
@@ -81,16 +86,16 @@
                 // Handle the changed row data
                 if (changedRow) {
                     var rows = table.getRows();
-                    var foundRow = rows.find(row => row.getData().RoleId === changedRow.RoleId);
+                    var foundRow = rows.find(row => row.getData().DepartmentId === changedRow.DepartmentId);
 
                     if (foundRow) {
-                        var rowId = foundRow.getData().RoleId;
-                        var checkbox = document.querySelector(`#childRoleChkbox-${rowId}`);
+                        var rowId = foundRow.getData().DepartmentId;
+                        var checkbox = document.querySelector(`#childDepartmentChkbox-${rowId}`);
                         if (checkbox.checked && currentSelectedRows.length === 1) {
-                            self.currectSelectedRole = changedRow;
+                            self.currectSelectedDepartment = changedRow;
                         }
                         else {
-                            self.currectSelectedRole = {};
+                            self.currectSelectedDepartment = {};
                         }
                     }
 
@@ -100,30 +105,30 @@
             }
         });
 
-        $(document).on("change", "#parentRoleChkbox", function () {
+        $(document).on("change", "#parentDepartmentChkbox", function () {
             var isChecked = $(this).prop('checked');
             if (isChecked) {
                 table.selectRow();
             } else {
                 table.deselectRow();
             }
-            $('.childRoleChkbox').prop('checked', isChecked);
+            $('.childDepartmentChkbox').prop('checked', isChecked);
         });
 
-        $(document).on('change', '.childRoleChkbox', function () {
+        $(document).on('change', '.childDepartmentChkbox', function () {
             var rowId = $(this).data('row-id');
             var row = table.getRow(function (data) {
-                return data.id === rowId;
+                return data.DepartmentId === rowId;
             });
             var rows = table.getRows();
             var allSelected = rows.length && rows.every(row => row.isSelected());
-            $('#parentRoleChkbox').prop('checked', allSelected);
+            $('#parentDepartmentChkbox').prop('checked', allSelected);
         });
         //-----------------Edit functionality-------------------//
         $(document).on("click", "#editBtn", function () {
-            if (self.currectSelectedRole) {
-                $("#Name").val(self.currectSelectedRole.Name);
-                $("#Code").val(self.currectSelectedRole.Code);
+            if (self.currectSelectedDepartment) {
+                $("#Name").val(self.currectSelectedDepartment.Name);
+                $("#Code").val(self.currectSelectedDepartment.Code);
                 $('#sidebar').addClass('show');
                 $('body').append('<div class="modal-backdrop fade show"></div>');
             } else {
@@ -132,11 +137,6 @@
             }
 
         });
-        //-----------------Permission icon click--------------------//
-        $('#permissionBtn').on('click', function () {
-            window.location.href = "/Permission/ManagerPermission?roleId=" + self.currectSelectedRole.RoleId;
-        });
-        //---------------Permission icon area closed ------------------//
 
         $('#addBtn').on('click', function () {
             $('#sidebar').addClass('show');
@@ -144,34 +144,34 @@
         });
 
         $('#closeSidebar, .modal-backdrop').on('click', function () {
-            $('#AddEditRoleForm')[0].reset();
+            $('#AddEditDepartmentForm')[0].reset();
             $('#sidebar').removeClass('show');
             $('.modal-backdrop').remove();
         });
-        $('#AddEditRoleForm').on('submit', function (e) {
+        $('#AddEditDepartmentForm').on('submit', function (e) {
             e.preventDefault();
-            var formData = getFormData('#AddEditRoleForm');
-            var role = addCommonProperties(formData);
-            role.RoleId = self.currectSelectedRole ? self.currectSelectedRole.RoleId : null;
+            var formData = getFormData('#AddEditDepartmentForm');
+            var department = addCommonProperties(formData);
+            department.DepartmentId = self.currectSelectedDepartment ? self.currectSelectedDepartment.DepartmentId : null;
 
-            self.addeditrole(role, false);
+            self.addeditDepartment(department, false);
         });
 
-        makeFormGeneric('#AddEditRoleForm', '#btnsubmit');
-        self.addeditrole = function (role, iscopy) {
+        makeFormGeneric('#AddEditDepartmentForm', '#btnsubmit');
+        self.addeditDepartment = function (department, iscopy) {
             makeAjaxRequest({
                 url: API_URLS.InsertOrUpdateRoleAsync,
-                data: role,
+                data: department,
                 type: 'POST',
                 successCallback: function (response) {
                     if (response) {
                         if (!iscopy) {
-                            $('#AddEditRoleForm')[0].reset();
+                            $('#AddEditDepartmentForm')[0].reset();
                             $('#sidebar').removeClass('show');
                             $('.modal-backdrop').remove();
                         }
                         table.setData();
-                        self.currectSelectedRole = {};
+                        self.currectSelectedDepartment = {};
                     }
                     console.info(response);
                 },
@@ -188,8 +188,8 @@
         $(document).on('change', '#fileInput', function (e) {
             var files = e.target.files;
             processFiles(files, gridColumns.RoleGrid, function (importedData) {
-                self.ImportedRoles = importedData;
-                console.log(self.ImportedRoles);
+                self.ImportedDepartments = importedData;
+                console.log(self.ImportedDepartments);
             });
         });
 
@@ -200,7 +200,7 @@
                     data: self.ImportedTenants,
                     type: 'POST',
                     successCallback: function (response) {
-                        self.ImportedRoles = [];
+                        self.ImportedDepartments = [];
                         table.setData();
                         $(self.fileUploadModal).modal('hide');
                         console.info(response);
@@ -232,6 +232,5 @@
             var sortOrder = sorters.length > 0 ? sorters[0].dir : null;
             exportToExcel(data, gridColumns.RoleGrid, "Role", "Role_Report", sortColumns, sortOrder);
         }
-
     };
 }
