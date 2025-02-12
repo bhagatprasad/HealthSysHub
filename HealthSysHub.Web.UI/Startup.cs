@@ -27,28 +27,51 @@ namespace HealthSysHub.Web.UI
             });
 
             services.AddMvc();
+
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+
             services.AddDirectoryBrowser();
+
             services.AddHttpContextAccessor();
+
             var healthSysHubConfig = configuration.GetSection("HealthSysHubConfig");
+
             services.Configure<HealthSysHubConfig>(healthSysHubConfig);
+
             services.AddHttpClient();
+
             services.AddScoped<HttpClientService>();
+
             services.AddTransient<TokenAuthorizationHttpClientHandler>();
+
             services.AddHttpClient("AuthorizedClient").AddHttpMessageHandler<TokenAuthorizationHttpClientHandler>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
             services.AddScoped<IRoleService, RoleService>();
+
             services.AddScoped<IUserService, UserService>();
+
             services.AddScoped<IAuthenticateService, AuthenticateService>();
+
             services.AddScoped<IDoctorService, DoctorService>();
+
             services.AddScoped<IMedicineService, MedicineService>();
+
             services.AddScoped<ILabTestService, LabTestService>();
+
             services.AddScoped<IHospitalTypeService, HospitalTypeService>();
+
             services.AddScoped<IPatientTypeService, PatientTypeService>();
+
             services.AddScoped<IPaymentTypeService, PaymentTypeService>();
+
             services.AddScoped<IHospitalService, HospitalService>();
-            services.AddScoped<IUserService, UserService>();
+     
+            services.AddScoped<IDepartmentService, DepartmentService>();
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);

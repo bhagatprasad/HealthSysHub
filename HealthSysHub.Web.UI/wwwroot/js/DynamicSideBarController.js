@@ -5,9 +5,6 @@
         var appUserInfo = storageService.get('ApplicationUser');
         // Construct the navigation HTML
         var navHTML = `
-            <li class="nav-item pcoded-menu-caption">
-                <label>navigation</label>
-            </li>
             <li class="nav-item">
                 <a href="/Home/Index" class="nav-link">
                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
@@ -16,7 +13,6 @@
             </li>
         `;
 
-        // Check the user's role and append corresponding menu items
         if (appUserInfo) {
             switch (appUserInfo.RoleName) {
                 case "Doctor":
@@ -114,9 +110,21 @@
                 default:
                     navHTML += `
                         <li class="nav-item">
-                            <a href="/Home/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-home"></i></span>
-                                <span class="pcoded-mtext">Home</span>
+                            <a href="/Department/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-box"></i></span>
+                                <span class="pcoded-mtext">Department</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Role/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-award"></i></span>
+                                <span class="pcoded-mtext">Role</span>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="/HospitalType/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-award"></i></span>
+                                <span class="pcoded-mtext">Hospital Type</span>
                             </a>
                         </li>
                     `;
