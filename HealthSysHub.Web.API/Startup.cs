@@ -57,6 +57,8 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IRoleManager, RoleDataManager>();
 
+            services.AddScoped<IUserManager, UserDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

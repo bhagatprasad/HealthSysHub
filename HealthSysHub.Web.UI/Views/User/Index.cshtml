@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Admn Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <partial name="~/Views/Shared/_gridHeaderPartial.cshtml" />
+            <div class="card-body card-body-padding">
+                <div id="usersgrid">
+                </div>
+            </div>
+        </div>
+        <partial name="~/Views/Home/_insertOrUpdateUserPartial.cshtml" />
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/UserController.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var ctrl = new UserController();
+        ctrl.init();
+    });
+</script>

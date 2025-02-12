@@ -5,7 +5,6 @@
     var actions = [];
     var dataObjects = [];
     actions.push('/Role/FetchRoles');
-
     self.init = function () {
         var appuser = storageService.get("ApplicationUser");
         if (appuser) {
@@ -31,12 +30,13 @@
                 { title: "Email", field: "Email" },
                 { title: "Phone", field: "Phone" },
                 { title: "Role", field: "RoleName" },
+                { title: "Hospital Name", field: "HospitalName" },
+                { title: "Department Name", field: "DepartmentName" },
+                { title: "Designation", field: "Designation" },
                 { title: "IsBlocked", field: "IsBlocked" },
                 { title: "IsActive", field: "IsActive" },
             ]
         });
-
-
         var requests = actions.map((action, index) => {
             var ajaxConfig = {
                 url: action,
