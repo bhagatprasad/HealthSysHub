@@ -48,6 +48,7 @@ namespace HealthSysHub.Web.UI
             services.AddScoped<IPatientTypeService, PatientTypeService>();
             services.AddScoped<IPaymentTypeService, PaymentTypeService>();
             services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);

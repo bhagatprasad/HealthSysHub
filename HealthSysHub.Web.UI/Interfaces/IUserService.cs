@@ -7,6 +7,6 @@ namespace HealthSysHub.Web.UI.Interfaces
     {
         Task<User> InsertOrUpdateUserAsync(UserRegistration user);
 
-        Task<IEnumerable<UserInfirmation>> FetchUsersAsync();
+        Task<IEnumerable<UserInfirmation>> FetchUsersAsync(Guid? hospitalId);
     }
 }

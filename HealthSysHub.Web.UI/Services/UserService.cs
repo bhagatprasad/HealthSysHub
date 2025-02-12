@@ -14,9 +14,15 @@ namespace HealthSysHub.Web.UI.Services
             _repository = repository;
 
         }
-        public async Task<IEnumerable<UserInfirmation>> FetchUsersAsync()
+        public async Task<IEnumerable<UserInfirmation>> FetchUsersAsync(Guid? hospitalId)
         {
-            return await _repository.SendAsync<IEnumerable<UserInfirmation>>(HttpMethod.Get, "User/FetchUsersAsync");
+            var requestUrl = "User/FetchUsersAsync";
+
+            if (hospitalId.HasValue)
+            {
+                requestUrl += $"?hospitalId={hospitalId.Value.ToString()}";
+            }
+            return await _repository.SendAsync<IEnumerable<UserInfirmation>>(HttpMethod.Get, requestUrl);
         }
 
         public async Task<User> InsertOrUpdateUserAsync(UserRegistration user)
