@@ -109,25 +109,49 @@
 
                 default:
                     navHTML += `
-                        <li class="nav-item">
-                            <a href="/Department/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-box"></i></span>
-                                <span class="pcoded-mtext">Department</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Role/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-award"></i></span>
-                                <span class="pcoded-mtext">Role</span>
-                            </a>
-                        </li>
-                         <li class="nav-item">
-                            <a href="/HospitalType/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-award"></i></span>
-                                <span class="pcoded-mtext">Hospital Type</span>
-                            </a>
-                        </li>
-                    `;
+                            <li class="nav-item">
+                                <a href="/Department/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-building"></i></span>
+                                    <span class="pcoded-mtext">Department</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Role/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-user-tag"></i></span>
+                                    <span class="pcoded-mtext">Role</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/HospitalType/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-hospital"></i></span>
+                                    <span class="pcoded-mtext">Hospital Type</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/LabTest/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-flask"></i></span>
+                                    <span class="pcoded-mtext">Lab Test</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Medicine/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-pills"></i></span>
+                                    <span class="pcoded-mtext">Medicine</span>
+                                </a>
+                            </li>
+                           <li class="nav-item">
+                                <a href="/PaymentType/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-credit-card"></i></span>
+                                    <span class="pcoded-mtext">Payment Type</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/PatientType/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-user-injured"></i></span>
+                                    <span class="pcoded-mtext">Patient Type</span>
+                                </a>
+                            </li>
+`;
             }
         }
 

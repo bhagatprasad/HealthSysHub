@@ -50,7 +50,12 @@
                 { title: "Created On", field: "CreatedOn" },
                 { title: "Modified By", field: "ModifiedBy"},
                 { title: "Modified On", field: "ModifiedOn" },
-                { title: "IsActive", field: "IsActive"}
+                {
+                    title: "Is Active",
+                    field: "IsActive",
+                    formatter: "tickCross",
+                    align: "center"
+                }
 
             ],
             rowSelectionChanged: function (data, rows) {

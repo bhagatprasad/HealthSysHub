@@ -33,8 +33,18 @@
                 { title: "Hospital Name", field: "HospitalName" },
                 { title: "Department Name", field: "DepartmentName" },
                 { title: "Designation", field: "Designation" },
-                { title: "IsBlocked", field: "IsBlocked" },
-                { title: "IsActive", field: "IsActive" },
+                {
+                    title: "Is Blocked",
+                    field: "IsBlocked",
+                    formatter: "tickCross",
+                    align: "center"
+                },
+                {
+                    title: "Is Active",
+                    field: "IsActive",
+                    formatter: "tickCross",
+                    align: "center"
+                }
             ]
         });
         var requests = actions.map((action, index) => {
