@@ -59,6 +59,8 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IUserManager, UserDataManager>();
 
+            services.AddScoped<ISpecializationManager, SpecializationDataManager>();
+            
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

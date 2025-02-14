@@ -151,6 +151,18 @@
                                     <span class="pcoded-mtext">Patient Type</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="/Hospital/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-hospital"></i></span>
+                                    <span class="pcoded-mtext">Hospital</span>
+                                </a>
+                            </li>
+                       <li class="nav-item">
+                            <a href="/Specialization/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="fas fa-user-md"></i></span>
+                                <span class="pcoded-mtext">Specialization</span>
+                            </a>
+                        </li>
 `;
             }
         }
