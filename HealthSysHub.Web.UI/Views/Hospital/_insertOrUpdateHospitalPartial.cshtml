@@ -1,0 +1,255 @@
+﻿<form id="AddEditHospitalForm">
+    <div class="sidebar" id="sidebar">
+        <div class="modal-header">
+            <h5 class="modal-title">Add/Edit Hospital</h5>
+            <button type="button" class="close" id="closeSidebar" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Hospital Name -->
+            <div class="form-group">
+                <label for="HospitalName">Hospital Name</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-hospital"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="HospitalName" placeholder="Enter hospital name" required>
+                </div>
+            </div>
+
+            <!-- Hospital Code -->
+            <div class="form-group">
+                <label for="HospitalCode">Hospital Code</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-code"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="HospitalCode" placeholder="Enter hospital code">
+                </div>
+            </div>
+
+            <!-- Registration Number -->
+            <div class="form-group">
+                <label for="RegistrationNumber">Registration Number</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="RegistrationNumber" placeholder="Enter registration number">
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group">
+                <label for="Address">Address</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="Address" placeholder="Enter address">
+                </div>
+            </div>
+
+            <!-- City -->
+            <div class="form-group">
+                <label for="City">City</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-city"></i></span>
+                    </div>
+                    <select class="form-control" id="City">
+                        <option value="" disabled selected>Select your city</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Jaipur">Jaipur</option>
+                        <option value="Lucknow">Lucknow</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Nagpur">Nagpur</option>
+                        <option value="Visakhapatnam">Visakhapatnam</option>
+                        <option value="Indore">Indore</option>
+                        <option value="Coimbatore">Coimbatore</option>
+                        <option value="Patna">Patna</option>
+                        <option value="Bhopal">Bhopal</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Nashik">Nashik</option>
+                        <option value="Agra">Agra</option>
+                        <option value="Vijayawada">Vijayawada</option>
+                        <option value="Mysuru">Mysuru</option>
+                        <option value="Thane">Thane</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dehradun">Dehradun</option>
+                        <option value="Guwahati">Guwahati</option>
+                        <option value="Ranchi">Ranchi</option>
+                        <option value="Raipur">Raipur</option>
+                        <option value="Jodhpur">Jodhpur</option>
+                        <option value="Kochi">Kochi</option>
+                        <option value="Agartala">Agartala</option>
+                        <option value="Imphal">Imphal</option>
+                        <option value="Shillong">Shillong</option>
+                        <option value="Aizawl">Aizawl</option>
+                        <option value="Kohima">Kohima</option>
+                        <option value="Itanagar">Itanagar</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- State -->
+            <div class="form-group">
+                <label for="State">State</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-map"></i></span>
+                    </div>
+                    <select class="form-control" id="State">
+                        <option value="" disabled selected>Select your state</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Puducherry">Puducherry</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Ladakh">Ladakh</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Country -->
+            <div class="form-group">
+                <label for="Country">Country</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                    </div>
+                    <select class="form-control" id="Country" required>
+                        <option value="">Select a country</option>
+                        <option value="India">India</option>
+                        <option value="United States">United States</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="France">France</option>
+                        <option value="Japan">Japan</option>
+                        <option value="China">China</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="Russia">Russia</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Spain">Spain</option>
+                        <option value="South Korea">South Korea</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="United Arab Emirates">United Arab Emirates</option>
+                        <option value="Singapore">Singapore</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Postal Code -->
+            <div class="form-group">
+                <label for="PostalCode">Postal Code</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="PostalCode" placeholder="Enter postal code">
+                </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                    </div>
+                    <input type="tel" class="form-control" id="PhoneNumber" placeholder="Enter phone number">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    </div>
+                    <input type="email" class="form-control" id="Email" placeholder="Enter email">
+                </div>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group">
+                <label for="Website">Website</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                    </div>
+                    <input type="url" class="form-control" id="Website" placeholder="Enter website URL">
+                </div>
+            </div>
+
+            <!-- Logo URL -->
+            <div class="form-group">
+                <label for="LogoUrl">Logo URL</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-image"></i></span>
+                    </div>
+                    <input type="url" class="form-control" id="LogoUrl" placeholder="Enter logo URL">
+                </div>
+            </div>
+
+            <!-- Hospital Type ID -->
+            <div class="form-group">
+                <label for="HospitalTypeId">Hospital Type</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-stethoscope"></i></span>
+                    </div>
+                    <select class="form-control" id="HospitalTypeId">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="btnsubmit" class="btn btn-primary float-right" form="AddEditHospitalForm">Submit</button>
+        </div>
+    </div>
+</form>
