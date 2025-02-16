@@ -74,6 +74,8 @@ namespace HealthSysHub.Web.UI
 
             services.AddScoped<ISpecializationService, SpecializationService>();
 
+            services.AddScoped<IDoctorAppointmentService, DoctorAppointmentService>();
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);

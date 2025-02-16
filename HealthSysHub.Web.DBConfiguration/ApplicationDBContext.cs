@@ -14,6 +14,7 @@ namespace HealthSysHub.Web.DBConfiguration
         {
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<DoctorAppointment> doctorAppointments { get; set; }
         public DbSet<Department> departments { get; set; }
 
         public DbSet<Hospital> hospitals { get; set; }
