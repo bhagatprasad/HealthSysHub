@@ -64,6 +64,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _hospitalService.InsertOrUpdateHospitalAsync(hospital);
+                _notyfService.Success("Hospital details has been successfully saved.");
                 return Json(new { data = response });
             }
             catch (Exception ex)
@@ -109,6 +110,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _hospitalService.InsertOrUpdateHospitalContactInformationAsync(hospitalContactInformation);
+                _notyfService.Success("Hospital contact has been successfully saved.");
                 return Json(new { data = response });
             }
             catch (Exception ex)
@@ -124,6 +126,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _hospitalService.InsertOrUpdateHospitalContentInformationAsync(hospitalContentInformation);
+                _notyfService.Success("Hospital content has been successfully saved.");
                 return Json(new { data = response });
             }
             catch (Exception ex)
@@ -139,6 +142,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _hospitalService.InsertOrUpdateHospitalDepartmentInformationAsync(hospitalDepartmentInformation);
+                _notyfService.Success("Hospital department has been successfully saved.");
                 return Json(new { data = response });
             }
             catch (Exception ex)
@@ -154,6 +158,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _hospitalService.InsertOrUpdateHospitalSpecialtyInformationAsync(hospitalSpecialtyInformation);
+                _notyfService.Success("Hospital specialization has been successfully saved.");
                 return Json(new { data = response });
             }
             catch (Exception ex)

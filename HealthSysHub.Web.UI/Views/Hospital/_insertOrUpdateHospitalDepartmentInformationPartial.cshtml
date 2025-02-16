@@ -5,19 +5,25 @@
     <div class="card-body">
         <div class="container">
             <div class="row">
-                <!-- Hospital Name -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
-                        <label for="HospitalName">Hospital Name</label>
+                        <label for="DepartmentId">Department</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-hospital"></i></span>
+                                <span class="input-group-text"><i class="fa fa-stethoscope"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="HospitalName" placeholder="Enter hospital name" required>
+                            <select class="form-control" id="DepartmentId">
+                                <option value="" disabled selected>Select a Department</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="row" id="pillsDepartmentContainer">
+
+            </div>
+
         </div>
     </div>
 </div>

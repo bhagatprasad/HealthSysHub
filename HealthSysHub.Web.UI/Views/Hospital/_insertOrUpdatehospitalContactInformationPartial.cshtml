@@ -5,18 +5,63 @@
     <div class="card-body">
         <div class="container">
             <div class="row">
-                <!-- Hospital Name -->
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <label for="HospitalName">Hospital Name</label>
+                        <label for="ContactType">Contact Type</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-hospital"></i></span>
+                                <span class="input-group-text"><i class="fa fa-address-book"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="HospitalName" placeholder="Enter hospital name" required>
+                            <select class="form-control" id="ContactType">
+                                <option value="" disabled selected>Select a Contact Type</option>
+                                <option value="home">Home</option>
+                                <option value="office">Office</option>
+                                <option value="personal">Personal</option>
+                                <option value="emergency">Emergency</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ContactPhone">Phone</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="ContactPhone" placeholder="Enter Phone" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ContactEmail">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="ContactEmail" placeholder="Enter Email" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary form-control" style="margin-top: 28px;" id="contactSubmitButton">Submit</button>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Contact Type</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="HospitalContactGrid">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
