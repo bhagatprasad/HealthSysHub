@@ -13,8 +13,8 @@ namespace HealthSysHub.Web.Managers
 
         Task<List<HospitalContactInformation>> InsertOrUpdateHospitalContactInformationAsync(HospitalContactInformation hospitalContactInformation);
         Task<HospitalContentInformation> InsertOrUpdateHospitalContentInformationAsync(HospitalContentInformation hospitalContentInformation);
-        Task<HospitalDepartmentInformation> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation);
-        Task<HospitalSpecialtyInformation> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation);
+        Task<List<HospitalDepartmentInformation>> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation);
+        Task<List<HospitalSpecialtyInformation>> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation);
 
     }
 }

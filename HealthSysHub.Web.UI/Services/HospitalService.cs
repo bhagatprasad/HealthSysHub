@@ -51,14 +51,14 @@ namespace HealthSysHub.Web.UI.Services
             return await _repository.SendAsync<HospitalContentInformation, HospitalContentInformation>(HttpMethod.Post, "Hospital/InsertOrUpdateHospitalContentInformationAsync", hospitalContentInformation);
         }
 
-        public async Task<HospitalDepartmentInformation> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation)
+        public async Task<List<HospitalDepartmentInformation>> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation)
         {
-            return await _repository.SendAsync<HospitalDepartmentInformation, HospitalDepartmentInformation>(HttpMethod.Post, "Hospital/InsertOrUpdateHospitalDepartmentInformationAsync", hospitalDepartmentInformation);
+            return await _repository.SendAsync<HospitalDepartmentInformation, List<HospitalDepartmentInformation>>(HttpMethod.Post, "Hospital/InsertOrUpdateHospitalDepartmentInformationAsync", hospitalDepartmentInformation);
         }
 
-        public async Task<HospitalSpecialtyInformation> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation)
+        public async Task<List<HospitalSpecialtyInformation>> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation)
         {
-            return await _repository.SendAsync<HospitalSpecialtyInformation, HospitalSpecialtyInformation>(HttpMethod.Post, "Hospital/InsertOrUpdateHospitalSpecialtyInformationAsync", hospitalSpecialtyInformation);
+            return await _repository.SendAsync<HospitalSpecialtyInformation, List<HospitalSpecialtyInformation>>(HttpMethod.Post, "Hospital/InsertOrUpdateHospitalSpecialtyInformationAsync", hospitalSpecialtyInformation);
         }
     }
 }

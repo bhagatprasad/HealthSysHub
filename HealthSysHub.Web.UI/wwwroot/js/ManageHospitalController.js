@@ -87,6 +87,8 @@
 
             genarateDropdown("SpecializationId", self.dbSpecializations, "SpecializationId", "SpecializationName");
 
+            genarateDropdown("DepartmentId", self.dbDepartments, "DepartmentId", "DepartmentName");
+
             if (self.HospitalInformation) {
                 // map to main info
                 var hospitalInformation = self.HospitalInformation;
@@ -130,6 +132,11 @@
 
             self.PrepareHospitalContentInformationUI();
 
+            self.PrepareHospitalContactInformationUI();
+
+            self.PrepareHospitalSpecialtyInformationUI();
+
+
             hideLoader();
         }).fail(function () {
             console.log('One or more requests failed.');
@@ -159,16 +166,34 @@
                 $("#HospitalNameDisplay").text(self.hospitalMainInformation.HospitalName || "Hospital Name");
 
                 // Set the registration number
-                $("#RegistrationNumberDisplay").text("Registration Number: " + (self.hospitalMainInformation.RegistrationNumber || "N/A")); 
+                $("#RegistrationNumberDisplay").text("Registration Number: " + (self.hospitalMainInformation.RegistrationNumber || "N/A"));
             }
         };
         self.PrepareHospitalContactInformationUI = function () {
-           
+            var hospitalContactGrid = $("#HospitalContactGrid");
+            hospitalContactGrid.html("");
+
+            if (self.hospitalContactInformation) {
+                self.hospitalContactInformation.forEach(function (item) {
+                    var trRow = $("<tr></tr>");
+                    trRow.append($("<td></td>").text(item.ContactType || 'N/A'));
+                    trRow.append($("<td></td>").text(item.Email || 'N/A')); // Email
+                    trRow.append($("<td></td>").text(item.Phone || 'N/A')); // Phone
+
+                    var actionsCell = $("<td class='text-center'></td>");
+                    var deleteLink = $("<a href='#' class='link-primary link-delete link-delete-contact' data-hospitalContactId='" + item.HospitalContactId + "'><i class='fa fa-trash-o' style='color: red;' data-hospitalContactId='" + item.HospitalContactId + "'></i></a>");
+                    actionsCell.append(deleteLink);
+
+                    trRow.append(actionsCell);
+
+                    hospitalContactGrid.append(trRow);
+                });
+            }
         };
 
         self.PrepareHospitalContentInformationUI = function () {
-            if (self.hospitalContactInformation) {
-                $("#Description").text(self.hospitalContactInformation.Description || "Hospital Name");
+            if (self.hospitalContentInformation) {
+                $("#Description").text(self.hospitalContentInformation.Description || "Hospital Name");
             }
         };
         self.PrepareHospitalDepartmentInformationUI = function () {
@@ -176,9 +201,146 @@
         };
 
         self.PrepareHospitalSpecialtyInformationUI = function () {
+            var pillsContainer = $("#pillsContainer");
+            pillsContainer.html(""); 
+            if (self.hospitalSpecialtyInformation && self.hospitalSpecialtyInformation.length > 0) {
 
+                self.hospitalSpecialtyInformation.forEach(function (item) {
+                    var pill = $('<div class="badge badge-primary m-1 pill" data-hospitalSpecialtyId=' + item.HospitalSpecialtyId + '>' + item.SpecializationName +
+                        ' <span class="close" style="cursor:pointer;">&times;</span></div>');
+                    $("#pillsContainer").append(pill);
+                });
+            }
         };
-        $(document).on("change", "#SpecializationId",function () {
+        $(document).on("click", ".link-delete-contact", function (e) {
+            e.preventDefault();
+
+            var hospitalContactId = $(this).data("hospitalcontactid");
+
+            var hospitalContactDeleteItem = self.hospitalContactInformation.filter(x => x.HospitalContactId === hospitalContactId)[0];
+
+            if (hospitalContactDeleteItem) {
+                if (confirm("Are you sure you want to delete this contact?")) {
+                    console.log(hospitalContactDeleteItem);
+                    hospitalContactDeleteItem.HospitalId = self.hospitalId;
+                    hospitalContactDeleteItem.IsActive = false;
+                    hospitalContactDeleteItem.ModifiedBy = self.ApplicationUser.Id;
+                    hospitalContactDeleteItem.ModifiedOn = new Date();
+                    self.InsertOrUpdateHospitalContactInformationAsync(hospitalContactDeleteItem);
+                }
+            } else {
+                alert("Contact not found.");
+            }
+        });
+
+        // Function to rebind the hospital contact grid
+        function bindHospitalContactGrid() {
+            var hospitalContactGrid = $("#HospitalContactGrid");
+            hospitalContactGrid.html(""); // Clear existing rows
+
+            if (self.hospitalContactInformation) {
+                self.hospitalContactInformation.forEach(function (item) {
+                    var trRow = $("<tr></tr>");
+                    trRow.append($("<td></td>").text(item.ContactType || 'N/A'));
+                    trRow.append($("<td></td>").text(item.Email || 'N/A'));
+                    trRow.append($("<td></td>").text(item.Phone || 'N/A'));
+
+                    var actionsCell = $("<td class='text-center'></td>");
+                    var deleteLink = $("<a href='#' class='link-primary link-delete link-delete-contact' data-hospitalContactId='" + item.HospitalContactId + "'><i class='fa fa-trash-o' style='color: red;'></i></a>");
+                    actionsCell.append(deleteLink);
+
+                    trRow.append(actionsCell);
+                    hospitalContactGrid.append(trRow);
+                });
+            }
+        }
+        $(document).on("click", "#contactSubmitButton", function (hopitalContact) {
+            showLoader();
+            var contactType = $("#ContactType").val();
+            var contactEmail = $("#ContactEmail").val();
+            var contactPhone = $("#ContactPhone").val();
+            var hopitalContact = {
+                HospitalContactId: null,
+                HospitalId: self.hospitalId,
+                ContactType: contactType,
+                Phone: contactPhone,
+                Email: contactEmail
+            };
+            var hospitalContactInformation = addCommonProperties(hopitalContact);
+            self.InsertOrUpdateHospitalContactInformationAsync(hospitalContactInformation);
+
+        });
+        self.InsertOrUpdateHospitalContactInformationAsync = function (hopitalContact) {
+            showLoader();
+            makeAjaxRequest({
+                url: "/Hospital/InsertOrUpdateHospitalContactInformation",
+                data: hopitalContact,
+                type: 'POST',
+                successCallback: function (response) {
+                    self.hospitalContactInformation = response && response.data ? response.data : [];
+                    var _hospitalContactGrid = $("#HospitalContactGrid");
+                    _hospitalContactGrid.html("");
+                    $("#ContactType").prop("selectedIndex", 0);
+                    $("#ContactEmail").val("");
+                    $("#ContactPhone").val("");
+                    self.PrepareHospitalContactInformationUI();
+                    console.info(response);
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                    hideLoader();
+                }
+            });
+        };
+        $(document).on("change", "#SpecializationId", function () {
+            var selectedValue = $(this).val();
+            var selectedText = $(this).find("option:selected").text();
+
+            // Check if a valid option is selected
+            if (selectedValue) {
+                var hospitalSpecialtyInformation = {
+                    HospitalSpecialtyId: null,
+                    HospitalId: self.hospitalId,
+                    SpecializationId: selectedValue,
+                    SpecializationName: selectedText
+                };
+                var hospitalSpecialty = addCommonProperties(hospitalSpecialtyInformation);
+                self.addEditHospitalSpecializationAsync(hospitalSpecialty);
+            }
+        });
+
+        self.addEditHospitalSpecializationAsync = function (specialization) {
+            makeAjaxRequest({
+                url: "/Hospital/InsertOrUpdateHospitalSpecialtyInformation",
+                data: specialization,
+                type: 'POST',
+                successCallback: function (response) {
+                    if (response) {
+                        self.hospitalSpecialtyInformation = response && response.data ? response.data : [];
+                    }
+                    $("#SpecializationId").prop("selectedIndex", 0);
+                    self.PrepareHospitalSpecialtyInformationUI();
+                    console.info(response);
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                }
+            });
+        };
+        $(document).on("click", ".close", function () {
+            var pillText = $(this).parent(".pill").text().trim(); // Get the text of the pill
+            var pillValue = $("#SpecializationId option").filter(function () {
+                return $(this).text() === pillText;
+            }).val();
+
+            // Remove the pill
+            $(this).parent(".pill").remove();
+            l// Add the option back to the dropdown
+            $("#SpecializationId").append('<option value="' + pillValue + '">' + pillText + '</option>');
+        });
+
+        $(document).on("change", "#DepartmentId", function () {
             var selectedValue = $(this).val();
             var selectedText = $(this).find("option:selected").text();
 
@@ -189,22 +351,61 @@
                     ' <span class="close" style="cursor:pointer;">&times;</span></div>');
 
                 // Append the pill to the pills container
-                $("#pillsContainer").append(pill);
+                $("#pillsDepartmentContainer").append(pill);
 
                 // Clear the selected option from the dropdown
                 $(this).val(""); // Reset the dropdown selection
             }
         });
-        $(document).on("click", ".close", function () {
-            var pillText = $(this).parent(".pill").text().trim(); // Get the text of the pill
-            var pillValue = $("#SpecializationId option").filter(function () {
-                return $(this).text() === pillText; 
-            }).val();
+        $('#AddEditHospitalForm').on('submit', function (e) {
+            e.preventDefault();
+            var formData = getFormData('#AddEditHospitalForm');
+            var hospital = addCommonProperties(formData);
+            hospital.HospitalId = self.hospitalId;
 
-            // Remove the pill
-            $(this).parent(".pill").remove();
-            l// Add the option back to the dropdown
-            $("#SpecializationId").append('<option value="' + pillValue + '">' + pillText + '</option>');
+            self.addeditHospital(hospital, false);
+        });
+
+        makeFormGeneric('#AddEditHospitalForm', '#btnsubmit');
+        self.addeditHospital = function (hospital, iscopy) {
+            makeAjaxRequest({
+                url: "/Hospital/InsertOrUpdateHospital",
+                data: hospital,
+                type: 'POST',
+                successCallback: function (response) {
+                    if (response) {
+                        self.hospitalMainInformation = response.data;
+                    }
+                    self.PrepareHospitalMainInformationUI();
+                    console.info(response);
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                }
+            });
+        };
+        $(document).on("click", "#btncontentsubmit", function () {
+            showLoader();
+            var hospitalContent = {
+                HospitalContentId: self.hospitalContentInformation && self.hospitalContentInformation.HospitalContentId ? self.hospitalContentInformation.HospitalContentId : null,
+                HospitalId: self.hospitalId,
+                Description: $("#Description").val(),
+            };
+            var hospitalContentInformation = addCommonProperties(hospitalContent);
+            // Make the AJAX request
+            makeAjaxRequest({
+                url: "/Hospital/InsertOrUpdateHospitalContentInformation",
+                data: hospitalContentInformation,
+                type: 'POST',
+                successCallback: function (response) {
+                    self.hospitalContentInformation = response.data;
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                    hideLoader();
+                }
+            });
         });
     };
 }

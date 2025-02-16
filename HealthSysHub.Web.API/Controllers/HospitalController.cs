@@ -75,8 +75,8 @@ namespace HealthSysHub.Web.API.Controllers
             }
         }
         [HttpPost]
-        [Route("InsertOrUpdateHospital")]
-        public async Task<IActionResult> InsertOrUpdateHospital(Hospital hospital)
+        [Route("InsertOrUpdateHospitalAsync")]
+        public async Task<IActionResult> InsertOrUpdateHospitalAsync(Hospital hospital)
         {
             try
             {

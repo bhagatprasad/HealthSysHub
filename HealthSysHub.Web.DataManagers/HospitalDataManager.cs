@@ -145,7 +145,7 @@ namespace HealthSysHub.Web.DataManagers
 
             try
             {
-                if (hospitalContactInformation.HospitalContactId == Guid.Empty)
+                if (hospitalContactInformation.HospitalContactId == Guid.Empty || hospitalContactInformation.HospitalContactId == null)
                 {
                     await InsertOrUpdateContactByTypeAndHospitalAsync(hospitalContactInformation);
                 }
@@ -171,7 +171,7 @@ namespace HealthSysHub.Web.DataManagers
         {
             try
             {
-                if (hospitalContentInformation.HospitalContentId == Guid.Empty)
+                if (hospitalContentInformation.HospitalContentId == Guid.Empty || hospitalContentInformation.HospitalContentId == null)
                 {
 
                     await InsertHospitalContentAsync(hospitalContentInformation);
@@ -195,13 +195,27 @@ namespace HealthSysHub.Web.DataManagers
                 throw;
             }
         }
-        public async Task<HospitalDepartmentInformation> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation)
+        public async Task<List<HospitalDepartmentInformation>> InsertOrUpdateHospitalDepartmentInformationAsync(HospitalDepartmentInformation hospitalDepartmentInformation)
         {
             try
             {
-                if (hospitalDepartmentInformation.HospitalDepartmentId == Guid.Empty)
+                if (hospitalDepartmentInformation.HospitalDepartmentId == Guid.Empty || hospitalDepartmentInformation.HospitalDepartmentId == null)
                 {
-                    await InsertHospitalDepartmentAsync(hospitalDepartmentInformation);
+                    if (_dbContext.hospitalDepartments.Any(x => x.HospitalDepartmentId == hospitalDepartmentInformation.HospitalDepartmentId))
+                    {
+                        // If the department exists, update it
+                        var hospitalDepartment = _dbContext.hospitalDepartments
+                            .FirstOrDefault(x => x.HospitalDepartmentId == hospitalDepartmentInformation.HospitalDepartmentId);
+
+                        // Assuming you want to update the existing department information
+                        hospitalDepartmentInformation.HospitalDepartmentId = hospitalDepartment.HospitalDepartmentId;
+                        await UpdateHospitalDepartmentAsync(hospitalDepartmentInformation);
+                    }
+                    else
+                    {
+                        // If the department does not exist, insert a new one
+                        await InsertHospitalDepartmentAsync(hospitalDepartmentInformation);
+                    }
                 }
                 else
                 {
@@ -210,7 +224,7 @@ namespace HealthSysHub.Web.DataManagers
 
                 await _dbContext.SaveChangesAsync();
 
-                var updatedDepartment = await GetHospitalDepartmentByIdAsync(hospitalDepartmentInformation.HospitalDepartmentId.Value);
+                var updatedDepartment = await GetHospitalDepartmentByIdAsync(hospitalDepartmentInformation.HospitalId.Value);
 
                 return updatedDepartment;
             }
@@ -220,13 +234,23 @@ namespace HealthSysHub.Web.DataManagers
                 throw;
             }
         }
-        public async Task<HospitalSpecialtyInformation> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation)
+        public async Task<List<HospitalSpecialtyInformation>> InsertOrUpdateHospitalSpecialtyInformationAsync(HospitalSpecialtyInformation hospitalSpecialtyInformation)
         {
             try
             {
-                if (hospitalSpecialtyInformation.HospitalSpecialtyId == Guid.Empty)
+                if (hospitalSpecialtyInformation.HospitalSpecialtyId == Guid.Empty || hospitalSpecialtyInformation.HospitalSpecialtyId == null)
                 {
-                    await InsertHospitalSpecialtyAsync(hospitalSpecialtyInformation);
+                    if (_dbContext.hospitalSpecialties.Any(x => x.SpecializationId == hospitalSpecialtyInformation.SpecializationId))
+                    {
+                        var hospitalSpecialty = _dbContext.hospitalSpecialties.Where(x => x.SpecializationId == hospitalSpecialtyInformation.SpecializationId).FirstOrDefault();
+                        hospitalSpecialtyInformation.HospitalSpecialtyId = hospitalSpecialty.HospitalSpecialtyId;
+                        await UpdateHospitalSpecialtyAsync(hospitalSpecialtyInformation);
+                    }
+                    else
+                    {
+                        await InsertHospitalSpecialtyAsync(hospitalSpecialtyInformation);
+                    }
+
                 }
                 else
                 {
@@ -235,7 +259,7 @@ namespace HealthSysHub.Web.DataManagers
 
                 await _dbContext.SaveChangesAsync();
 
-                var updatedSpecialty = await GetHospitalSpecialtyByIdAsync(hospitalSpecialtyInformation.HospitalSpecialtyId.Value);
+                var updatedSpecialty = await GetHospitalSpecialtyByIdAsync(hospitalSpecialtyInformation.HospitalId.Value);
 
                 return updatedSpecialty;
             }
@@ -281,8 +305,8 @@ namespace HealthSysHub.Web.DataManagers
 
         private void MapHospitalContactInformation(HospitalInformation hospitalInformation, Guid hospitalId, List<HospitalContact> hospitalContacts = null)
         {
-            var contacts = hospitalContacts?.Where(c => c.HospitalContactId == hospitalId).ToList()
-                           ?? _dbContext.hospitalContacts.Where(c => c.HospitalContactId == hospitalId).ToList();
+            var contacts = hospitalContacts?.Where(c => c.HospitalId == hospitalId && c.IsActive == true).ToList()
+                           ?? _dbContext.hospitalContacts.Where(c => c.HospitalId == hospitalId && c.IsActive == true).ToList();
 
             foreach (var contact in contacts)
             {
@@ -548,27 +572,33 @@ namespace HealthSysHub.Web.DataManagers
             }
         }
 
-        private async Task<HospitalDepartmentInformation> GetHospitalDepartmentByIdAsync(Guid hospitalDepartmentId)
+        private async Task<List<HospitalDepartmentInformation>> GetHospitalDepartmentByIdAsync(Guid hospitalId)
         {
             var department = await _dbContext.hospitalDepartments
-                .Where(d => d.HospitalDepartmentId == hospitalDepartmentId)
-                .Select(d => new HospitalDepartmentInformation
-                {
-                    HospitalDepartmentId = d.HospitalDepartmentId,
-                    HospitalId = d.HospitalId,
-                    DepartmentId = d.DepartmentId,
-                    HeadOfDepartment = d.HeadOfDepartment,
-                    CreatedBy = d.CreatedBy,
-                    CreatedOn = d.CreatedOn,
-                    ModifiedBy = d.ModifiedBy,
-                    ModifiedOn = d.ModifiedOn,
-                    IsActive = d.IsActive
-                })
-                .FirstOrDefaultAsync();
+                             .Where(d => d.HospitalId == hospitalId)
+                             .Join(
+                                 _dbContext.departments, 
+                                 hd => hd.DepartmentId,
+                                 d => d.DepartmentId, 
+                                 (hd, d) => new HospitalDepartmentInformation
+                                 {
+                                     HospitalDepartmentId = hd.HospitalDepartmentId,
+                                     HospitalId = hd.HospitalId,
+                                     DepartmentId = hd.DepartmentId,
+                                     HeadOfDepartment = hd.HeadOfDepartment,
+                                     DepartmentName = d.DepartmentName,
+                                     CreatedBy = hd.CreatedBy,
+                                     CreatedOn = hd.CreatedOn,
+                                     ModifiedBy = hd.ModifiedBy,
+                                     ModifiedOn = hd.ModifiedOn,
+                                     IsActive = hd.IsActive
+                                 }
+                             )
+                             .ToListAsync();
 
             if (department == null)
             {
-                throw new KeyNotFoundException($"Hospital department with ID {hospitalDepartmentId} not found.");
+                throw new KeyNotFoundException($"Hospital department with ID {hospitalId} not found.");
             }
 
             return department;
@@ -613,26 +643,31 @@ namespace HealthSysHub.Web.DataManagers
             }
         }
 
-        private async Task<HospitalSpecialtyInformation> GetHospitalSpecialtyByIdAsync(Guid hospitalSpecialtyId)
+        private async Task<List<HospitalSpecialtyInformation>> GetHospitalSpecialtyByIdAsync(Guid hospitalId)
         {
             var specialty = await _dbContext.hospitalSpecialties
-                .Where(s => s.HospitalSpecialtyId == hospitalSpecialtyId)
-                .Select(s => new HospitalSpecialtyInformation
-                {
-                    HospitalSpecialtyId = s.HospitalSpecialtyId,
-                    HospitalId = s.HospitalId,
-                    SpecializationId = s.SpecializationId,
-                    CreatedBy = s.CreatedBy,
-                    CreatedOn = s.CreatedOn,
-                    ModifiedBy = s.ModifiedBy,
-                    ModifiedOn = s.ModifiedOn,
-                    IsActive = s.IsActive
-                })
-                .FirstOrDefaultAsync();
+                                .Where(s => s.HospitalId == hospitalId)
+                                .Join(
+                                    _dbContext.specializations,
+                                    hs => hs.SpecializationId,
+                                    s => s.SpecializationId,
+                                    (hs, s) => new HospitalSpecialtyInformation
+                                    {
+                                        HospitalSpecialtyId = hs.HospitalSpecialtyId,
+                                        HospitalId = hs.HospitalId,
+                                        SpecializationId = hs.SpecializationId,
+                                        SpecializationName = s.SpecializationName,
+                                        CreatedBy = hs.CreatedBy,
+                                        CreatedOn = hs.CreatedOn,
+                                        ModifiedBy = hs.ModifiedBy,
+                                        ModifiedOn = hs.ModifiedOn,
+                                        IsActive = hs.IsActive
+                                    }
+                                ).ToListAsync();
 
             if (specialty == null)
             {
-                throw new KeyNotFoundException($"Hospital specialty with ID {hospitalSpecialtyId} not found.");
+                throw new KeyNotFoundException($"Hospital specialty with ID {hospitalId} not found.");
             }
 
             return specialty;
