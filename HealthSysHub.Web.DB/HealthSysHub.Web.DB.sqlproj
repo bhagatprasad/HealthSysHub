@@ -87,6 +87,7 @@
     <Build Include="Tables\HospitalContact.sql" />
     <Build Include="Tables\HospitalStaff.sql" />
     <Build Include="Tables\User.sql" />
+    <Build Include="Tables\DoctorAppointment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />

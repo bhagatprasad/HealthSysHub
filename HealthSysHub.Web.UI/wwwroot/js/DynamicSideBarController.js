@@ -1,16 +1,9 @@
 ﻿function DynamicSideBarController() {
     var self = this;
-
     self.init = function () {
         var appUserInfo = storageService.get('ApplicationUser');
-        // Construct the navigation HTML
         var navHTML = `
-            <li class="nav-item">
-                <a href="/Home/Index" class="nav-link">
-                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
-                    <span class="pcoded-mtext">Dashboard</span>
-                </a>
-            </li>
+           
         `;
 
         if (appUserInfo) {
@@ -60,7 +53,28 @@
                         </li>
                     `;
                     break;
-
+                case "Receptionist":
+                    navHTML += `
+                        <li class="nav-item">
+                            <a href="/ReceptionistDashboard/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-briefcase"></i></span>
+                                <span class="pcoded-mtext">Executive Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/ExecutiveReports/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-file-text"></i></span>
+                                <span class="pcoded-mtext">Reports</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/ExecutiveAnalytics/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-pie-chart"></i></span>
+                                <span class="pcoded-mtext">Analytics</span>
+                            </a>
+                        </li>
+                    `;
+                    break;
                 case "Pharmacist":
                     navHTML += `
                         <li class="nav-item">
@@ -109,6 +123,12 @@
 
                 default:
                     navHTML += `
+                         <li class="nav-item">
+                                        <a href="/Home/Index" class="nav-link">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">Dashboard</span>
+                                        </a>
+                                    </li>
                             <li class="nav-item">
                                 <a href="/Department/Index" class="nav-link">
                                     <span class="pcoded-micon"><i class="fas fa-building"></i></span>
