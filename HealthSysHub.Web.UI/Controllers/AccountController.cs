@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using HealthSysHub.Web.UI.Models;
 
 namespace HealthSysHub.Web.UI.Controllers
 {
@@ -15,13 +16,19 @@ namespace HealthSysHub.Web.UI.Controllers
         private readonly IAuthenticateService _authenticateService;
         private readonly INotyfService _notyfService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHospitalService _hospitalService;
+        private readonly IStaffService _staffService;
         public AccountController(IAuthenticateService authenticateService,
             INotyfService notyfService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IHospitalService hospitalService,
+            IStaffService staffService)
         {
             _authenticateService = authenticateService;
             _notyfService = notyfService;
             _httpContextAccessor = httpContextAccessor;
+            _hospitalService = hospitalService;
+            _staffService = staffService;
         }
         [HttpGet]
         public async Task<IActionResult> Login()
@@ -47,6 +54,11 @@ namespace HealthSysHub.Web.UI.Controllers
         [HttpPost]
         public async Task<JsonResult> Login([FromBody] UserAuthentication authentication)
         {
+            HospitalInformation hospitalInformation = new HospitalInformation();
+
+            List<HospitalStaff> hospitalStaffDetails = new List<HospitalStaff>();
+
+
             try
             {
                 var responce = await _authenticateService.AuthenticateUserAsync(authentication);
@@ -72,7 +84,14 @@ namespace HealthSysHub.Web.UI.Controllers
                                                                ExpiresUtc = DateTime.UtcNow.AddMinutes(20)
                                                            });
 
-                        return Json(new { appUser = userClaimes, status = true });
+                        if (userClaimes.HospitalId.HasValue)
+                        {
+                            hospitalInformation = await _hospitalService.GetHospitalInformationByIdAsync(userClaimes.HospitalId.Value);
+
+                            hospitalStaffDetails = await _staffService.GetAllHospitalStaffAsync(userClaimes.HospitalId.Value);
+                        }
+
+                        return Json(new { appUser = userClaimes, status = true, hospitalInformation = hospitalInformation, hospitalStaffDetails = hospitalStaffDetails });
                     }
 
                     _notyfService.Error(responce.StatusMessage);
@@ -82,7 +101,7 @@ namespace HealthSysHub.Web.UI.Controllers
                     _notyfService.Error("Something went wrong");
                 }
 
-                return Json(new { appUser = default(object), status = false });
+                return Json(new { appUser = default(object), status = false, hospitalInformation = hospitalInformation, hospitalStaffDetails = hospitalStaffDetails });
             }
             catch (Exception ex)
             {

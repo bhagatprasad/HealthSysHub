@@ -2,6 +2,7 @@
 (
 	[DoctorId]          UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
     [HospitalId]        UNIQUEIDENTIFIER  NULL,
+    [StaffId]           UNIQUEIDENTIFIER  NULL,
     [SpecializationId]  UNIQUEIDENTIFIER  NULL,
     [DepartmentId]      UNIQUEIDENTIFIER  NULL,
     [RoleId]            UNIQUEIDENTIFIER  NULL,

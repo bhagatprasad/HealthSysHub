@@ -1,0 +1,139 @@
+﻿<form id="AddEditDoctorAppointmentForm">
+    <div class="sidebar" id="sidebar">
+        <div class="modal-header">
+            <h5 class="modal-title">Add/Edit Doctor Appointment</h5>
+            <button type="button" class="close" id="closeSidebar" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label for="DoctorId">Doctor Assigned</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user-md"></i></span>
+                        </div>
+                        <select id="DoctorId" class="form-control custom-select"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="AppointmentDate">Appointment Date</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" id="AppointmentDate" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="AppointmentTime">Appointment Time</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                            </div>
+                            <input type="time" class="form-control" id="AppointmentTime" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="PatientName">Patient Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="PatientName" placeholder="Enter Patient Name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="PatientPhone">Patient Phone</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="PatientPhone" placeholder="Enter Patient Phone" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ComingFrom">Coming From</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-arrow-right"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="ComingFrom" placeholder="Enter Source of Referral" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Amount">Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+                            </div>
+                            <input type="number" step="0.01" class="form-control" id="Amount" placeholder="Enter Amount" required>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="PaymentType">Payment Type</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="PaymentType" placeholder="Enter Payment Type" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="PaymentReference">Payment Reference</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-receipt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="PaymentReference" placeholder="Enter Payment Reference" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="HealthIssue">Health Issue</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-heartbeat"></i></span>
+                            </div>
+                            <textarea class="form-control" id="HealthIssue" placeholder="Enter health issues" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="btnsubmit" class="btn btn-primary" form="AddEditDoctorAppointmentForm">Submit</button>
+        </div>
+    </div>
+</form>

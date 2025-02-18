@@ -42,7 +42,29 @@
                 var applicationUser = response.appUser;
                 storageService.set('ApplicationUser', applicationUser);
 
+                if (appUserInfo.HospitalId) {
+                    var hospitalInfo = storageService.get('HospitalInformation');
+                    if (hospitalInfo) {
+                        storageService.remove('HospitalInformation');
+                    }
+
+                    var hospitalInformation = response.hospitalInformation; 
+
+                    storageService.set('HospitalInformation', hospitalInformation);
+
+
+                    var hospitalStaffDetails = storageService.get('HospitalStaff');
+                    if (hospitalStaffDetails) {
+                        storageService.remove('HospitalStaff');
+                    }
+                    var hospitalStaffDetails = response.hospitalStaffDetails;
+
+                    storageService.set('HospitalStaff', hospitalStaffDetails);
+                }
+
                 var appUserInfo = storageService.get('ApplicationUser');
+
+
                 if (appUserInfo) {
                     if (appUserInfo.RoleName === "Doctor") {
                         window.location.href = "/DoctorDashboard/Index";
@@ -54,6 +76,8 @@
                     }
                     else if (appUserInfo.RoleName === "Lab technicians") {
                         window.location.href = "/LabTechnicianDashBoard/Index";
+                    } else if (appUserInfo.RoleName === "Receptionist") {
+                        window.location.href = "/DoctorAppointment/Index";
                     } else {
 
                         window.location.href = "/Home/Index";
