@@ -55,21 +55,27 @@
                     break;
                 case "Receptionist":
                     navHTML += `
-                        <li class="nav-item">
+                       <li class="nav-item">
                             <a href="/ReceptionistDashboard/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-briefcase"></i></span>
+                                <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                 <span class="pcoded-mtext">Executive Dashboard</span>
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/DoctorAppointment/Index" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-calendar"></i></span>
+                                <span class="pcoded-mtext">Appointments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/ExecutiveReports/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-file-text"></i></span>
+                                <span class="pcoded-micon"><i class="feather icon-file"></i></span>
                                 <span class="pcoded-mtext">Reports</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/ExecutiveAnalytics/Index" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-pie-chart"></i></span>
+                                <span class="pcoded-micon"><i class="feather icon-bar-chart"></i></span>
                                 <span class="pcoded-mtext">Analytics</span>
                             </a>
                         </li>
