@@ -45,6 +45,20 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetHospitalDoctorsAsync/{hospitalId}")]
+        public async Task<IActionResult> GetHospitalDoctorsAsync(Guid hospitalId)
+        {
+            try
+            {
+                var response = await _staffManager.GetDoctorsAsync(hospitalId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [HttpPost]
         [Route("InsertOrUpdateHospitalStaffAsync")]

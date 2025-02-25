@@ -18,9 +18,10 @@ namespace HealthSysHub.Web.UI.Services
             return await _repository.SendAsync<Doctor>(HttpMethod.Get, uri);
         }
 
-        public async Task<List<Doctor>> GetDoctorsAsync()
+        public async Task<List<Doctor>> GetDoctorsAsync(Guid hospitalId)
         {
-            return await _repository.SendAsync<List<Doctor>>(HttpMethod.Get, "Doctor/GetDoctorsAsync");
+            var uri = Path.Combine("Staff/GetHospitalDoctorsAsync", hospitalId.ToString());
+            return await _repository.SendAsync<List<Doctor>>(HttpMethod.Get, uri);
         }
 
         public async Task<Doctor> InsertOrUpdateDoctorAsync(Doctor doctor)

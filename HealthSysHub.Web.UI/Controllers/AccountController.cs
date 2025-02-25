@@ -18,17 +18,20 @@ namespace HealthSysHub.Web.UI.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHospitalService _hospitalService;
         private readonly IStaffService _staffService;
+        private readonly IDoctorService _doctorService;
         public AccountController(IAuthenticateService authenticateService,
             INotyfService notyfService,
             IHttpContextAccessor httpContextAccessor,
             IHospitalService hospitalService,
-            IStaffService staffService)
+            IStaffService staffService,
+            IDoctorService doctorService)
         {
             _authenticateService = authenticateService;
             _notyfService = notyfService;
             _httpContextAccessor = httpContextAccessor;
             _hospitalService = hospitalService;
             _staffService = staffService;
+            _doctorService = doctorService;
         }
         [HttpGet]
         public async Task<IActionResult> Login()
@@ -57,7 +60,7 @@ namespace HealthSysHub.Web.UI.Controllers
             HospitalInformation hospitalInformation = new HospitalInformation();
 
             List<HospitalStaff> hospitalStaffDetails = new List<HospitalStaff>();
-
+            List<Doctor> doctors = new List<Doctor>();
 
             try
             {
@@ -88,10 +91,10 @@ namespace HealthSysHub.Web.UI.Controllers
                         {
                             hospitalInformation = await _hospitalService.GetHospitalInformationByIdAsync(userClaimes.HospitalId.Value);
 
-                            hospitalStaffDetails = await _staffService.GetAllHospitalStaffAsync(userClaimes.HospitalId.Value);
+                            doctors = await _doctorService.GetDoctorsAsync(userClaimes.HospitalId.Value);
                         }
 
-                        return Json(new { appUser = userClaimes, status = true, hospitalInformation = hospitalInformation, hospitalStaffDetails = hospitalStaffDetails });
+                        return Json(new { appUser = userClaimes, status = true, hospitalInformation = hospitalInformation, doctors = doctors });
                     }
 
                     _notyfService.Error(responce.StatusMessage);
