@@ -3,9 +3,6 @@
 	[DoctorId]          UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
     [HospitalId]        UNIQUEIDENTIFIER  NULL,
     [StaffId]           UNIQUEIDENTIFIER  NULL,
-    [SpecializationId]  UNIQUEIDENTIFIER  NULL,
-    [DepartmentId]      UNIQUEIDENTIFIER  NULL,
-    [RoleId]            UNIQUEIDENTIFIER  NULL,
     [FullName]          VARCHAR(100)  NULL,
     [Description]       VARCHAR(Max) NULL,
     [Experience]        VARCHAR(100) NULL,
@@ -24,8 +21,5 @@
     [ModifiedBy]                                UNIQUEIDENTIFIER NULL,
     [ModifiedOn]                                DATETIMEOFFSET NULL,
     [IsActive]                                  BIT DEFAULT 1,
-    CONSTRAINT FK_DoctorRegistration_Hospital FOREIGN KEY (HospitalId) REFERENCES [dbo].[Hospital](HospitalId),
-    CONSTRAINT FK_DoctorRegistration_Specialization FOREIGN KEY (SpecializationId) REFERENCES [dbo].[Specialization](SpecializationId),
-    CONSTRAINT FK_DoctorRegistration_Department FOREIGN KEY (DepartmentId) REFERENCES [dbo].[Department](DepartmentId),
-    CONSTRAINT FK_DoctorRegistration_Role FOREIGN KEY (RoleId) REFERENCES [dbo].[Role](RoleId)
+    CONSTRAINT FK_DoctorRegistration_Hospital FOREIGN KEY (HospitalId) REFERENCES [dbo].[Hospital](HospitalId)
 )

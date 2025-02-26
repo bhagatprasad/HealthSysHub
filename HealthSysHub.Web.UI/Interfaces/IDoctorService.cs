@@ -7,6 +7,6 @@ namespace HealthSysHub.Web.UI.Interfaces
     {
         Task<Doctor> InsertOrUpdateDoctorAsync(Doctor doctor);
         Task<Doctor> GetDoctorByIdAsync(Guid doctorId);
-        Task<List<Doctor>> GetDoctorsAsync();
+        Task<List<Doctor>> GetDoctorsAsync(Guid hospitalId);
     }
 }

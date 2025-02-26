@@ -13,15 +13,24 @@
 
     self.ApplicationUser = {};
 
+    self.HospitalStaff = [];
+
+
     var appUserInfo = storageService.get('ApplicationUser');
     if (appUserInfo)
         self.ApplicationUser = appUserInfo;
+
+    var hospitalStaffDetails = storageService.get('HospitalStaff');
+    if (hospitalStaffDetails) {
+        self.HospitalStaff = hospitalStaffDetails;
+    }
 
     const hospitalId = self.ApplicationUser.HospitalId;
 
     const dateTime = new Date().toISOString();
 
     self.init = function () {
+
         var table = new Tabulator("#DoctorAppointmentGrid", {
             height: "770px",
             layout: "fitColumns",

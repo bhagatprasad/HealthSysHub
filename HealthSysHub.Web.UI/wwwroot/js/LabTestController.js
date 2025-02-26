@@ -76,7 +76,7 @@
                 // Find the most recently changed row
                 let currentSelectedRows = rows.map(row => row.getData());
                 let changedRow = null;
-
+                oi
                 if (self.selectedRows.length > currentSelectedRows.length) {
                     // A row was deselected
                     changedRow = self.selectedRows.find(row => !currentSelectedRows.includes(row));

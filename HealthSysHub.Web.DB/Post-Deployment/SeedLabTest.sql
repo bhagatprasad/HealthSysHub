@@ -1,15 +1,4 @@
-﻿/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
-MERGE INTO [dbo].[LabTest] AS target
+﻿MERGE INTO [dbo].[LabTest] AS target
 USING (
     VALUES 
         ('Complete Blood Count', 'A test that evaluates overall health and detects a variety of disorders, such as anemia and infection.'),
@@ -33,7 +22,7 @@ USING (
         ('Allergy Testing', 'Tests that identify specific allergens that may cause allergic reactions.'),
         ('Genetic Testing', 'Tests that analyze DNA to identify genetic disorders or predispositions.'),
         ('Pregnancy Test', 'A test that detects the presence of human chorionic gonadotropin (hCG) in the blood or urine.'),
-        ('Urine Culture', 'A test that detects bacteria in the urine to diagnose urinary tract infections.'),
+        (' Urine Culture', 'A test that detects bacteria in the urine to diagnose urinary tract infections.'),
         ('Electrolyte Panel', 'A test that measures levels of electrolytes in the blood, including sodium, potassium, and chloride.'),
         ('Creatinine Test', 'A test that measures the level of creatinine in the blood to assess kidney function.'),
         ('Lactate Test', 'A test that measures the level of lactate in the blood to assess tissue oxygenation.'),

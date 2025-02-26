@@ -89,6 +89,11 @@
     <Build Include="Tables\HospitalStaff.sql" />
     <Build Include="Tables\User.sql" />
     <Build Include="Tables\DoctorAppointment.sql" />
+    <Build Include="Tables\Nurse.sql" />
+    <Build Include="Tables\Pharmacist.sql" />
+    <Build Include="Tables\LabTechnician.sql" />
+    <Build Include="Tables\Receptionist.sql" />
+    <Build Include="Tables\PatientCare.sql" />
     <Build Include="Post-Deployment\SeedDepartment.sql" />
     <Build Include="Post-Deployment\SeedHospitalType.sql" />
     <Build Include="Post-Deployment\SeedLabTest.sql" />
@@ -103,5 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post-Deployment\Script.PostDeployment.sql" />
+    <None Include="Post-Deployment\SeedUser.sql" />
+    <None Include="Post-Deployment\SeedDoctor.sql" />
+    <None Include="Post-Deployment\SeedNurse.sql" />
+    <None Include="Post-Deployment\SeedReceptionist.sql" />
+    <None Include="Post-Deployment\SeedPatientCare.sql" />
   </ItemGroup>
 </Project>
