@@ -7,6 +7,7 @@ using HealthSysHub.Web.UI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json.Serialization;
+using QuestPDF.Infrastructure;
 
 namespace HealthSysHub.Web.UI
 {
@@ -16,6 +17,7 @@ namespace HealthSysHub.Web.UI
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
+            QuestPDF.Settings.License = LicenseType.Community;
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -77,7 +79,7 @@ namespace HealthSysHub.Web.UI
             services.AddScoped<IDoctorAppointmentService, DoctorAppointmentService>();
 
             services.AddScoped<IStaffService, StaffService>();
-
+           
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
