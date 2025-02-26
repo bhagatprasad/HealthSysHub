@@ -20,7 +20,7 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public string? Email { get; set; }
         public string? Address { get; set; }
         public DateTimeOffset? DateOfBirth { get; set; }
-        public string Gender { get; set; }
+        public string? Gender { get; set; }
         public DateTimeOffset? JoiningDate { get; set; }
         public string? Status { get; set; }
         public Guid? CreatedBy { get; set; }

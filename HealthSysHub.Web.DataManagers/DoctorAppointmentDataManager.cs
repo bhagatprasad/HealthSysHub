@@ -1,6 +1,7 @@
 ﻿using HealthSysHub.Web.DBConfiguration;
 using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.Utility.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSysHub.Web.DataManagers
@@ -50,30 +51,22 @@ namespace HealthSysHub.Web.DataManagers
 
         public async Task<List<DoctorAppointment>> GetDoctorAppointmentsAsync(Guid hospitalId, DateTime? dateTime)
         {
-            return await _dbContext.doctorAppointments
-                .Where(a => a.HospitalId == hospitalId && a.AppointmentDate == dateTime.Value.Date)
-                .ToListAsync();
+            return await _dbContext.doctorAppointments.Where(a => a.HospitalId == hospitalId && a.AppointmentDate == dateTime.Value.Date).OrderByDescending(x => x.TokenNo).ToListAsync();
         }
 
         public async Task<List<DoctorAppointment>> GetDoctorAppointmentsByDateRangeAsync(Guid hospitalId, DateTime startDate, DateTime endDate)
         {
-            return await _dbContext.doctorAppointments
-                .Where(a => a.HospitalId == hospitalId && a.AppointmentDate >= startDate && a.AppointmentDate <= endDate)
-                .ToListAsync();
+            return await _dbContext.doctorAppointments.Where(a => a.HospitalId == hospitalId && a.AppointmentDate >= startDate && a.AppointmentDate <= endDate).ToListAsync();
         }
 
         public async Task<List<DoctorAppointment>> GetDoctorAppointmentsByDoctorAsync(Guid hospitalId, Guid? doctorId, DateTime? dateTime)
         {
-            return await _dbContext.doctorAppointments
-                .Where(a => a.HospitalId == hospitalId && a.DoctorId == doctorId && a.AppointmentDate == dateTime.Value.Date)
-                .ToListAsync();
+            return await _dbContext.doctorAppointments.Where(a => a.HospitalId == hospitalId && a.DoctorId == doctorId && a.AppointmentDate == dateTime.Value.Date).ToListAsync();
         }
 
         public async Task<List<DoctorAppointment>> GetDoctorAppointmentsByPatientAsync(Guid hospitalId, string patientName)
         {
-            return await _dbContext.doctorAppointments
-                .Where(a => a.HospitalId == hospitalId && a.PatientName.Contains(patientName))
-                .ToListAsync();
+            return await _dbContext.doctorAppointments.Where(a => a.HospitalId == hospitalId && a.PatientName.Contains(patientName)).ToListAsync();
         }
 
         public async Task<List<DoctorAppointment>> GetDoctorAppointmentsByPhoneAsync(Guid hospitalId, string? phone, DateTime? dateTime)
@@ -85,14 +78,34 @@ namespace HealthSysHub.Web.DataManagers
 
         public async Task<DoctorAppointment> InsertOrUpdateDoctorAppointmentAsync(DoctorAppointment doctorAppointment)
         {
-            if (doctorAppointment.AppointmentId == Guid.Empty)
+            if (doctorAppointment.AppointmentId == Guid.Empty || doctorAppointment.AppointmentId == null)
             {
                 doctorAppointment.AppointmentId = Guid.NewGuid();
+                var maxTokenNo = await _dbContext.doctorAppointments.Where(a => a.AppointmentDate == doctorAppointment.AppointmentDate).MaxAsync(a => (int?)a.TokenNo) ?? 0;
+                doctorAppointment.TokenNo = maxTokenNo + 1;
                 await _dbContext.doctorAppointments.AddAsync(doctorAppointment);
             }
             else
             {
-                _dbContext.doctorAppointments.Update(doctorAppointment);
+                var existingDoctorAppointment = await _dbContext.doctorAppointments.FindAsync(doctorAppointment.AppointmentId);
+
+                if (existingDoctorAppointment != null)
+                {
+                    // Check for changes and update properties
+                    bool hasChanges = EntityUpdater.HasChanges(existingDoctorAppointment, doctorAppointment, nameof(DoctorAppointment.CreatedBy), nameof(DoctorAppointment.CreatedOn));
+
+                    if (hasChanges)
+                    {
+                        EntityUpdater.UpdateProperties(existingDoctorAppointment, doctorAppointment, nameof(DoctorAppointment.CreatedBy), nameof(DoctorAppointment.CreatedOn));
+                    }
+                }
+                else
+                {
+                    doctorAppointment.AppointmentId = Guid.NewGuid();
+                    var maxTokenNo = await _dbContext.doctorAppointments.Where(a => a.AppointmentDate == doctorAppointment.AppointmentDate).MaxAsync(a => (int?)a.TokenNo) ?? 0;
+                    doctorAppointment.TokenNo = maxTokenNo + 1;
+                    await _dbContext.doctorAppointments.AddAsync(doctorAppointment);
+                }
             }
 
             await _dbContext.SaveChangesAsync();

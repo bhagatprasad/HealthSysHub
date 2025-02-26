@@ -101,7 +101,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="PaymentType" placeholder="Enter Payment Type" required>
+                            <select id="PaymentType" class="form-control custom-select"></select>
                         </div>
                     </div>
                 </div>
@@ -130,6 +130,31 @@
                     </div>
                 </div>
                
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label for="Status">Status</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user-md"></i></span>
+                        </div>
+                        <select id="Status" class="form-control custom-select"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="StatusMessage">Notes</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-heartbeat"></i></span>
+                            </div>
+                            <textarea class="form-control" id="StatusMessage" placeholder="Enter notes" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="modal-footer">

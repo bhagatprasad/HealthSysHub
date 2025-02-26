@@ -53,13 +53,12 @@
                     storageService.set('HospitalInformation', hospitalInformation);
 
 
-                    var hospitalStaffDetails = storageService.get('HospitalStaff');
-                    if (hospitalStaffDetails) {
-                        storageService.remove('HospitalStaff');
-                    }
-                    var hospitalStaffDetails = response.hospitalStaffDetails;
+                    var doctorsDetails = storageService.get('doctors');
 
-                    storageService.set('HospitalStaff', hospitalStaffDetails);
+                    if (doctorsDetails) {
+                        storageService.remove('doctors');
+                    }
+                    storageService.set('doctors', response.doctors);
                 }
 
                 var appUserInfo = storageService.get('ApplicationUser');

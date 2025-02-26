@@ -1,4 +1,5 @@
 ﻿function DoctorAppointmentController() {
+    
     var self = this;
 
     self.selectedRows = [];
@@ -13,16 +14,16 @@
 
     self.ApplicationUser = {};
 
-    self.HospitalStaff = [];
-
+    self.HospitalDoctors = [];
 
     var appUserInfo = storageService.get('ApplicationUser');
+
     if (appUserInfo)
         self.ApplicationUser = appUserInfo;
 
-    var hospitalStaffDetails = storageService.get('HospitalStaff');
-    if (hospitalStaffDetails) {
-        self.HospitalStaff = hospitalStaffDetails;
+    var doctors = storageService.get('doctors');
+    if (doctors) {
+        self.HospitalDoctors = doctors;
     }
 
     const hospitalId = self.ApplicationUser.HospitalId;
@@ -30,6 +31,12 @@
     const dateTime = new Date().toISOString();
 
     self.init = function () {
+
+        genarateDropdown("DoctorId", self.HospitalDoctors, "DoctorId", "FullName");
+
+        genarateDropdown("PaymentType", paymentTypes, "PaymentTypeName", "PaymentTypeName");
+
+        genarateDropdown("Status", hospitalStatuses, "StatusCode", "StatusName");
 
         var table = new Tabulator("#DoctorAppointmentGrid", {
             height: "770px",
@@ -71,26 +78,48 @@
                         cell.getRow().toggleSelect();
                     }
                 },
-                { title: "Token No", field: "TokenNo" },
-                { title: "Patient Name", field: "PatientName" },
-                { title: "Patient Phone", field: "PatientPhone" },
-                { title: "Coming From", field: "ComingFrom" },
-                { title: "Doctor ID", field: "DoctorId" },
-                { title: "Appointment Date", field: "AppointmentDate", formatter: "datetime", formatterParams: { outputFormat: "YYYY-MM-DD" } },
-                { title: "Appointment Time", field: "AppointmentTime", formatter: "time", formatterParams: { outputFormat: "HH:mm:ss" } },
-                { title: "Health Issue", field: "HealthIssue" },
+                {
+                    title: "Sr No",
+                    field: "TokenNo",
+                    "width": 100
+                },
+                {
+                    title: "Patient Info",
+                    field: "PatientName",
+                    "formatter": patientInfoFormatter
+                },
+                {
+                    title: "Doctor",
+                    field: "DoctorId",
+                    "formatter": function (value, row, index) {
+                        const doctor = self.HospitalDoctors.find(doc => doc.DoctorId === value._cell.row.data.DoctorId);
+
+                        if (doctor) {
+                            return `
+                                    <div>
+                                        <i class="fas fa-user-md"></i> ${doctor.FullName}
+                                    </div>
+                                `;
+                        } else {
+                            return '<div>N/A</div>'; 
+                        }
+                    }
+                },
+                {
+                    title: "Appointment Date",
+                    field: "AppointmentDate",
+                    "formatter": appointmentFormatter
+                },
                 { title: "Amount", field: "Amount", formatter: "money", formatterParams: { symbol: "$" } },
                 { title: "Payment Type", field: "PaymentType" },
                 { title: "Payment Reference", field: "PaymentReference" },
                 { title: "Status", field: "Status" },
-                { title: "Status Message", field: "StatusMessage" },
-                { title: "Created On", field: "CreatedOn", formatter: "datetime", formatterParams: { outputFormat: "YYYY-MM-DD HH:mm:ss" } },
-                { title: "Modified On", field: "ModifiedOn", formatter: "datetime", formatterParams: { outputFormat: "YYYY-MM-DD HH:mm:ss" } },
                 {
-                    title: "Is Active",
-                    field: "IsActive",
-                    formatter: "tickCross",
-                    align: "center"
+                    "title": "Actions",
+                    "field": "actions",
+                    "width": 110,
+                    "formatter": customActionsFormatter,
+                    "align": "center"
                 }
 
             ],
@@ -140,7 +169,36 @@
 
             }
         });
+        function patientInfoFormatter(value, row, index) {
+            const patientName = value._cell.row.data.PatientName ? value._cell.row.data.PatientName : 'N/A';
+            const patientPhone = value._cell.row.data.PatientPhone ? value._cell.row.data.PatientPhone : 'N/A';
+            const comingFrom = value._cell.row.data.ComingFrom ? value._cell.row.data.ComingFrom : 'N/A';
 
+            return `
+        <div title="${value._cell.row.data.HealthIssue}">
+            <i class="fas fa-user"></i> ${patientName}<br>
+            <i class="fas fa-phone"></i> ${patientPhone}<br>
+            <i class="fas fa-map-marker-alt"></i> ${comingFrom}
+        </div>
+    `;
+        }
+        function appointmentFormatter(value, row, index) {
+            return `
+        <div>
+            ${value._cell.row.data.AppointmentDate} <br>
+            ${value._cell.row.data.AppointmentTime}
+        </div>
+    `;
+        }
+        function customActionsFormatter(value, row, index) {
+            return `
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary" onclick="printPaymentReceipt('${value._cell.row.data.AppointmentId}')">
+                                <i class="fas fa-receipt"></i> Receipt
+                            </button>
+                        </div>
+                    `;
+        }
         $(document).on("change", "#parentDoctorAppointmentChkbox", function () {
             var isChecked = $(this).prop('checked');
             if (isChecked) {
@@ -163,8 +221,18 @@
         //-----------------Edit functionality-------------------//
         $(document).on("click", "#editBtn", function () {
             if (self.currectSelectedDoctorAppointment) {
-                $("#Name").val(self.currectSelectedDoctorAppointment.Name);
-                $("#Code").val(self.currectSelectedDoctorAppointment.Code);
+                $("#DoctorId").val(self.currectSelectedDoctorAppointment.DoctorId);
+                $("#AppointmentDate").val(self.currectSelectedDoctorAppointment.AppointmentDate);
+                $("#AppointmentTime").val(self.currectSelectedDoctorAppointment.AppointmentTime);
+                $("#PatientName").val(self.currectSelectedDoctorAppointment.PatientName);
+                $("#PatientPhone").val(self.currectSelectedDoctorAppointment.PatientPhone);
+                $("#ComingFrom").val(self.currectSelectedDoctorAppointment.ComingFrom);
+                $("#Amount").val(self.currectSelectedDoctorAppointment.Amount);
+                $("#PaymentType").val(self.currectSelectedDoctorAppointment.PaymentType);
+                $("#PaymentReference").val(self.currectSelectedDoctorAppointment.PaymentReference);
+                $("#HealthIssue").val(self.currectSelectedDoctorAppointment.HealthIssue);
+                $("#Status").val(self.currectSelectedDoctorAppointment.Status);
+                $("#StatusMessage").val(self.currectSelectedDoctorAppointment.StatusMessage);
                 $('#sidebar').addClass('show');
                 $('body').append('<div class="modal-backdrop fade show"></div>');
             } else {
@@ -185,19 +253,21 @@
             $('.modal-backdrop').remove();
         });
         $('#AddEditDoctorAppointmentForm').on('submit', function (e) {
+            showLoader();
             e.preventDefault();
             var formData = getFormData('#AddEditDoctorAppointmentForm');
             var doctorAppointment = addCommonProperties(formData);
             doctorAppointment.DoctorAppointmentId = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.DoctorAppointmentId : null;
-
-            self.addeditDoctorAppointment(department, false);
+            doctorAppointment.HospitalId = self.ApplicationUser.HospitalId;
+            doctorAppointment.TokenNo = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.TokenNo : 0;
+            self.addeditDoctorAppointment(doctorAppointment, false);
         });
 
         makeFormGeneric('#AddEditDoctorAppointmentForm', '#btnsubmit');
-        self.addeditDoctorAppointment = function (department, iscopy) {
+        self.addeditDoctorAppointment = function (doctorAppointment, iscopy) {
             makeAjaxRequest({
-                url: API_URLS.InsertOrUpdateRoleAsync,
-                data: department,
+                url: "/DoctorAppointment/InsertOrUpdateDoctorAppointment",
+                data: doctorAppointment,
                 type: 'POST',
                 successCallback: function (response) {
                     if (response) {
@@ -208,11 +278,14 @@
                         }
                         table.setData();
                         self.currectSelectedDoctorAppointment = {};
+                        
                     }
                     console.info(response);
+                    hideLoader();
                 },
                 errorCallback: function (xhr, status, error) {
                     console.error("Error in upserting data to server: " + error);
+                    hideLoader();
                 }
             });
         };
@@ -227,25 +300,6 @@
                 self.ImportedDoctorAppointments = importedData;
                 console.log(self.ImportedDoctorAppointments);
             });
-        });
-
-        $(document).on("click", "#uploadButton", function (e) {
-            if (self.ImportedTenants.length > 0) {
-                makeAjaxRequest({
-                    url: API_URLS.BulkInsertOrUpdateTenant,
-                    data: self.ImportedTenants,
-                    type: 'POST',
-                    successCallback: function (response) {
-                        self.ImportedDoctorAppointments = [];
-                        table.setData();
-                        $(self.fileUploadModal).modal('hide');
-                        console.info(response);
-                    },
-                    errorCallback: function (xhr, status, error) {
-                        console.error("Error in upserting data to server: " + error);
-                    }
-                });
-            }
         });
 
         //-------------------Export ------------------//
