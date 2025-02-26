@@ -182,7 +182,7 @@ const API_URLS = {
     InsertOrUpdatePaymentMethod: '/PaymentMethod/InsertOrUpdatePaymentMethod',
     InsertOrUpdateBillingAccount: '/BillingAccount/InsertOrUpdateBillingAccount',
     FetchBillingAccount: '/BillingAccount/FetchBillingAccount',
-    
+
 
 };
 function addCommonProperties(data) {
@@ -435,7 +435,40 @@ const Features = {
     SettingType: 'SettingType',
     Dealer: 'Dealer'
 };
-
+const hospitalStatuses = [
+    { "StatusName": "Appointment booked", "StatusCode": "AppointmentBooked" },
+    { "StatusName": "Hospital visited", "StatusCode": "HospitalVisited" },
+    { "StatusName": "Doctor consulted", "StatusCode": "DoctorConsulted" },
+    { "StatusName": "Sent for test", "StatusCode": "SentForTests" },
+    { "StatusName": "Test completed", "StatusCode": "TestCompleted" },
+    { "StatusName": "Reports Available", "StatusCode": "ReportsAvailable" },
+    { "StatusName": "Doctor reports seen", "StatusCode": "DoctorReportsSeen" },
+    { "StatusName": "Sent for medicine", "StatusCode": "SentToPharmacy" },
+    { "StatusName": "Medicine given", "StatusCode": "MedicineGiven" },
+    { "StatusName": "Hospital visit completed", "StatusCode": "HospitalVisitCompleted" },
+    { "StatusName": "Follow-Up Scheduled", "StatusCode": "FollowUpScheduled" },
+    { "StatusName": "Follow-Up Completed", "StatusCode": "FollowUpCompleted" },
+    { "StatusName": "Referral Made", "StatusCode": "ReferralMade" },
+    { "StatusName": "Referral Completed", "StatusCode": "ReferralCompleted" },
+    { "StatusName": "Insurance Verified", "StatusCode": "InsuranceVerified" },
+    { "StatusName": "Payment Processed", "StatusCode": "PaymentProcessed" },
+    { "StatusName": "Patient Discharged", "StatusCode": "PatientDischarged" },
+    { "StatusName": "Patient Feedback Received", "StatusCode": "PatientFeedbackReceived" },
+    { "StatusName": "Emergency Visit", "StatusCode": "EmergencyVisit" },
+    { "StatusName": "Telehealth Appointment Scheduled", "StatusCode": "TelehealthAppointmentScheduled" }
+];
+const statuses = {
+    AppointmentBooked: "Appointment booked",
+    HospitalVisited: "Hospital visited",
+    DoctorConsulated: "Doctor consulated",
+    SentForTests: "Sent for test",
+    TestCompleted: "Test completed",
+    ReportsAvailable: "Reports Available",
+    DoctorReportsSeen:"Doctor reports seen",
+    SentToPharmacy: "Sent for medicine",
+    MediceneGiven: "Medicene given",
+    HospitalVisitCompleted: "Hospital visit completed"
+};
 function hasPermission(featureName, activityName) {
     var userPermissions = storageService.get('UserPermissions');
     if (!userPermissions) {
@@ -456,7 +489,23 @@ function hasPermission(featureName, activityName) {
     }
     return false;
 }
-
+const paymentTypes = [
+    { "PaymentTypeName": "PhonePe", "PaymentTypeCode": "PhonePe" },
+    { "PaymentTypeName": "Credit Card", "PaymentTypeCode": "CreditCard" },
+    { "PaymentTypeName": "Debit Card", "PaymentTypeCode": "DebitCard" },
+    { "PaymentTypeName": "Bajaj Card", "PaymentTypeCode": "BajajCard" },
+    { "PaymentTypeName": "Discover", "PaymentTypeCode": "Discover" },
+    { "PaymentTypeName": "Net Banking", "PaymentTypeCode": "NetBanking" },
+    { "PaymentTypeName": "EMI", "PaymentTypeCode": "EMI" },
+    { "PaymentTypeName": "Cash", "PaymentTypeCode": "Cash" },
+    { "PaymentTypeName": "UPI", "PaymentTypeCode": "UPI" },
+    { "PaymentTypeName": "Google Pay", "PaymentTypeCode": "GooglePay" },
+    { "PaymentTypeName": "Paytm", "PaymentTypeCode": "Paytm" },
+    { "PaymentTypeName": "Amazon Pay", "PaymentTypeCode": "AmazonPay" },
+    { "PaymentTypeName": "Apple Pay", "PaymentTypeCode": "ApplePay" },
+    { "PaymentTypeName": "Samsung Pay", "PaymentTypeCode": "SamsungPay" },
+    { "PaymentTypeName": "Cryptocurrency", "PaymentTypeCode": "Crypto" }
+];
 function genarateDropdown(dropdownId, data, valueField, textField) {
     var $dropdown = $('#' + dropdownId);
     $dropdown.empty();

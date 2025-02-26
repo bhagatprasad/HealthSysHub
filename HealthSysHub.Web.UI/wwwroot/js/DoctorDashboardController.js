@@ -16,6 +16,9 @@
         if (appUserInfo) {
             self.ApplicationUser = appUserInfo;
         }
+        const hospitalId = self.ApplicationUser.HospitalId;
+
+        const dateTime = new Date().toISOString();
 
         var table = new Tabulator("#consulationGrid", {
             height: "780px",

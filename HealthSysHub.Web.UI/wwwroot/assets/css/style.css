@@ -30180,7 +30180,7 @@ new-task label input[type=checkbox] {
 }
 
 .padding-rigt {
-    padding-right: 5px !important;
+    padding-right: 20px !important;
 }
 
 .custom-cursor {
@@ -30304,4 +30304,8 @@ input:checked + .slider {
 .genarateTenantAggriment {
     color: red;
     font-size: 20px;
+}
+.tabulator-row.tabulator-selectable:hover {
+    background-color: #00afc3 !important;
+    cursor: pointer;
 }
