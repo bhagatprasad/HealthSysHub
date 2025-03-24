@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.UI", "HealthSysHub.Web.UI\HealthSysHub.Web.UI.csproj", "{DD759BC4-7645-4CDF-9829-8448E892E710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.UI", "HealthSysHub.Web.UI\HealthSysHub.Web.UI.csproj", "{DD759BC4-7645-4CDF-9829-8448E892E710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.API", "HealthSysHub.Web.API\HealthSysHub.Web.API.csproj", "{21CB0A61-9A21-47B9-9CF0-55D4D1FFF37C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.API", "HealthSysHub.Web.API\HealthSysHub.Web.API.csproj", "{21CB0A61-9A21-47B9-9CF0-55D4D1FFF37C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.Utility", "HealthSysHub.Web.Utility\HealthSysHub.Web.Utility.csproj", "{5C3619F1-76A1-4E50-BAAE-F8F24DB6662E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.Utility", "HealthSysHub.Web.Utility\HealthSysHub.Web.Utility.csproj", "{5C3619F1-76A1-4E50-BAAE-F8F24DB6662E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.Tests", "HealthSysHub.Web.Tests\HealthSysHub.Web.Tests.csproj", "{59884AA7-3F5E-412F-B472-4FFEEB55C4DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.Tests", "HealthSysHub.Web.Tests\HealthSysHub.Web.Tests.csproj", "{59884AA7-3F5E-412F-B472-4FFEEB55C4DE}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HealthSysHub.Web.DB", "HealthSysHub.Web.DB\HealthSysHub.Web.DB.sqlproj", "{9FD4FEF1-0A8A-4B88-8C22-AA021B3B60A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.DBConfiguration", "HealthSysHub.Web.DBConfiguration\HealthSysHub.Web.DBConfiguration.csproj", "{3070EAF3-0CAA-457C-99A9-6C1EAB8C8D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.DBConfiguration", "HealthSysHub.Web.DBConfiguration\HealthSysHub.Web.DBConfiguration.csproj", "{3070EAF3-0CAA-457C-99A9-6C1EAB8C8D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.Managers", "HealthSysHub.Web.Managers\HealthSysHub.Web.Managers.csproj", "{51B8E9F0-43DE-4491-AC91-F971AF080386}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.Managers", "HealthSysHub.Web.Managers\HealthSysHub.Web.Managers.csproj", "{51B8E9F0-43DE-4491-AC91-F971AF080386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.DataManagers", "HealthSysHub.Web.DataManagers\HealthSysHub.Web.DataManagers.csproj", "{5EECB2C8-1E6F-4389-A8AD-7C76F8A28D09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.DataManagers", "HealthSysHub.Web.DataManagers\HealthSysHub.Web.DataManagers.csproj", "{5EECB2C8-1E6F-4389-A8AD-7C76F8A28D09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSysHub.Web.MicroServices", "HealthSysHub.Web.MicroServices\HealthSysHub.Web.MicroServices.csproj", "{4684485E-42D9-4387-8691-56A57F9DB951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSysHub.Web.MicroServices", "HealthSysHub.Web.MicroServices\HealthSysHub.Web.MicroServices.csproj", "{4684485E-42D9-4387-8691-56A57F9DB951}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

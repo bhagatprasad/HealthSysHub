@@ -5,6 +5,7 @@
     [StaffId]          UNIQUEIDENTIFIER  NULL,
     [FullName]         VARCHAR(100) NULL,
     [Description]      VARCHAR(MAX) NULL,
+    [Awards]            VARCHAR(Max)  NULL,
     [Experience]       VARCHAR(100) NULL,
     [Education]        VARCHAR(MAX) NULL,
     [ProfileUrl]       VARCHAR(255) NULL,
