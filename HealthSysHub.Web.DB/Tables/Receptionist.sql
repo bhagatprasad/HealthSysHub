@@ -7,6 +7,7 @@
     [Description]      VARCHAR(MAX) NULL,
     [Experience]       VARCHAR(100) NULL,
     [Education]        VARCHAR(MAX) NULL,
+    [Awards]            VARCHAR(Max)  NULL,
     [ProfileUrl]       VARCHAR(255) NULL,
     [PhoneNumber]      VARCHAR(20) NULL,
     [Email]            VARCHAR(100) NULL,

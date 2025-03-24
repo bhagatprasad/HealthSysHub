@@ -1,14 +1,4 @@
-﻿/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
+﻿--delete  from [dbo].[Medicine]
 MERGE INTO [dbo].[Medicine] AS target
 USING (
     VALUES 
@@ -29,7 +19,7 @@ USING (
         ('Gabapentin', 'Gabapentin', 'Capsule', '300 mg', 'Neurontin', 'BATCH015', '2024-10-31T00:00:00Z', 12.49, 65),
         ('Sertraline', 'Sertraline', 'Tablet', '50 mg', 'Zoloft', 'BATCH016', '2024-09-30T00:00:00Z', 15.49, 55),
         ('Fluoxetine', 'Fluoxetine', 'Capsule', '20 mg', 'Prozac', 'BATCH017', '2024-08-31T00:00:00Z', 14.49, 45),
-        ('Citalopram', 'Citalopram', 'Tablet', '20 mg', 'Celexa', 'BATCH018', '2024-07- 31T00:00:00Z', 13.99, 50),
+        ('Citalopram', 'Citalopram', 'Tablet', '20 mg', 'Celexa', 'BATCH018', '2024-07-31T00:00:00Z', 13.99, 50),
         ('Escitalopram', 'Escitalopram', 'Tablet', '10 mg', 'Lexapro', 'BATCH019', '2024-06-30T00:00:00Z', 16.99, 40),
         ('Bupropion', 'Bupropion', 'Tablet', '150 mg', 'Wellbutrin', 'BATCH020', '2024-05-31T00:00:00Z', 18.49, 30),
         ('Venlafaxine', 'Venlafaxine', 'Capsule', '75 mg', 'Effexor', 'BATCH021', '2024-04-30T00:00:00Z', 17.99, 25),
