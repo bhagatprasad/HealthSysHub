@@ -153,6 +153,7 @@ namespace HealthSysHub.Web.DataManagers
                         {
                             FullName = hospitalStaff.FirstName + " " + hospitalStaff.LastName,
                             Email = hospitalStaff.Email,
+                            HospitalId = hospitalStaff.HospitalId,
                             PhoneNumber = hospitalStaff.Phone,
                             StaffId = hospitalStaff.StaffId,
                             IsActive = true,
@@ -168,6 +169,7 @@ namespace HealthSysHub.Web.DataManagers
                             Email = hospitalStaff.Email,
                             PhoneNumber = hospitalStaff.Phone,
                             StaffId = hospitalStaff.StaffId,
+                            HospitalId = hospitalStaff.HospitalId,
                             IsActive = true,
                             CreatedBy = hospitalStaff.CreatedBy,
                             CreatedOn = DateTimeOffset.UtcNow,
