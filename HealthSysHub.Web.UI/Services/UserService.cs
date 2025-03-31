@@ -20,7 +20,7 @@ namespace HealthSysHub.Web.UI.Services
 
             if (hospitalId.HasValue)
             {
-                requestUrl += $"?hospitalId={hospitalId.Value.ToString()}";
+                requestUrl = Path.Combine(requestUrl, hospitalId.ToString());
             }
             return await _repository.SendAsync<IEnumerable<UserInfirmation>>(HttpMethod.Get, requestUrl);
         }

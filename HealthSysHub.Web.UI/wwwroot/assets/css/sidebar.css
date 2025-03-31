@@ -15,7 +15,15 @@
     .sidebar.show {
         right: 0;
     }
-
+@media (max-width: 767px) {
+    .sidebar {
+        right: -100% !important; /* Full off-screen */
+        width: 100% !important; /* Full width */
+    }
+        .sidebar.show {
+            right: 0 !important;
+        }
+}
 .modal-header, .modal-footer {
     padding: 15px;
     border-bottom: 1px solid #dee2e6;
