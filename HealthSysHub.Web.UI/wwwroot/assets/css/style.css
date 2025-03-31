@@ -30309,3 +30309,40 @@ input:checked + .slider {
     background-color: #00afc3 !important;
     cursor: pointer;
 }
+/* Mobile patient view styling */
+.mobile-patient-view {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.patient-mobile-row {
+    display: flex;
+    margin-bottom: 3px;
+    align-items: center;
+}
+
+    .patient-mobile-row strong {
+        margin-left: 5px;
+    }
+
+.mobile-label {
+    font-weight: bold;
+    color: #555;
+    min-width: 50px;
+    display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #DoctorAppointmentGrid {
+        font-size: 14px;
+    }
+
+    .tabulator-cell {
+        padding: 6px 4px;
+    }
+
+    .tabulator-col {
+        padding: 6px 4px;
+    }
+}

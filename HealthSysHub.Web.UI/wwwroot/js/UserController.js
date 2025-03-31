@@ -12,7 +12,7 @@
         }
         self.usersgrid = new Tabulator("#usersgrid", {
             ajaxURL: '/User/FetchUsers',
-            ajaxParams: {},
+            ajaxParams: { hospitalId: appuser.HospitalId },
             ajaxConfig: {
                 method: 'GET',
                 headers: {

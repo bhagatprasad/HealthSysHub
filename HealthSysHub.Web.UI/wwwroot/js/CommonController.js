@@ -343,7 +343,7 @@ function disableAllButtons() {
     $(".custom-cursor").addClass("disabled");
     $("#addBtn").removeClass("disabled");
     $("#exportBtn").removeClass("disabled");
-    $("#importBtn").removeClass("disabled");
+   /* $("#importBtn").removeClass("disabled");*/
     /* $("#permissionBtn").removeClass("disabled");*/
 }
 
