@@ -38,6 +38,66 @@
 
         genarateDropdown("Status", hospitalStatuses, "StatusCode", "StatusName");
 
+        //// Add responsive behavior
+        window.addEventListener('resize', updateTableColumns);
+
+        // Initialize the table
+        var table = new Tabulator("#DoctorAppointmentGrid", {
+            height: "770px",
+            layout: "fitColumns",
+            resizableColumnFit: true,
+            ajaxURL: "/DoctorAppointment/GetDoctorAppointments",
+            ajaxParams: {
+                hospitalId: hospitalId,
+                dateTime: dateTime
+            },
+            ajaxConfig: {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            },
+            ajaxResponse: function (url, params, response) {
+                return response.data;
+            },
+            columns: getColumnConfig(window.innerWidth <= 768),
+            rowSelectionChanged: function (data, rows) {
+                var allSelected = rows.length && rows.every(row => row.isSelected());
+                $('#parentDoctorAppointmentChkbox').prop('checked', allSelected);
+                disableAllButtons();
+
+                if (rows.length > 0) {
+                    enableButtons(table);
+                }
+
+                let currentSelectedRows = rows.map(row => row.getData());
+                let changedRow = null;
+
+                if (self.selectedRows.length > currentSelectedRows.length) {
+                    changedRow = self.selectedRows.find(row => !currentSelectedRows.includes(row));
+                } else if (self.selectedRows.length < currentSelectedRows.length) {
+                    changedRow = currentSelectedRows.find(row => !self.selectedRows.includes(row));
+                }
+
+                self.selectedRows = currentSelectedRows;
+                if (changedRow) {
+                    var rows = table.getRows();
+                    var foundRow = rows.find(row => row.getData().AppointmentId === changedRow.AppointmentId);
+
+                    if (foundRow) {
+                        var rowId = foundRow.getData().AppointmentId;
+                        var checkbox = document.querySelector(`#childDoctorAppointmentChkbox-${rowId}`);
+                        if (checkbox.checked && currentSelectedRows.length === 1) {
+                            self.currectSelectedDoctorAppointment = changedRow;
+                        }
+                        else {
+                            self.currectSelectedDoctorAppointment = {};
+                        }
+                    }
+                }
+            }
+        });
+
         // Define column configurations
         function getColumnConfig(isMobile) {
             const baseColumns = [
@@ -162,22 +222,22 @@
             const comingFrom = data.ComingFrom || 'N/A';
 
             return `
-        <div title="${data.HealthIssue || ''}">
-            <i class="fas fa-user"></i> ${patientName}<br>
-            <i class="fas fa-phone"></i> ${patientPhone}<br>
-            <i class="fas fa-map-marker-alt"></i> ${comingFrom}
-        </div>
-    `;
+                <div title="${data.HealthIssue || ''}">
+                    <i class="fas fa-user"></i> ${patientName}<br>
+                    <i class="fas fa-phone"></i> ${patientPhone}<br>
+                    <i class="fas fa-map-marker-alt"></i> ${comingFrom}
+                </div>
+            `;
         }
 
         function appointmentFormatter(cell) {
             const data = cell.getData();
             return `
-        <div>
-            ${data.AppointmentDate || ''} <br>
-            ${data.AppointmentTime || ''}
-        </div>
-    `;
+                    <div>
+                        ${data.AppointmentDate || ''} <br>
+                        ${data.AppointmentTime || ''}
+                    </div>
+                `;
         }
 
         function customActionsFormatter(cell) {
@@ -189,8 +249,7 @@
                 return `
             <div class="btn-group mobile-actions" role="group">
                 <button type="button" 
-                        class="btn btn-sm btn-success btn-pdf-icon" 
-                        onclick="printPaymentReceipt('${appointmentId}')">
+                        class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
                     <i class="fa fa-file-pdf"></i>
                 </button>
             </div>
@@ -198,9 +257,7 @@
             } else {
                 return `
             <div class="btn-group desktop-actions" role="group">
-                <button type="button" 
-                        class="btn btn-sm btn-success btn-pdf-receipt"
-                        onclick="printPaymentReceipt('${appointmentId}')">
+                <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
                     <i class="fa fa-receipt"></i> Receipt
                 </button>
             </div>
@@ -214,67 +271,6 @@
             table.setColumns(getColumnConfig(isMobile));
             table.redraw(true);
         }
-
-        // Initialize the table
-        var table = new Tabulator("#DoctorAppointmentGrid", {
-            height: "770px",
-            layout: "fitColumns",
-            resizableColumnFit: true,
-            ajaxURL: "/DoctorAppointment/GetDoctorAppointments",
-            ajaxParams: {
-                hospitalId: hospitalId,
-                dateTime: dateTime
-            },
-            ajaxConfig: {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            },
-            ajaxResponse: function (url, params, response) {
-                return response.data;
-            },
-            columns: getColumnConfig(window.innerWidth <= 768),
-            rowSelectionChanged: function (data, rows) {
-                var allSelected = rows.length && rows.every(row => row.isSelected());
-                $('#parentDoctorAppointmentChkbox').prop('checked', allSelected);
-                disableAllButtons();
-
-                if (rows.length > 0) {
-                    enableButtons(table);
-                }
-
-                let currentSelectedRows = rows.map(row => row.getData());
-                let changedRow = null;
-
-                if (self.selectedRows.length > currentSelectedRows.length) {
-                    changedRow = self.selectedRows.find(row => !currentSelectedRows.includes(row));
-                } else if (self.selectedRows.length < currentSelectedRows.length) {
-                    changedRow = currentSelectedRows.find(row => !self.selectedRows.includes(row));
-                }
-
-                self.selectedRows = currentSelectedRows;
-                if (changedRow) {
-                    var rows = table.getRows();
-                    var foundRow = rows.find(row => row.getData().AppointmentId === changedRow.AppointmentId);
-
-                    if (foundRow) {
-                        var rowId = foundRow.getData().AppointmentId;
-                        var checkbox = document.querySelector(`#childDoctorAppointmentChkbox-${rowId}`);
-                        if (checkbox.checked && currentSelectedRows.length === 1) {
-                            self.currectSelectedDoctorAppointment = changedRow;
-                        }
-                        else {
-                            self.currectSelectedDoctorAppointment = {};
-                        }
-                    }
-                }
-            }
-        });
-
-        //// Add responsive behavior
-        window.addEventListener('resize', updateTableColumns);
-
         $(document).on("change", "#parentDoctorAppointmentChkbox", function () {
             var isChecked = $(this).prop('checked');
             if (isChecked) {
@@ -398,5 +394,28 @@
             var sortOrder = sorters.length > 0 ? sorters[0].dir : null;
             exportToExcel(data, gridColumns.RoleGrid, "Role", "Role_Report", sortColumns, sortOrder);
         }
+
+        $(document).on("click", ".pdf-print-receipt", function () {
+            showLoader();
+            var rowId = $(this).data('appointmentid');
+            var row = table.getRows(function (data) {
+                return data.AppointmentId === rowId;
+            })[0];
+            console.log(row.getData());
+
+            $.ajax({
+                url: '/Report/PrintAppointmentReceipt',
+                type: 'GET',
+                data: { appointmentId: rowId },
+                success: function (status) {
+                    window.location.href = "/Report/PrintAppointmentReceipt?appointmentId=" + rowId;
+                    hideLoader();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    hideLoader();
+                }
+            });
+        });
     };
 }
