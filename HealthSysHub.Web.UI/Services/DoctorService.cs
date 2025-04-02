@@ -20,7 +20,7 @@ namespace HealthSysHub.Web.UI.Services
 
         public async Task<List<Doctor>> GetDoctorsAsync(Guid hospitalId)
         {
-            var uri = Path.Combine("Staff/GetHospitalDoctorsAsync", hospitalId.ToString());
+            var uri = Path.Combine("Doctor/GetDoctorsByHospitalAsync", hospitalId.ToString());
             return await _repository.SendAsync<List<Doctor>>(HttpMethod.Get, uri);
         }
 

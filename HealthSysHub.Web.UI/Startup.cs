@@ -3,6 +3,7 @@ using AspNetCoreHero.ToastNotification.Extensions;
 using HealthSysHub.Web.UI.Factory;
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.UI.Models;
+using HealthSysHub.Web.UI.Reports;
 using HealthSysHub.Web.UI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -43,7 +44,7 @@ namespace HealthSysHub.Web.UI
             services.AddHttpClient();
 
             services.AddScoped<HttpClientService>();
-
+          
             services.AddTransient<TokenAuthorizationHttpClientHandler>();
 
             services.AddHttpClient("AuthorizedClient").AddHttpMessageHandler<TokenAuthorizationHttpClientHandler>();
@@ -79,7 +80,9 @@ namespace HealthSysHub.Web.UI
             services.AddScoped<IDoctorAppointmentService, DoctorAppointmentService>();
 
             services.AddScoped<IStaffService, StaffService>();
-           
+
+            services.AddScoped<PdfLayoutService>();
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
