@@ -1,4 +1,5 @@
-﻿using HealthSysHub.Web.DBConfiguration.Models;
+﻿using HealthSysHub.Web.API.CustomFilters;
+using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ namespace HealthSysHub.Web.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [HealthSysHubAutherize]
     public class HospitalController : ControllerBase
     {
         private readonly IHospitalManager _hospitalManager;

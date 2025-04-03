@@ -162,12 +162,15 @@ namespace HealthSysHub.Web.API
 
             app.UseStaticFiles();
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
+            if (_configuration.GetValue<bool>("Swagger:Enabled"))
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthSysHub.Web.API");
-            });
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthSysHub.Web.API");
+                });
+            }
 
         }
     }
