@@ -361,40 +361,6 @@
                 }
             });
         };
-        //---------------Import Functionality-------------//
-        $(document).on("click", "#importBtn", function () {
-            self.selectedRows = [];
-            $(self.fileUploadModal).modal('show');
-        });
-        $(document).on('change', '#fileInput', function (e) {
-            var files = e.target.files;
-            processFiles(files, gridColumns.RoleGrid, function (importedData) {
-                self.ImportedDoctorAppointments = importedData;
-                console.log(self.ImportedDoctorAppointments);
-            });
-        });
-
-        //-------------------Export ------------------//
-        $(document).on("click", "#exportTemplate", function (e) {
-            var _selectedRows = [];
-
-            self.exportExcel(_selectedRows)
-        });
-        $(document).on("click", "#exportWithGridData", function (e) {
-            if (self.selectedRows.length > 0)
-                self.exportExcel(self.selectedRows);
-        });
-        $(document).on("click", "#exportWithOriginalData", function (e) {
-            var gridData = table.getData();
-            self.exportExcel(gridData);
-        });
-        self.exportExcel = function (data) {
-            var sorters = table.getSorters();
-            var sortColumns = sorters.length > 0 ? sorters[0].field : null;
-            var sortOrder = sorters.length > 0 ? sorters[0].dir : null;
-            exportToExcel(data, gridColumns.RoleGrid, "Role", "Role_Report", sortColumns, sortOrder);
-        }
-
         $(document).on("click", ".pdf-print-receipt", function () {
             showLoader();
             var rowId = $(this).data('appointmentid');
@@ -413,6 +379,83 @@
                 },
                 error: function (error) {
                     console.error('Error:', error);
+                    hideLoader();
+                }
+            });
+        });
+
+        $(document).on("click", "#exportTemplate", function () {
+            showLoader();
+
+            var searchInput = $("#searchInput").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            var report = {
+                HospitalId: self.ApplicationUser.HospitalId,
+                SearchStr: searchInput,
+                FromDate: startDate ? new Date(startDate) : null,
+                ToDate: endDate ? new Date(endDate) : null
+            };
+
+            $.ajax({
+                url: '/Report/PrintAppointmentsReport',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(report),
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    var blob = new Blob([data], { type: 'application/pdf' });
+                    var link = document.createElement('a');
+                    var url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = `AppointmentsReport_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.pdf`;
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    setTimeout(function () {
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
+                        hideLoader();
+                    }, 100);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    hideLoader();
+                    alert('Error generating report. Please try again.');
+                }
+            });
+        });
+
+        $(document).on("click", "#searchButton", function () {
+            showLoader();
+            var searchInput = $("#searchInput").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            var doctorAppointment = {
+                HospitalId: self.ApplicationUser.HospitalId,
+                SearchStr: searchInput,
+                FromDate: startDate ? new Date(startDate) : null,
+                ToDate: endDate ? new Date(endDate) : null
+            };
+
+            makeAjaxRequest({
+                url: "/DoctorAppointment/GetAppointmentsReports",
+                data: doctorAppointment,
+                type: 'POST',
+                successCallback: function (response) {
+                    console.info(response);
+                    if (response) {
+                        table.setData(response.data);
+                    }
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
                     hideLoader();
                 }
             });

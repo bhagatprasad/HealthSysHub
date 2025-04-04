@@ -1,6 +1,7 @@
 ﻿using HealthSysHub.Web.API.CustomFilters;
 using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -165,6 +166,131 @@ namespace HealthSysHub.Web.API.Controllers
             {
                 var tokenNumber = await _doctorAppointmentManager.GenerateTokenNumberAsync(hospitalId, doctorId, appointmentDate);
                 return Ok(tokenNumber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsAsync/{hospitalId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsAsync(Guid hospitalId, [FromQuery] DateTime? dateTime)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsAsync(hospitalId, dateTime);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsByDoctorAsync/{hospitalId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsByDoctorAsync(Guid hospitalId, [FromQuery] Guid? doctorId, [FromQuery] DateTime? dateTime)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsByDoctorAsync(hospitalId, doctorId, dateTime);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsByPatientAsync/{hospitalId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsByPatientAsync(Guid hospitalId, [FromQuery] string patientName)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsByPatientAsync(hospitalId, patientName);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsByIdAsync/{appointmentId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsByIdAsync(Guid appointmentId)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsByIdAsync(appointmentId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetActiveDoctorAppointmentDetailsAsync/{hospitalId}")]
+        public async Task<IActionResult> GetActiveDoctorAppointmentDetailsAsync(Guid hospitalId)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetActiveDoctorAppointmentDetailsAsync(hospitalId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsByDateRangeAsync/{hospitalId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsByDateRangeAsync(Guid hospitalId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsByDateRangeAsync(hospitalId, startDate, endDate);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorAppointmentDetailsByPhoneAsync/{hospitalId}")]
+        public async Task<IActionResult> GetDoctorAppointmentDetailsByPhoneAsync(Guid hospitalId, [FromQuery] string? phone, [FromQuery] DateTime? dateTime)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetDoctorAppointmentDetailsByPhoneAsync(hospitalId, phone, dateTime);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAppointmentsReportAsync")]
+        public async Task<IActionResult> GetAppointmentsReportAsync([FromBody] PrintAppointmentsReportRequest request)
+        {
+            try
+            {
+                var response = await _doctorAppointmentManager.GetAppointmentsReportAsync(request);
+                return Ok(response);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

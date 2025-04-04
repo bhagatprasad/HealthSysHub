@@ -1,4 +1,5 @@
 ﻿using HealthSysHub.Web.UI.Models;
+using HealthSysHub.Web.Utility.Models;
 
 namespace HealthSysHub.Web.UI.Interfaces
 {
@@ -14,5 +15,6 @@ namespace HealthSysHub.Web.UI.Interfaces
         Task<List<DoctorAppointment>> GetDoctorAppointmentsByDateRangeAsync(Guid hospitalId, DateTime startDate, DateTime endDate);
         Task<int> GenerateTokenNumberAsync(Guid hospitalId, Guid? doctorId, DateTime appointmentDate);
         Task<List<DoctorAppointment>> GetDoctorAppointmentsByPhoneAsync(Guid hospitalId, string? phone, DateTime? dateTime);
+        Task<List<DoctorAppointmentDetails>> GetAppointmentsReportAsync(Models.PrintAppointmentsReportRequest request);
     }
 }

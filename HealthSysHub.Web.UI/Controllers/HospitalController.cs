@@ -2,11 +2,12 @@
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.UI.Models;
 using HealthSysHub.Web.Utility.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSysHub.Web.UI.Controllers
 {
-
+    [Authorize]
     public class HospitalController : Controller
     {
         private readonly IHospitalService _hospitalService;

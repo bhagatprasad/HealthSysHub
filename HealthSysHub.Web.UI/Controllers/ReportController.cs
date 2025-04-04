@@ -1,14 +1,18 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using HealthSysHub.Web.UI.Interfaces;
+using HealthSysHub.Web.UI.Models;
 using HealthSysHub.Web.UI.Reports;
 using HealthSysHub.Web.UI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Reflection.Metadata;
 
 namespace HealthSysHub.Web.UI.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly PdfLayoutService _pdfLayoutService;
@@ -144,6 +148,7 @@ namespace HealthSysHub.Web.UI.Controllers
 
             return File(pdfBytes, "application/pdf", "DailyPatientReport.pdf");
         }
+
         [HttpGet]
         public async Task<IActionResult> PrintAppointmentReceipt(string appointmentId)
         {
@@ -165,7 +170,7 @@ namespace HealthSysHub.Web.UI.Controllers
                     return NotFound("Required information not found");
                 }
 
-                var document = Document.Create(container =>
+                var document = QuestPDF.Fluent.Document.Create(container =>
                 {
                     container.Page(page =>
                     {
@@ -371,6 +376,180 @@ namespace HealthSysHub.Web.UI.Controllers
             {
                 _notyfService.Error(ex.Message);
                 return StatusCode(500, "An error occurred while generating the receipt");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PrintAppointmentsReport([FromBody] PrintAppointmentsReportRequest request)
+        {
+
+            try
+            {
+                var hospitalDetails = await _hospitalService.GetHospitalByIdAsync(request.HospitalId.Value);
+
+                var appointmentsReport = await _doctorAppointmentService.GetAppointmentsReportAsync(request);
+
+                var document = QuestPDF.Fluent.Document.Create(container =>
+                {
+                    container.Page(page =>
+                    {
+                        page.Size(PageSizes.A4);
+                        page.Margin(1.5f, Unit.Centimetre);
+                        page.PageColor(Colors.White);
+                        page.DefaultTextStyle(x => x.FontSize(10));
+
+                        // Header
+                        page.Header()
+                            .BorderBottom(1)
+                            .BorderColor(Colors.Grey.Lighten1)
+                            .PaddingBottom(5)
+                            .Row(row =>
+                            {
+                                row.RelativeItem().Column(column =>
+                                {
+                                    column.Item().AlignCenter().Text(hospitalDetails.HospitalName).Bold().FontSize(14);
+                                    column.Item().AlignCenter().Text($"{hospitalDetails.Address}, {hospitalDetails.City}, {hospitalDetails.Country}").FontSize(10);
+                                    column.Item().AlignCenter().Text($"Phone: {hospitalDetails.PhoneNumber} | Email: {hospitalDetails.Email}").FontSize(8);
+                                    column.Item().AlignCenter().Text("Appointments Report").Bold().FontSize(14);
+                                    column.Item().AlignCenter().Text($"Generated on: {DateTime.Now.ToString("dd MMMM yyyy HH:mm")}").FontSize(9);
+                                });
+                            });
+
+                        // Content - Main Table
+                        page.Content()
+                            .Table(table =>
+                            {
+                                // Define 6 columns
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.ConstantColumn(25);  // Sr No
+                                    columns.RelativeColumn(2);   // Patient Info
+                                    columns.RelativeColumn(2);   // Doctor Info
+                                    columns.RelativeColumn();    // Appointment Date/Time
+                                    columns.RelativeColumn();    // Amount
+                                    columns.RelativeColumn();    // Payment Info
+                                });
+
+                                // Table Header
+                                table.Header(header =>
+                                {
+                                    void AddHeaderCell(string text)
+                                    {
+                                        header.Cell()
+                                            .Border(1)
+                                            .Background(Colors.Grey.Lighten3)
+                                            .Padding(3)
+                                            .Text(text)
+                                            .FontSize(9)
+                                            .Bold();
+                                    }
+
+                                    AddHeaderCell("Sr No");
+                                    AddHeaderCell("Patient Information");
+                                    AddHeaderCell("Doctor Information");
+                                    AddHeaderCell("Appointment");
+                                    AddHeaderCell("Amount");
+                                    AddHeaderCell("Payment");
+                                });
+
+                                // Table Rows
+                                for (int i = 0; i < appointmentsReport.Count; i++)
+                                {
+                                    var appointment = appointmentsReport[i];
+                                    var index = i + 1;
+
+                                    // Row with alternating background color
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .Text(index.ToString())
+                                        .FontSize(9);
+
+                                    // Patient Information Cell
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .Column(column =>
+                                        {
+                                            column.Item().Text($"Name: {appointment.PatientName ?? "N/A"}").FontSize(9);
+                                            column.Item().Text($"Phone: {appointment.PatientPhone ?? "N/A"}").FontSize(8);
+                                            column.Item().Text($"From: {appointment.ComingFrom ?? "N/A"}").FontSize(8);
+                                        });
+
+                                    // Doctor Information Cell
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .Column(column =>
+                                        {
+                                            column.Item().Text($"Dr. {appointment.DoctorName ?? "N/A"}").FontSize(9);
+                                            column.Item().Text($"Token: {appointment.TokenNo}").FontSize(8);
+                                        });
+
+                                    // Appointment Date/Time Cell
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .Column(column =>
+                                        {
+                                            column.Item().Text(appointment.AppointmentDate?.ToString("dd MMM yyyy") ?? "N/A").FontSize(9);
+                                            column.Item().Text(appointment.AppointmentTime?.ToString(@"hh\:mm") ?? "N/A").FontSize(8);
+                                        });
+
+                                    // Amount Cell
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .AlignRight()
+                                        .Text(appointment.Amount?.ToString("C") ?? "N/A")
+                                        .FontSize(9);
+
+                                    // Payment Info Cell
+                                    table.Cell()
+                                        .Border(1)
+                                        .BorderColor(Colors.Grey.Lighten1)
+                                        .Background(index % 2 == 0 ? Colors.White : Colors.Grey.Lighten4)
+                                        .Padding(3)
+                                        .Column(column =>
+                                        {
+                                            column.Item().Text($"Type: {appointment.PaymentType ?? "N/A"}").FontSize(8);
+                                            column.Item().Text($"Ref: {appointment.PaymentReference ?? "N/A"}").FontSize(8);
+                                        });
+                                }
+                            });
+
+                        // Footer
+                        page.Footer()
+                            .BorderTop(1)
+                            .BorderColor(Colors.Grey.Lighten1)
+                            .PaddingTop(3)
+                            .AlignCenter()
+                            .Text(text =>
+                            {
+                                text.Span("Page ").FontSize(8);
+                                text.CurrentPageNumber().FontSize(8);
+                                text.Span(" of ").FontSize(8);
+                                text.TotalPages().FontSize(8);
+                            });
+                    });
+                });
+                var pdfBytes = document.GeneratePdf();
+                return File(pdfBytes, "application/pdf", $"AppointmentsReport_{DateTimeOffset.Now.ToString()}.pdf");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error(ex.Message);
+                return StatusCode(500, "An error occurred while generating the Appointments Report");
             }
         }
     }

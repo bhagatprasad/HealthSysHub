@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSysHub.Web.UI.Controllers
 {
+    [Authorize]
     public class StaffController : Controller
     {
         // Constructor with dependency injection
