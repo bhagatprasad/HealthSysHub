@@ -74,3 +74,10 @@ This summary provides a clear and concise overview of your project, highlighting
 
 Demo > 
 https://healthsyshub.azurewebsites.bdprasad.in/
+
+Demo Reports:
+Appointment Recepit : 
+![image](https://github.com/user-attachments/assets/7166b461-0a46-409b-b50b-35d42729696f)
+
+Appointments Report : filter, what cusotmer want to 
+![image](https://github.com/user-attachments/assets/c5c48d59-8b23-4e20-8f06-a3dc09591072)
