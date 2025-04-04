@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSysHub.Web.UI.Controllers
 {
+    [Authorize]
     public class DoctorAppointmentController : Controller
     {
         private readonly IDoctorAppointmentService _doctorAppointmentService;
@@ -144,6 +146,20 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _doctorAppointmentService.GetDoctorAppointmentsByDateRangeAsync(hospitalId, startDate, endDate);
+                return Json(new { data = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetAppointmentsReports([FromBody] PrintAppointmentsReportRequest request)
+        {
+
+            try
+            {
+                var response = await _doctorAppointmentService.GetAppointmentsReportAsync(request);
                 return Json(new { data = response });
             }
             catch (Exception ex)
