@@ -93,6 +93,18 @@
     <Build Include="Tables\LabTechnician.sql" />
     <Build Include="Tables\Receptionist.sql" />
     <Build Include="Tables\PatientCare.sql" />
+    <Build Include="Tables\Patient.sql" />
+    <Build Include="Tables\PatientVital.sql" />
+    <Build Include="Tables\PatientPrescription.sql" />
+    <Build Include="Tables\Consultation.sql" />
+    <Build Include="Tables\PharmacyOrderRequest.sql" />
+    <Build Include="Tables\PharmacyOrderRequestItem.sql" />
+    <Build Include="Tables\PharmacyOrder.sql" />
+    <Build Include="Tables\PharmacyOrderItem.sql" />
+    <Build Include="Tables\LabOrderRequest.sql" />
+    <Build Include="Tables\LabOrderRequestItem.sql" />
+    <Build Include="Tables\LabOrder.sql" />
+    <Build Include="Tables\LabOrderItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />

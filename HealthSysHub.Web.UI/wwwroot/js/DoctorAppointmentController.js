@@ -439,6 +439,7 @@
             var doctorAppointment = {
                 HospitalId: self.ApplicationUser.HospitalId,
                 SearchStr: searchInput,
+                DoctorId: null,
                 FromDate: startDate ? new Date(startDate) : null,
                 ToDate: endDate ? new Date(endDate) : null
             };

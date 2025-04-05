@@ -225,10 +225,14 @@ namespace HealthSysHub.Web.DataManagers
             }
 
             var query = from appointment in _dbContext.doctorAppointments
-                        where appointment.HospitalId == request.HospitalId && appointment.IsActive
+                        where appointment.HospitalId == request.HospitalId
+                           && appointment.IsActive
                            && (!request.FromDate.HasValue || appointment.AppointmentDate >= request.FromDate.Value.Date)
                            && (!request.ToDate.HasValue || appointment.AppointmentDate <= request.ToDate.Value.Date)
-                           && (string.IsNullOrEmpty(request.SearchStr) || appointment.PatientName.Contains(request.SearchStr) || appointment.PatientPhone.Contains(request.SearchStr))
+                           && (!request.DoctorId.HasValue || appointment.DoctorId == request.DoctorId)
+                           && (string.IsNullOrEmpty(request.SearchStr)
+                               || appointment.PatientName.Contains(request.SearchStr)
+                               || appointment.PatientPhone.Contains(request.SearchStr))
                         join doctor in _dbContext.doctors on appointment.DoctorId equals doctor.DoctorId into doctorInfo
                         from doctorJoinedInfo in doctorInfo.DefaultIfEmpty()
                         select new DoctorAppointmentDetails

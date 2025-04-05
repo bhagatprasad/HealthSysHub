@@ -66,7 +66,7 @@
 
                 if (appUserInfo) {
                     if (appUserInfo.RoleName === "Doctor") {
-                        window.location.href = "/DoctorDashboard/Index";
+                        window.location.href = "/DoctorDashboard/ManageDoctorAppointments";
                     } else if (appUserInfo.RoleName === "Executive") {
                         window.location.href = "/ExecutiveDashboard/Index";
                     }
