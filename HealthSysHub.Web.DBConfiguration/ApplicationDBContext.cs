@@ -33,10 +33,20 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<Medicine> medicines { get; set; }
         public DbSet<PaymentType> paymentTypes { get; set; }
         public DbSet<PatientType> patientTypes { get; set; }
-
         public DbSet<Role> roles { get; set; }
-
         public DbSet<Specialization> specializations { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<Consultation> consultations { get; set; }
+        public DbSet<LabOrder> labOrders { get; set; }
+        public DbSet<LabOrderItem> labOrderItems { get; set; }
+        public DbSet<LabOrderRequest> labOrderRequests { get; set; }
+        public DbSet<LabOrderRequestItem> labOrderRequestItems { get; set; }
+        public DbSet<Patient> patients { get; set; }
+        public DbSet<PatientPrescription> patientPrescriptions { get; set; }
+        public DbSet<PatientVital> patientVitals { get; set; }
+        public DbSet<PharmacyOrder> pharmacyOrders { get; set; }
+        public DbSet<PharmacyOrderItem> pharmacyOrderItems { get; set; }
+        public DbSet<PharmacyOrderRequest> pharmacyOrderRequests { get; set; }
+        public DbSet<PharmacyOrderRequestItem> pharmacyOrderRequestItems { get; set; }
     }
 }

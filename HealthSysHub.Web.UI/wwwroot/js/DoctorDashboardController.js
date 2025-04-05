@@ -1,31 +1,60 @@
 ﻿function DoctorDashboardController() {
     var self = this;
+
     self.selectedRows = [];
-    self.currectSelectedPatient = {};
+
+    self.currectSelectedDoctorAppointment = {};
+
     self.todayDate = new Date();
+
     self.fileUploadModal = $("#fileUploadModal");
-    self.coreDBDocters = [];
-    var actions = [];
-    var dataObjects = [];
+
+    self.ImportedDoctorAppointments = [];
+
     self.ApplicationUser = {};
 
-    actions.push('/Doctor/GetDoctors');
+    self.HospitalDoctors = [];
+
+    self.CurrentDoctorInfirmation = {};
+
+    var appUserInfo = storageService.get('ApplicationUser');
+
+    if (appUserInfo)
+        self.ApplicationUser = appUserInfo;
+
+    var doctors = storageService.get('doctors');
+    if (doctors) {
+        self.HospitalDoctors = doctors;
+
+        self.CurrentDoctorInformation = doctors.find(x => x.StaffId === self.ApplicationUser.StaffId);
+    }
+
+    const hospitalId = self.ApplicationUser.HospitalId;
+
+    const dateTime = new Date().toISOString();
+
     self.init = function () {
 
-        var appUserInfo = storageService.get('ApplicationUser');
-        if (appUserInfo) {
-            self.ApplicationUser = appUserInfo;
-        }
-        const hospitalId = self.ApplicationUser.HospitalId;
+        genarateDropdown("DoctorId", self.HospitalDoctors, "DoctorId", "FullName");
 
-        const dateTime = new Date().toISOString();
+        genarateDropdown("PaymentType", paymentTypes, "PaymentTypeName", "PaymentTypeName");
 
-        var table = new Tabulator("#consulationGrid", {
-            height: "780px",
+        genarateDropdown("Status", hospitalStatuses, "StatusCode", "StatusName");
+
+        //// Add responsive behavior
+        window.addEventListener('resize', updateTableColumns);
+
+        // Initialize the table
+        var table = new Tabulator("#DoctorAppointmentGrid", {
+            height: "770px",
             layout: "fitColumns",
             resizableColumnFit: true,
-            ajaxURL: '/Patient/GetPatientsByDoctor',
-            ajaxParams: { doctorId: self.ApplicationUser.Id },
+            ajaxURL: "/DoctorAppointment/GetDoctorAppointmentsByDoctor",
+            ajaxParams: {
+                hospitalId: hospitalId,
+                doctorId: self.CurrentDoctorInformation.DoctorId,
+                dateTime: dateTime,
+            },
             ajaxConfig: {
                 method: 'GET',
                 headers: {
@@ -35,9 +64,50 @@
             ajaxResponse: function (url, params, response) {
                 return response.data;
             },
-            columns: [
+            columns: getColumnConfig(window.innerWidth <= 768),
+            rowSelectionChanged: function (data, rows) {
+                var allSelected = rows.length && rows.every(row => row.isSelected());
+                $('#parentDoctorAppointmentChkbox').prop('checked', allSelected);
+                disableAllButtons();
+
+                if (rows.length > 0) {
+                    enableButtons(table);
+                }
+
+                let currentSelectedRows = rows.map(row => row.getData());
+                let changedRow = null;
+
+                if (self.selectedRows.length > currentSelectedRows.length) {
+                    changedRow = self.selectedRows.find(row => !currentSelectedRows.includes(row));
+                } else if (self.selectedRows.length < currentSelectedRows.length) {
+                    changedRow = currentSelectedRows.find(row => !self.selectedRows.includes(row));
+                }
+
+                self.selectedRows = currentSelectedRows;
+                if (changedRow) {
+                    var rows = table.getRows();
+                    var foundRow = rows.find(row => row.getData().AppointmentId === changedRow.AppointmentId);
+
+                    if (foundRow) {
+                        var rowId = foundRow.getData().AppointmentId;
+                        var checkbox = document.querySelector(`#childDoctorAppointmentChkbox-${rowId}`);
+                        if (checkbox.checked && currentSelectedRows.length === 1) {
+                            self.currectSelectedDoctorAppointment = changedRow;
+                        }
+                        else {
+                            self.currectSelectedDoctorAppointment = {};
+                        }
+                    }
+                }
+            }
+        });
+
+        // Define column configurations
+        function getColumnConfig(isMobile) {
+            const baseColumns = [
+                // Checkbox column (always visible)
                 {
-                    title: "<div class='centered-checkbox'><input type='checkbox' id='parentPatientChkbox' style='margin-top: 22px;'></div>",
+                    title: "<div class='centered-checkbox'><input type='checkbox' id='parentDoctorAppointmentChkbox'></div>",
                     field: "select",
                     headerSort: false,
                     hozAlign: "center",
@@ -47,8 +117,8 @@
                     formatter: function (cell, formatterParams, onRendered) {
                         onRendered(function () {
                             var row = cell.getRow();
-                            var rowId = row.getData().PatientId;
-                            cell.getElement().innerHTML = `<div class='centered-checkbox'><input type='checkbox' id='childPatientChkbox-${rowId}' class='childPatientChkbox' data-row-id='${rowId}'/></div>`;
+                            var rowId = row.getData().AppointmentId;
+                            cell.getElement().innerHTML = `<div class='centered-checkbox'><input type='checkbox' id='childDoctorAppointmentChkbox-${rowId}' class='childDoctorAppointmentChkbox' data-row-id='${rowId}'/></div>`;
                             cell.getElement().querySelector('input[type="checkbox"]').checked = row.isSelected();
                         });
                         return "";
@@ -56,150 +126,217 @@
                     cellClick: function (e, cell) {
                         cell.getRow().toggleSelect();
                     }
-                },
-                { title: "Name", field: "PatientName" },
-                { title: "Date of Visit", field: "DateOfVisit" },
-                { title: "Time of Visit", field: "TimeOfVisit" },
-                { title: "Coming From", field: "ComingFrom" },
-                { title: "Phone Number", field: "PhoneNo" },
-                { title: "Gender", field: "Gender" },
-                {
-                    title: "Vitals",
-                    field: "Height",
-                    formatter: function (cell, formatterParams, onRendered) {
-                        var rowData = cell.getRow().getData();
+                }
+            ];
 
-                        var vitals = [
-                            `Height: ${rowData.Height || "N/A"}`,
-                            `Weight: ${rowData.Weight || "N/A"}`,
-                            `BP: ${rowData.BP || "N/A"}`,
-                            `Sugar: ${rowData.Sugar || "N/A"}`,
-                            `Temperature: ${rowData.Temperature || "N/A"}`
-                        ].join("<br>");
-                        return vitals;
-                    },
-                },
-                { title: "Fee", field: "Fee" },
-                { title: "Current Status", field: "CurrentStatus" },
-                {
-                    title: "Options",
-                    field: "PatientId",
-                    headerSort: false,
-                    hozAlign: "center",
-                    headerHozAlign: "center",
-                    cssClass: "centered-checkbox",
-                    width: 150, // Adjust width as needed
-                    formatter: function (cell, formatterParams, onRendered) {
-                        onRendered(function () {
-                            var row = cell.getRow();
-                            var rowId = row.getData().PatientId;
-                            cell.getElement().innerHTML = `
-                        <button class="consultation-button btn btn-primary" data-patientid='${rowId}'>
-                            Consultation
-                        </button>`;
-                        });
-                        return "";
-                    },
-                    cellClick: function (e, cell) {
-                        var patientId = cell.getRow().getData().PatientId;
-                        // Handle the consultation button click event
-                        console.log("Consultation button clicked for Patient ID:", patientId);
-                        // You can add your logic here to handle the consultation action
+            if (isMobile) {
+                // Mobile configuration - compact view
+                baseColumns.push({
+                    title: "Patient Details",
+                    field: "PatientName",
+                    width: 200,
+                    formatter: function (cell, formatterParams) {
+                        const data = cell.getData();
+                        const doctor = self.HospitalDoctors.find(doc => doc.DoctorId === data.DoctorId);
+
+                        return `
+                    <div class="mobile-patient-view">
+                        <div class="patient-mobile-row">
+                            <span class="mobile-label">#${data.TokenNo || ''}</span>
+                            <strong>${data.PatientName || 'N/A'}</strong>
+                        </div>
+                        <div class="patient-mobile-row">
+                            <i class="fas fa-phone"></i> ${data.PatientPhone || 'N/A'}
+                        </div>
+                        <div class="patient-mobile-row">
+                            <i class="fas fa-user-md"></i> ${doctor?.FullName || 'N/A'}
+                        </div>
+                        <div class="patient-mobile-row">
+                            <i class="fas fa-calendar-day"></i> ${data.AppointmentDate || ''}
+                             <i class="fas fa-calendar-day"></i> ${data.AppointmentTime || ''}
+                        </div>
+                        <div class="patient-mobile-row">
+                            <span class="status-badge">${data.Status || ''}</span>
+                        </div>
+                    </div>
+                `;
                     }
-                }
-            ],
-            rowSelectionChanged: function (data, rows) {
-                var allSelected = rows.length && rows.every(row => row.isSelected());
-                $('#parentPatientChkbox').prop('checked', allSelected);
-                disableAllButtons();
-
-                // Enable buttons based on selection
-                if (rows.length > 0) {
-                    enableButtons();
-                }
-
-                // Find the most recently changed row
-                let currentSelectedRows = rows.map(row => row.getData());
-                let changedRow = null;
-
-                if (self.selectedRows.length > currentSelectedRows.length) {
-                    // A row was deselected
-                    changedRow = self.selectedRows.find(row => !currentSelectedRows.includes(row));
-                } else if (self.selectedRows.length < currentSelectedRows.length) {
-                    // A row was selected
-                    changedRow = currentSelectedRows.find(row => !self.selectedRows.includes(row));
-                }
-
-
-                // Update the previous selected rows state
-                self.selectedRows = currentSelectedRows;
-                // Handle the changed row data
-                if (changedRow) {
-                    var rows = table.getRows();
-                    var foundRow = rows.find(row => row.getData().PatientId === changedRow.PatientId);
-
-                    if (foundRow) {
-                        var rowId = foundRow.getData().PatientId;
-                        var checkbox = document.querySelector(`#childPatientChkbox-${rowId}`);
-                        if (checkbox.checked && currentSelectedRows.length === 1) {
-                            self.currectSelectedPatient = changedRow;
-                        }
-                        else {
-                            self.currectSelectedPatient = {};
-                        }
-                    }
-
-                }
-
-
-            }
-        });
-
-        var requests = actions.map((action, index) => {
-            var ajaxConfig = {
-                url: action,
-                method: 'GET'
-            };
-            return $.ajax(ajaxConfig);
-        });
-
-        $.when.apply($, requests).done(function (...responses) {
-            self.coreDBDocters = responses[0]?.data || [];
-
-            if (self.coreDBDocters) {
-                var doctorPhoneList = self.coreDBDocters.map(function (doctor) {
-                    return {
-                        DoctorId: doctor.DoctorId,
-                        DoctorName: doctor.DoctorName + "-" + doctor.Specialty + "-" + doctor.Phone
-                    };
                 });
-                genarateDropdown("DoctorAssignedId", doctorPhoneList, "DoctorId", "DoctorName");
+            } else {
+                // Desktop configuration - full columns
+                baseColumns.push(
+                    {
+                        title: "Sr No",
+                        field: "TokenNo",
+                        width: 40
+                    },
+                    {
+                        title: "Patient Info",
+                        field: "PatientName",
+                        formatter: patientInfoFormatter
+                    },
+                    {
+                        title: "Doctor",
+                        field: "DoctorId",
+                        formatter: function (cell, formatterParams) {
+                            const doctor = self.HospitalDoctors.find(doc => doc.DoctorId === cell.getData().DoctorId);
+                            return doctor ? `<div><i class="fas fa-user-md"></i> ${doctor.FullName}</div>` : '<div>N/A</div>';
+                        }
+                    },
+                    {
+                        title: "Appointment Date",
+                        field: "AppointmentDate",
+                        formatter: appointmentFormatter
+                    },
+                    {
+                        title: "Amount",
+                        field: "Amount",
+                        formatter: "money",
+                        formatterParams: { symbol: "$" }
+                    },
+                    {
+                        title: "Payment Type",
+                        field: "PaymentType"
+                    },
+                    {
+                        title: "Status",
+                        field: "Status"
+                    }
+                );
             }
 
-            hideLoader();
-        }).fail(function () {
-            console.log('One or more requests failed.');
-        });
-        $(document).on("change", "#parentPatientChkbox", function () {
+            // Actions column (always last and always visible)
+            baseColumns.push({
+                title: "Actions",
+                field: "actions",
+                width: isMobile ? 80 : 110,
+                formatter: customActionsFormatter,
+                align: "center",
+                headerSort: false
+            });
+
+            return baseColumns;
+        }
+
+        // Formatter functions
+        function patientInfoFormatter(cell) {
+            const data = cell.getData();
+            const patientName = data.PatientName || 'N/A';
+            const patientPhone = data.PatientPhone || 'N/A';
+            const comingFrom = data.ComingFrom || 'N/A';
+
+            return `
+                <div title="${data.HealthIssue || ''}">
+                    <i class="fas fa-user"></i> ${patientName}<br>
+                    <i class="fas fa-phone"></i> ${patientPhone}<br>
+                    <i class="fas fa-map-marker-alt"></i> ${comingFrom}
+                </div>
+            `;
+        }
+
+        function appointmentFormatter(cell) {
+            const data = cell.getData();
+            return `
+                    <div>
+                        ${data.AppointmentDate || ''} <br>
+                        ${data.AppointmentTime || ''}
+                    </div>
+                `;
+        }
+
+        function customActionsFormatter(cell) {
+            const isMobile = window.innerWidth <= 768;
+            const data = cell.getData();
+            const appointmentId = String(data.AppointmentId).replace(/"/g, '&quot;');
+            const status = data.Status; // Assuming the status is stored in data.Status
+
+            if (status === "HospitalVisited") {
+                // If the status is HospitalVisited, display the Consultation button
+                return `
+            <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
+                <button type="button" class="btn btn-sm btn-info btn-consultation" data-appointmentid="${appointmentId}">
+                    ${isMobile ? '<i class="fa fa-comments"></i>' : 'Consultation'}
+                </button>
+            </div>
+        `;
+            } else if (status === "DoctorConsulted") {
+                // If the status is DoctorConsulted, display the Print Prescription button
+                return `
+            <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
+                <button type="button" class="btn btn-sm btn-warning btn-print-prescription" data-appointmentid="${appointmentId}">
+                    ${isMobile ? '<i class="fa fa-print"></i>' : 'Print Prescription'}
+                </button>
+            </div>
+        `;
+            } else {
+                // Default case for other statuses
+                if (isMobile) {
+                    return `
+                <div class="btn-group mobile-actions" role="group">
+                    <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
+                        <i class="fa fa-file-pdf"></i>
+                    </button>
+                </div>
+            `;
+                } else {
+                    return `
+                <div class="btn-group desktop-actions" role="group">
+                    <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
+                        <i class="fa fa-receipt"></i> Receipt
+                    </button>
+                </div>
+            `;
+                }
+            }
+        }
+        // Update table columns based on screen size
+        function updateTableColumns() {
+            const isMobile = window.innerWidth <= 768;
+            table.setColumns(getColumnConfig(isMobile));
+            table.redraw(true);
+        }
+        $(document).on("change", "#parentDoctorAppointmentChkbox", function () {
             var isChecked = $(this).prop('checked');
             if (isChecked) {
                 table.selectRow();
             } else {
                 table.deselectRow();
             }
-            $('.childPatientChkbox').prop('checked', isChecked);
+            $('.childDoctorAppointmentChkbox').prop('checked', isChecked);
         });
 
-        $(document).on('change', '.childPatientChkbox', function () {
+        $(document).on('change', '.childDoctorAppointmentChkbox', function () {
             var rowId = $(this).data('row-id');
             var row = table.getRow(function (data) {
-                return data.id === rowId;
+                return data.AppointmentId === rowId;
             });
             var rows = table.getRows();
             var allSelected = rows.length && rows.every(row => row.isSelected());
-            $('#parentPatientChkbox').prop('checked', allSelected);
+            $('#parentDoctorAppointmentChkbox').prop('checked', allSelected);
         });
+        //-----------------Edit functionality-------------------//
+        $(document).on("click", "#editBtn", function () {
+            if (self.currectSelectedDoctorAppointment) {
+                $("#DoctorId").val(self.currectSelectedDoctorAppointment.DoctorId);
+                $("#AppointmentDate").val(self.currectSelectedDoctorAppointment.AppointmentDate);
+                $("#AppointmentTime").val(self.currectSelectedDoctorAppointment.AppointmentTime);
+                $("#PatientName").val(self.currectSelectedDoctorAppointment.PatientName);
+                $("#PatientPhone").val(self.currectSelectedDoctorAppointment.PatientPhone);
+                $("#ComingFrom").val(self.currectSelectedDoctorAppointment.ComingFrom);
+                $("#Amount").val(self.currectSelectedDoctorAppointment.Amount);
+                $("#PaymentType").val(self.currectSelectedDoctorAppointment.PaymentType);
+                $("#PaymentReference").val(self.currectSelectedDoctorAppointment.PaymentReference);
+                $("#HealthIssue").val(self.currectSelectedDoctorAppointment.HealthIssue);
+                $("#Status").val(self.currectSelectedDoctorAppointment.Status);
+                $("#StatusMessage").val(self.currectSelectedDoctorAppointment.StatusMessage);
+                $('#sidebar').addClass('show');
+                $('body').append('<div class="modal-backdrop fade show"></div>');
+            } else {
+                $('#sidebar').removeClass('show');
+                $('.modal-backdrop').remove();
+            }
 
+        });
 
         $('#addBtn').on('click', function () {
             $('#sidebar').addClass('show');
@@ -207,209 +344,147 @@
         });
 
         $('#closeSidebar, .modal-backdrop').on('click', function () {
-            $('#AddEditConsulationForm')[0].reset();
+            $('#AddEditDoctorAppointmentForm')[0].reset();
             $('#sidebar').removeClass('show');
             $('.modal-backdrop').remove();
         });
-
-        $('#AddEditConsulationForm').on('submit', function (e) {
+        $('#AddEditDoctorAppointmentForm').on('submit', function (e) {
+            showLoader();
             e.preventDefault();
-            var formData = getFormData('#AddEditConsulationForm');
-            var patient = addCommonProperties(formData);
-            patient.PatientId = self.currectSelectedPatient ? self.currectSelectedPatient.PatientId : null;
-            patient.CurrentStatus = self.currectSelectedPatient.CurrentStatus ? self.currectSelectedPatient.CurrentStatus : "Patiend Registered";
-            patient.PreparedBy = patient.ModifiedBy;
-            self.addEditPatient(patient, false);
-
-            console.log(patient);
+            var formData = getFormData('#AddEditDoctorAppointmentForm');
+            var doctorAppointment = addCommonProperties(formData);
+            doctorAppointment.AppointmentId = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.AppointmentId : null;
+            doctorAppointment.HospitalId = self.ApplicationUser.HospitalId;
+            doctorAppointment.TokenNo = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.TokenNo : 0;
+            self.addeditDoctorAppointment(doctorAppointment, false);
         });
 
-        makeFormGeneric('#AddEditConsulationForm', '#btnsubmit');
-
-        // Function to disable all buttons
-        function disableAllButtons() {
-
-            $(".custom-cursor").addClass("disabled");
-            $("#addBtn").removeClass("disabled");
-            $("#exportBtn").removeClass("disabled");
-            $("#importBtn").removeClass("disabled");
-        }
-
-        // Function to enable buttons
-        function enableButtons() {
-            $(".custom-cursor").removeClass("disabled");
-
-            // Highlight buttons based on selection
-            var selectedRows = table.getSelectedRows();
-            var hasMultipleSelection = selectedRows.length > 1;
-
-            if (hasMultipleSelection) {
-                /* $("#addBtn").removeClass("selected");*/
-                $("#editBtn").addClass("disabled");
-                $("#deleteBtn").addClass("disabled");
-                $("#copyBtn").addClass("disabled");
-                $("#addBtn").removeClass("disabled");
-            } else {
-                selectedRows.forEach(function (row) {
-                    // Highlight based on specific conditions (e.g., edit and delete)
-                    var isSelected = row.isSelected();
-                    if (isSelected) {
-                        /*  $("#addBtn").addClass("selected");*/
-                        $("#editBtn").addClass("selected");
-                        $("#deleteBtn").addClass("selected");
-                        $("#copyBtn").addClass("selected");
-                        $("#addBtn").addClass("disabled");
-                    }
-                });
-            }
-        }
-
-        $(document).on("click", ".consultation-button", function () {
-            var rowId = $(this).data('patientid');
-
-            var row = $.grep(table.getData(), function (data) {
-                return data.PatientId === rowId;
-            });
-
-            console.log(row[0]);
-
-            var patient = row[0];
-
-            var managerPatientUrl = "/DoctorDashboard/DoctorConsutation?patientId=" + patient.PatientId;
-
-            window.location.href = managerPatientUrl;
-        });
-
-        $(document).on("click", "#editBtn", function () {
-            if (self.currectSelectedPatient) {
-                // Populate the form fields with data from the selected patient
-                $("#PatientName").val(self.currectSelectedPatient.PatientName);
-                $("#DateOfVisit").val(self.currectSelectedPatient.DateOfVisit ? self.currectSelectedPatient.DateOfVisit.split('T')[0] : '');  // Date formatting for input[type="date"]
-                $("#TimeOfVisit").val(self.currectSelectedPatient.TimeOfVisit);
-                $("#ComingFrom").val(self.currectSelectedPatient.ComingFrom);
-                $("#Reference").val(self.currectSelectedPatient.Reference);
-                $("#PhoneNo").val(self.currectSelectedPatient.PhoneNo);
-                $("#AlternatePhoneNo").val(self.currectSelectedPatient.AlternatePhoneNo);
-                $("#Email").val(self.currectSelectedPatient.Email);
-                $("#Gender").val(self.currectSelectedPatient.Gender);
-                $("#DOB").val(self.currectSelectedPatient.DOB ? self.currectSelectedPatient.DOB.split('T')[0] : '');  // Date formatting for input[type="date"]
-                $("#Height").val(self.currectSelectedPatient.Height);
-                $("#Weight").val(self.currectSelectedPatient.Weight);
-                $("#BP").val(self.currectSelectedPatient.BP);
-                $("#Sugar").val(self.currectSelectedPatient.Sugar);
-                $("#Temperature").val(self.currectSelectedPatient.Temperature);
-                $("#HealthIssues").val(self.currectSelectedPatient.HealthIssues);
-                $("#DoctorAssignedId").val(self.currectSelectedPatient.DoctorAssignedId);
-                $("#Fee").val(self.currectSelectedPatient.Fee);
-                $("#PreparedBy").val(self.currectSelectedPatient.PreparedBy);
-
-                // Show the sidebar and backdrop
-                $('#sidebar').addClass('show');
-                $('body').append('<div class="modal-backdrop fade show"></div>');
-            } else {
-                // If no patient is selected, hide the sidebar and backdrop
-                $('#sidebar').removeClass('show');
-                $('.modal-backdrop').remove();
-            }
-        });
-
-        $(document).on("click", "#copyBtn", function () {
-            if (self.currectSelectedPatient) {
-                $('#confirmCopyModal').modal('show');
-            }
-        });
-        $(document).on("click", "#confirmCopyBtn", function () {
-            if (self.currectSelectedPatient) {
-                var tenant = addCommonProperties(self.currectSelectedPatient);
-                tenant.PatientId = null;
-                self.addedittenant(tenant, true);
-            }
-            $('#confirmCopyModal').modal('hide');
-        });
-        $(document).on("click", "#deleteBtn", function () {
-            if (self.currectSelectedPatient) {
-                $('#confirmDeleteModal').modal('show');
-            }
-        });
-        $(document).on("click", "#confirmDeleteBtn", function () {
-            if (self.currectSelectedPatient) {
-                //var tenant = addCommonProperties(self.currectSelectedPatient);
-                //tenant.PatientId = null;
-                //self.addedittenant(tenant, true);
-            }
-            $('#confirmDeleteModal').modal('hide');
-        });
-        $(document).on("click", "#exportTemplate", function (e) {
-            var _selectedRows = [];
-
-            self.exportExcel(_selectedRows)
-        });
-        $(document).on("click", "#exportWithGridData", function (e) {
-            if (self.selectedRows.length > 0)
-                self.exportExcel(self.selectedRows);
-        });
-        $(document).on("click", "#exportWithOriginalData", function (e) {
-            var gridData = table.getData();
-            self.exportExcel(gridData);
-        });
-        $(document).on("click", "#importBtn", function () {
-            self.selectedRows = [];
-            $(self.fileUploadModal).modal('show');
-        });
-
-        self.exportExcel = function (data) {
-            var sorters = table.getSorters();
-            var sortColumns = sorters.length > 0 ? sorters[0].field : null;
-            var sortOrder = sorters.length > 0 ? sorters[0].dir : null;
-            exportToExcel(data, gridColumns.TenantGrid, "Tenant", "Tenant_Report", sortColumns, sortOrder);
-        }
-        self.addEditPatient = function (patient, iscopy) {
+        makeFormGeneric('#AddEditDoctorAppointmentForm', '#btnsubmit');
+        self.addeditDoctorAppointment = function (doctorAppointment, iscopy) {
             makeAjaxRequest({
-                url: "/Patient/InsertOrUpdatePatientRegistration",
-                data: patient,
+                url: "/DoctorAppointment/InsertOrUpdateDoctorAppointment",
+                data: doctorAppointment,
                 type: 'POST',
                 successCallback: function (response) {
                     if (response) {
                         if (!iscopy) {
-                            $('#AddEditConsulationForm')[0].reset();
+                            $('#AddEditDoctorAppointmentForm')[0].reset();
                             $('#sidebar').removeClass('show');
                             $('.modal-backdrop').remove();
                         }
                         table.setData();
-                        self.currectSelectedPatient = {};
+                        self.currectSelectedDoctorAppointment = {};
+
                     }
                     console.info(response);
+                    hideLoader();
                 },
                 errorCallback: function (xhr, status, error) {
                     console.error("Error in upserting data to server: " + error);
+                    hideLoader();
                 }
             });
         };
-        $(document).on('change', '#fileInput', function (e) {
-            var files = e.target.files;
-            processFiles(files, gridColumns.TenantGrid, function (importedData) {
-                self.ImportedTenants = importedData;
-                console.log(self.ImportedTenants);
+        $(document).on("click", ".pdf-print-receipt", function () {
+            showLoader();
+            var rowId = $(this).data('appointmentid');
+            var row = table.getRows(function (data) {
+                return data.AppointmentId === rowId;
+            })[0];
+            console.log(row.getData());
+
+            $.ajax({
+                url: '/Report/PrintAppointmentReceipt',
+                type: 'GET',
+                data: { appointmentId: rowId },
+                success: function (status) {
+                    window.location.href = "/Report/PrintAppointmentReceipt?appointmentId=" + rowId;
+                    hideLoader();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    hideLoader();
+                }
             });
         });
 
-        $(document).on("click", "#uploadButton", function (e) {
-            if (self.ImportedTenants.length > 0) {
-                makeAjaxRequest({
-                    url: API_URLS.BulkInsertOrUpdateTenant,
-                    data: self.ImportedTenants,
-                    type: 'POST',
-                    successCallback: function (response) {
-                        self.ImportedTenants = [];
-                        table.setData();
-                        $(self.fileUploadModal).modal('hide');
-                        console.info(response);
-                    },
-                    errorCallback: function (xhr, status, error) {
-                        console.error("Error in upserting data to server: " + error);
-                    }
-                });
-            }
+        $(document).on("click", "#exportTemplate", function () {
+            showLoader();
+
+            var searchInput = $("#searchInput").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            var report = {
+                HospitalId: self.ApplicationUser.HospitalId,
+                SearchStr: searchInput,
+                DoctorId: self.CurrentDoctorInformation.DoctorId,
+                FromDate: startDate ? new Date(startDate) : null,
+                ToDate: endDate ? new Date(endDate) : null
+            };
+
+            $.ajax({
+                url: '/Report/PrintAppointmentsReport',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(report),
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    var blob = new Blob([data], { type: 'application/pdf' });
+                    var link = document.createElement('a');
+                    var url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = `AppointmentsReport_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.pdf`;
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    setTimeout(function () {
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
+                        hideLoader();
+                    }, 100);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    hideLoader();
+                    alert('Error generating report. Please try again.');
+                }
+            });
         });
-    }
+
+        $(document).on("click", "#searchButton", function () {
+            showLoader();
+            var searchInput = $("#searchInput").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            var doctorAppointment = {
+                HospitalId: self.ApplicationUser.HospitalId,
+                SearchStr: searchInput,
+                DoctorId: self.CurrentDoctorInformation.DoctorId,
+                FromDate: startDate ? new Date(startDate) : null,
+                ToDate: endDate ? new Date(endDate) : null
+            };
+
+            makeAjaxRequest({
+                url: "/DoctorAppointment/GetAppointmentsReports",
+                data: doctorAppointment,
+                type: 'POST',
+                successCallback: function (response) {
+                    console.info(response);
+                    if (response) {
+                        table.setData(response.data);
+                    }
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                    hideLoader();
+                }
+            });
+        });
+    };
 }

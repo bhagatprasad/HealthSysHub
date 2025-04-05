@@ -14,5 +14,10 @@ namespace HealthSysHub.Web.UI.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> CreatePatientConsulation(Guid appointmentId)
+        {
+            return View();
+        }
     }
 }
