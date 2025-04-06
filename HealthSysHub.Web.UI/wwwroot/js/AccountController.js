@@ -34,15 +34,15 @@
         function handleAuthenticationSuccess(response) {
             console.info(response);
             if (response.status) {
-                var appUserInfo = storageService.get('ApplicationUser');
-                if (appUserInfo) {
+                var _appUserInfo = storageService.get('ApplicationUser');
+                if (_appUserInfo) {
                     storageService.remove('ApplicationUser');
                 }
 
                 var applicationUser = response.appUser;
                 storageService.set('ApplicationUser', applicationUser);
 
-                if (appUserInfo.HospitalId) {
+                if (_appUserInfo.HospitalId) {
                     var hospitalInfo = storageService.get('HospitalInformation');
                     if (hospitalInfo) {
                         storageService.remove('HospitalInformation');

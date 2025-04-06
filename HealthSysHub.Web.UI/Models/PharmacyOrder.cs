@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-
-namespace HealthSysHub.Web.DBConfiguration.Models
+﻿namespace HealthSysHub.Web.UI.Models
 {
-    [Table("PharmacyOrder")]
     public class PharmacyOrder
     {
-        [Key]
-        public Guid PharmacyOrderId { get; set; }
+        public Guid? PharmacyOrderId { get; set; }
         public Guid? PharmacyOrderRequestId { get; set; }
         public long? ItemQty { get; set; }
         public decimal? TotalAmount { get; set; }

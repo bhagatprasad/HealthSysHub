@@ -8,6 +8,7 @@
     [FinalAmount]           DECIMAL(22,11)      NULL,
     [BalanceAmount]         DECIMAL(22,11)      NULL,
     [Notes]                 VARCHAR(MAX)        NULL,
+    [Status]                VARCHAR(max)        NULL,
     [CreatedBy]             UNIQUEIDENTIFIER    NULL,
     [CreatedOn]             DATETIMEOFFSET      DEFAULT SYSDATETIMEOFFSET(),
     [ModifiedBy]            UNIQUEIDENTIFIER    NULL,

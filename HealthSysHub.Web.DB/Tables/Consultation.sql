@@ -4,6 +4,7 @@
     [AppointmentId]      UNIQUEIDENTIFIER    NULL, 
     [HospitalId]         UNIQUEIDENTIFIER    NULL,
     [DoctorId]           UNIQUEIDENTIFIER    NULL,
+    [Status]             varchar(max)        NULL,
     [CreatedBy]          UNIQUEIDENTIFIER    NULL,
     [CreatedOn]          DATETIMEOFFSET      DEFAULT SYSDATETIMEOFFSET(),
     [ModifiedBy]         UNIQUEIDENTIFIER    NULL,

@@ -17,6 +17,7 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public string? Name { get; set; }
         public string? Phone { get; set; }
         public string? Notes { get; set; }
+        public string? Status { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTimeOffset? CreatedOn { get; set; } 
         public Guid? ModifiedBy { get; set; }

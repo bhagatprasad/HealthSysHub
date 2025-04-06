@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealthSysHub.Web.DBConfiguration.Models
+﻿namespace HealthSysHub.Web.UI.Models
 {
-    [Table("LabOrderRequestItem")]
     public class LabOrderRequestItem
     {
-        [Key]
-        public Guid LabOrderRequestItemId { get; set; } 
+        public Guid? LabOrderRequestItemId { get; set; }
         public Guid? LabOrderRequestId { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? TestId { get; set; }
@@ -17,6 +12,5 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public Guid? ModifiedBy { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
         public bool IsActive { get; set; }
-        
     }
 }

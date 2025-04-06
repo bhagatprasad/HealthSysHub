@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HealthSysHub.Web.DBConfiguration.Models
+﻿namespace HealthSysHub.Web.UI.Models
 {
-    [Table("LabOrderRequest")]
     public class LabOrderRequest
     {
-        [Key]
-        public Guid LabOrderRequestId { get; set; }
+        public Guid? LabOrderRequestId { get; set; }
         public Guid? PatientPrescriptionId { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? PatientId { get; set; }

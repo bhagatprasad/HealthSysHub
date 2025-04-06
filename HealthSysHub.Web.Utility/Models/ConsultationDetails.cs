@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealthSysHub.Web.DBConfiguration.Models
+﻿namespace HealthSysHub.Web.Utility.Models
 {
-    [Table("Consultation")]
-    public class Consultation
+    public class ConsultationDetails
     {
-        [Key]
+        public ConsultationDetails()
+        {
+            patientDetails = new PatientDetails();
+        }
         public Guid ConsultationId { get; set; }
         public Guid? AppointmentId { get; set; }
         public Guid? HospitalId { get; set; }
@@ -17,5 +16,6 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public Guid? ModifiedBy { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
         public bool IsActive { get; set; }
+        public PatientDetails patientDetails { get; set; }
     }
 }
