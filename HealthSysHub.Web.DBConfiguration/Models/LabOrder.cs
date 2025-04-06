@@ -14,11 +14,12 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public decimal? DiscountAmount { get; set; }
         public decimal? FinalAmount { get; set; }
         public decimal? BalanceAmount { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
+        public string? Status { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTimeOffset? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
     }
 }

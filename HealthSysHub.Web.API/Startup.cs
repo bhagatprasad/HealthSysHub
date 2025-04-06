@@ -65,6 +65,16 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IDoctorManager, DoctorDataManager>();
 
+            services.AddScoped<IConsultationManager, ConsultationDataManager>();
+
+            services.AddScoped<IPatientManager, PatientDataManager>();
+
+            services.AddScoped<IPatientVitalManager, PatientVitalDataManager>();
+
+            services.AddScoped<IPharmacistManager, PharmacistDataManager>();
+
+            services.AddScoped<IPharmacyOrderManager, PharmacyOrderDataManager  >();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

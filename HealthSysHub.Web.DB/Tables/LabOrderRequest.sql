@@ -9,6 +9,7 @@
     [Name]                   VARCHAR(MAX)        NULL,
     [Phone]                  VARCHAR(MAX)        NULL,
     [Notes]                  VARCHAR(MAX)        NULL,
+    [Status]                  VARCHAR(max)        NULL,
     [CreatedBy]              UNIQUEIDENTIFIER    NULL,
     [CreatedOn]              DATETIMEOFFSET      DEFAULT SYSDATETIMEOFFSET(),
     [ModifiedBy]             UNIQUEIDENTIFIER    NULL,
