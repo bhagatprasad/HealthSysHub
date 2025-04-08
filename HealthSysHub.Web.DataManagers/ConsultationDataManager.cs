@@ -132,11 +132,11 @@ namespace HealthSysHub.Web.DataManagers
                 {
                     consultationDetails.patientDetails.patientPrescriptionDetails = new PatientPrescriptionDetails
                     {
-                        Advice = patientPrescription.Advice,
+                        Advice = patientPrescription.Advoice,
                         PatientPrescriptionId = patientPrescription.PatientPrescriptionId,
                         Treatment = patientPrescription.Treatment,
-                        Diagnosis = patientPrescription.Diagnosis,
-                        FollowUpOn = patientPrescription.FollowUpOn,
+                        Diagnosis = patientPrescription.Diognasys,
+                        FollowUpOn = patientPrescription.FallwoUpOn,
                         Notes = patientPrescription.Notes,
                         pharmacyOrderRequestDetails = new PharmacyOrderRequestDetails(),
                         labOrderRequestDetails = new LabOrderRequestDetails()
@@ -263,9 +263,9 @@ namespace HealthSysHub.Web.DataManagers
 
             try
             {
-                using var transaction = await _dbContext.Database.BeginTransactionAsync();
+                //using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-                if (consultationDetails.ConsultationId == Guid.Empty)
+                if (consultationDetails.ConsultationId == Guid.Empty || consultationDetails.ConsultationId == null)
                 {
                     await CreateNewConsultation(consultationDetails);
                 }
@@ -274,7 +274,7 @@ namespace HealthSysHub.Web.DataManagers
                     await UpdateExistingConsultation(consultationDetails);
                 }
 
-                await transaction.CommitAsync();
+                //await transaction.CommitAsync();
                 return consultationDetails;
             }
             catch (Exception ex)
@@ -282,6 +282,38 @@ namespace HealthSysHub.Web.DataManagers
                 // Log the exception here
                 throw new ApplicationException("An error occurred while saving consultation details.", ex);
             }
+        }
+        private async Task CreateNewConsultationDetails(ConsultationDetails consultationDetails)
+        {
+            // Create and save consultation
+            var consultation = new Consultation
+            {
+                AppointmentId = consultationDetails.AppointmentId,
+                ConsultationId = Guid.NewGuid(),
+                CreatedBy = consultationDetails.CreatedBy,
+                CreatedOn = consultationDetails.CreatedOn,
+                DoctorId = consultationDetails.DoctorId,
+                HospitalId = consultationDetails.HospitalId,
+                IsActive = consultationDetails.IsActive,
+                ModifiedBy = consultationDetails.ModifiedBy,
+                ModifiedOn = consultationDetails.ModifiedOn,
+                Status = consultationDetails.Status
+            };
+
+            await _dbContext.consultations.AddAsync(consultation);
+            await _dbContext.SaveChangesAsync();
+
+            consultationDetails.ConsultationId = consultation.ConsultationId;
+
+            // Create and save patient
+            var patient = await CreatePatient(consultationDetails, consultation.ConsultationId);
+            await _dbContext.patients.AddAsync(patient);
+            await _dbContext.SaveChangesAsync();
+
+            // Create and save vital
+            var vital = await CreatePatientVital(consultationDetails, patient.PatientId, consultation.ConsultationId);
+            await _dbContext.patientVitals.AddAsync(vital);
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task CreateNewConsultation(ConsultationDetails consultationDetails)
@@ -494,12 +526,12 @@ namespace HealthSysHub.Web.DataManagers
         {
             return new PatientPrescription
             {
-                Advice = consultationDetails.patientDetails.patientPrescriptionDetails.Advice,
+                Advoice = consultationDetails.patientDetails.patientPrescriptionDetails.Advice,
                 ConsultationId = consultationId,
                 CreatedBy = consultationDetails.CreatedBy,
                 CreatedOn = consultationDetails.CreatedOn,
-                Diagnosis = consultationDetails.patientDetails.patientPrescriptionDetails.Diagnosis,
-                FollowUpOn = consultationDetails.patientDetails.patientPrescriptionDetails.FollowUpOn,
+                Diognasys = consultationDetails.patientDetails.patientPrescriptionDetails.Diagnosis,
+                FallwoUpOn = consultationDetails.patientDetails.patientPrescriptionDetails.FollowUpOn,
                 HospitalId = consultationDetails.HospitalId,
                 IsActive = consultationDetails.IsActive,
                 ModifiedBy = consultationDetails.ModifiedBy,
@@ -520,12 +552,12 @@ namespace HealthSysHub.Web.DataManagers
 
             var prescription = new PatientPrescription
             {
-                Advice = consultationDetails.patientDetails.patientPrescriptionDetails.Advice,
+                Advoice = consultationDetails.patientDetails.patientPrescriptionDetails.Advice,
                 ConsultationId = consultationDetails.ConsultationId,
                 CreatedBy = consultationDetails.CreatedBy,
                 CreatedOn = consultationDetails.CreatedOn,
-                Diagnosis = consultationDetails.patientDetails.patientPrescriptionDetails.Diagnosis,
-                FollowUpOn = consultationDetails.patientDetails.patientPrescriptionDetails.FollowUpOn,
+                Diognasys = consultationDetails.patientDetails.patientPrescriptionDetails.Diagnosis,
+                FallwoUpOn = consultationDetails.patientDetails.patientPrescriptionDetails.FollowUpOn,
                 HospitalId = consultationDetails.HospitalId,
                 IsActive = consultationDetails.IsActive,
                 ModifiedBy = consultationDetails.ModifiedBy,
@@ -624,5 +656,29 @@ namespace HealthSysHub.Web.DataManagers
             return consultationDetails;
         }
 
+        public async Task<ConsultationDetails> SaveConsultationDetailsAsync(ConsultationDetails consultationDetails)
+        {
+            if (consultationDetails == null)
+            {
+                throw new ArgumentNullException(nameof(consultationDetails));
+            }
+
+            try
+            {
+                using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+                if (consultationDetails.ConsultationId == Guid.Empty)
+                {
+                    await CreateNewConsultationDetails(consultationDetails);
+                }
+                await transaction.CommitAsync();
+                return consultationDetails;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                throw new ApplicationException("An error occurred while saving consultation details.", ex);
+            }
+        }
     }
 }

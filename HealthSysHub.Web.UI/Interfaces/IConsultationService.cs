@@ -1,16 +1,15 @@
-﻿using HealthSysHub.Web.DBConfiguration.Models;
+﻿using HealthSysHub.Web.UI.Models;
 using HealthSysHub.Web.Utility.Models;
 
-namespace HealthSysHub.Web.Managers
+namespace HealthSysHub.Web.UI.Interfaces
 {
-    public interface IConsultationManager
+    public interface IConsultationService
     {
         Task<Consultation> InsertOrUpdateConsultationAsync(Consultation consultation);
         Task<List<Consultation>> GetConsultationsAsync();
         Task<List<Consultation>> GetConsultationsByDoctorAsync(Guid doctorId);
         Task<List<Consultation>> GetConsultationsByHospitalAsync(Guid doctorId);
         Task<ConsultationDetails> InsertOrUpdateConsultationDetailsAsync(ConsultationDetails consultationDetails);
-        Task<ConsultationDetails> SaveConsultationDetailsAsync(ConsultationDetails consultationDetails);
         Task<List<ConsultationDetails>> GetConsultationDetailsAsync();
         Task<List<ConsultationDetails>> GetConsultationDetailsByAppointmentIdAsync(Guid appointmentId);
         Task<List<ConsultationDetails>> GetConsultationDetailsByConsultationIdAsync(Guid consultationId);

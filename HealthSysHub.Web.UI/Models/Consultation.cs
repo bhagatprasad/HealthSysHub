@@ -1,12 +1,8 @@
-﻿namespace HealthSysHub.Web.Utility.Models
+﻿namespace HealthSysHub.Web.UI.Models
 {
-    public class ConsultationDetails
+    public class Consultation
     {
-        public ConsultationDetails()
-        {
-            patientDetails = new PatientDetails();
-        }
-        public Guid? ConsultationId { get; set; }
+        public Guid ConsultationId { get; set; }
         public Guid? AppointmentId { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? DoctorId { get; set; }
@@ -16,6 +12,5 @@
         public Guid? ModifiedBy { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
         public bool IsActive { get; set; }
-        public PatientDetails patientDetails { get; set; }
     }
 }

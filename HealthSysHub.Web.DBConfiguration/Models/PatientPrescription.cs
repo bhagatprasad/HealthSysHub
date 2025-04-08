@@ -12,10 +12,10 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public Guid? PatientId { get; set; }
         public Guid? ConsultationId { get; set; }
         public string? Treatment { get; set; }
-        public string? Advice { get; set; }
-        public string? Diagnosis { get; set; }
+        public string? Advoice { get; set; }
+        public string? Diognasys { get; set; }
         public string? Notes { get; set; }
-        public DateTimeOffset? FollowUpOn { get; set; }
+        public DateTimeOffset? FallwoUpOn { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTimeOffset? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }
