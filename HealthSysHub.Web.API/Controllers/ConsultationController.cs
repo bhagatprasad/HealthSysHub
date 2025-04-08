@@ -1,5 +1,6 @@
 ﻿using HealthSysHub.Web.API.CustomFilters;
 using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,6 +84,21 @@ namespace HealthSysHub.Web.API.Controllers
             try
             {
                 var response = await _consultationManager.GetConsultationDetailsByHospitalAsync(hospitalId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("InsertOrUpdateConsultationDetailsAsync")]
+        public async Task<IActionResult> InsertOrUpdateConsultationDetailsAsync(ConsultationDetails consultationDetails)
+        {
+            try
+            {
+                var response = await _consultationManager.InsertOrUpdateConsultationDetailsAsync(consultationDetails);
                 return Ok(response);
             }
             catch (Exception ex)

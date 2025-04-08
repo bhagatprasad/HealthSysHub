@@ -438,6 +438,7 @@ const Features = {
 const hospitalStatuses = [
     { "StatusName": "Appointment booked", "StatusCode": "AppointmentBooked" },
     { "StatusName": "Hospital visited", "StatusCode": "HospitalVisited" },
+    { "StatusName": "Doctor consultation created", "StatusCode": "DoctorConsultationCreated" },
     { "StatusName": "Doctor consulted", "StatusCode": "DoctorConsulted" },
     { "StatusName": "Sent for test", "StatusCode": "SentForTests" },
     { "StatusName": "Test completed", "StatusCode": "TestCompleted" },

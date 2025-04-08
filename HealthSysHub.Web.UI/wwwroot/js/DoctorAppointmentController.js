@@ -29,7 +29,7 @@
     const hospitalId = self.ApplicationUser.HospitalId;
 
     const dateTime = new Date().toISOString();
-
+    self.ConsuatlationAppointment = null;
     self.init = function () {
 
         genarateDropdown("DoctorId", self.HospitalDoctors, "DoctorId", "FullName");
@@ -244,25 +244,43 @@
             const isMobile = window.innerWidth <= 768;
             const data = cell.getData();
             const appointmentId = String(data.AppointmentId).replace(/"/g, '&quot;');
+            const status = data.Status; // Assuming the status is available in the data object
 
-            if (isMobile) {
-                return `
-            <div class="btn-group mobile-actions" role="group">
-                <button type="button" 
-                        class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
-                    <i class="fa fa-file-pdf"></i>
-                </button>
-            </div>
-        `;
-            } else {
-                return `
-            <div class="btn-group desktop-actions" role="group">
-                <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
-                    <i class="fa fa-receipt"></i> Receipt
-                </button>
-            </div>
+            let actionsHtml = '';
+
+            // Check if the status is "HospitalVisited"
+            if (status === "HospitalVisited") {
+                actionsHtml += `
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-primary create-consultation" data-appointmentid="${appointmentId}">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
         `;
             }
+
+            // Add mobile specific actions
+            if (isMobile) {
+                actionsHtml += `
+        <div class="btn-group mobile-actions" role="group">
+            <button type="button" 
+                    class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
+                <i class="fa fa-file-pdf"></i>
+            </button>
+        </div>
+        `;
+            } else {
+                // Add desktop specific actions
+                actionsHtml += `
+        <div class="btn-group desktop-actions" role="group">
+            <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
+                <i class="fa fa-receipt"></i> Receipt
+            </button>
+        </div>
+        `;
+            }
+
+            return actionsHtml;
         }
 
         // Update table columns based on screen size
@@ -320,9 +338,113 @@
         });
 
         $('#closeSidebar, .modal-backdrop').on('click', function () {
-            $('#AddEditDoctorAppointmentForm')[0].reset();
-            $('#sidebar').removeClass('show');
+            if (self.ConsuatlationAppointment != null) {
+                $('#AddEditDoctorConsultationForm')[0].reset();
+                $('.AddEditDoctorConsultationFormSidebar').removeClass('show');
+                self.ConsuatlationAppointment = null;
+            }
+            else {
+                $('#AddEditDoctorAppointmentForm')[0].reset();
+                $('#sidebar').removeClass('show');
+            }
             $('.modal-backdrop').remove();
+        });
+        $(document).on('click', '.create-consultation', function () {
+            var rowId = $(this).data('appointmentid');
+            var row = table.getRows(function (data) {
+                return data.AppointmentId === rowId;
+            });
+            if (row && row[0]) {
+                self.ConsuatlationAppointment = row[0].getData();
+            }
+            console.log(row);
+            if (self.ConsuatlationAppointment && self.ConsuatlationAppointment.AppointmentId) {
+                $("#Name").val(self.ConsuatlationAppointment.PatientName);
+                $("#Phone").val(self.ConsuatlationAppointment.PatientPhone);
+                $("#Address").val(self.ConsuatlationAppointment.ComingFrom);
+            }
+            $('.AddEditDoctorConsultationFormSidebar').addClass('show');
+            $('body').append('<div class="modal-backdrop fade show"></div>');
+        });
+        $('#AddEditDoctorConsultationForm').on('submit', function (e) {
+
+            showLoader();
+
+            e.preventDefault();
+
+            var formData = getFormData('#AddEditDoctorConsultationForm');
+
+            var consulationDetails = addCommonProperties(formData);
+
+            var patientPrescriptionDetails = {
+                PatientPrescriptionId: null,
+                Treatment: "",
+                Advice: "",
+                Diagnosis: "",
+                Notes: "",
+                FollowUpOn: null
+            };
+
+            var patientVitalDetails = {
+                VitalId: null,
+                BodyTemperature: consulationDetails.BodyTemperature,
+                HeartRate: consulationDetails.HeartRate,
+                BloodPressure: consulationDetails.BloodPressure,
+                RespiratoryRate: consulationDetails.RespiratoryRate,
+                OxygenSaturation: consulationDetails.OxygenSaturation,
+                Height: consulationDetails.Height,
+                Weight: consulationDetails.Weight,
+                BMI: consulationDetails.BMI,
+                Notes: consulationDetails.Notes
+            };
+            var patientDetails = {
+                PatientId: null,
+                PatientTypeId: "A0A632F2-DDA1-41A3-87FC-085228735A3E",
+                HealthIssue: self.ConsuatlationAppointment.HealthIssue,
+                Name: consulationDetails.Name,
+                Phone: consulationDetails.Phone,
+                AttenderPhone: consulationDetails.AttenderPhone,
+                Age: consulationDetails.Age,
+                Gender: consulationDetails.Gender,
+                Address: consulationDetails.Address,
+                patientVitalDetails: patientVitalDetails,
+                patientPrescriptionDetails: patientPrescriptionDetails
+            };
+            var consultationDetails = {
+                ConsultationId: null,
+                AppointmentId: self.ConsuatlationAppointment.AppointmentId,
+                HospitalId: self.ConsuatlationAppointment.HospitalId,
+                DoctorId: self.ConsuatlationAppointment.DoctorId,
+                Status: "DoctorConsultationCreated",
+                CreatedBy: consulationDetails.CreatedBy,
+                CreatedOn: consulationDetails.CreatedOn,
+                ModifiedBy: consulationDetails.ModifiedBy,
+                ModifiedOn: consulationDetails.ModifiedOn,
+                IsActive: true,
+                patientDetails: patientDetails
+            };
+            makeAjaxRequest({
+                url: "/Consultation/InsertOrUpdateConsultationDetails",
+                data: consultationDetails,
+                type: 'POST',
+                successCallback: function (response) {
+                    if (response.status) {
+                        $('#AddEditDoctorConsultationForm')[0].reset();
+                        $('.AddEditDoctorConsultationFormSidebar').removeClass('show');
+                        $('.modal-backdrop').remove();
+                        table.setData();
+                        self.ConsuatlationAppointment = {};
+                    } else {
+                        console.error(response.message);
+                    }
+                    console.info(response);
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error in upserting data to server: " + error);
+                    hideLoader();
+                }
+            });
         });
         $('#AddEditDoctorAppointmentForm').on('submit', function (e) {
             showLoader();
@@ -334,7 +456,7 @@
             doctorAppointment.TokenNo = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.TokenNo : 0;
             self.addeditDoctorAppointment(doctorAppointment, false);
         });
-
+        makeFormGeneric('#AddEditDoctorConsultationFormSidebar', '#btnsubmit');
         makeFormGeneric('#AddEditDoctorAppointmentForm', '#btnsubmit');
         self.addeditDoctorAppointment = function (doctorAppointment, iscopy) {
             makeAjaxRequest({

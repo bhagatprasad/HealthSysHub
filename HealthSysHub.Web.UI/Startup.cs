@@ -81,6 +81,8 @@ namespace HealthSysHub.Web.UI
 
             services.AddScoped<IStaffService, StaffService>();
 
+            services.AddScoped<IConsultationService, ConsultationService>();
+
             services.AddScoped<PdfLayoutService>();
 
             services.AddSession(options =>
