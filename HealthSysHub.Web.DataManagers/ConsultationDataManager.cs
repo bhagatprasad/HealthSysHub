@@ -318,6 +318,15 @@ namespace HealthSysHub.Web.DataManagers
 
         private async Task CreateNewConsultation(ConsultationDetails consultationDetails)
         {
+            var appointment = await _dbContext.doctorAppointments.FindAsync(consultationDetails.AppointmentId);
+            
+            if (appointment != null)
+            {
+                appointment.Status = consultationDetails.Status;
+                appointment.ModifiedBy = consultationDetails.ModifiedBy;
+                appointment.ModifiedOn = consultationDetails.ModifiedOn;
+                await _dbContext.SaveChangesAsync();
+            }
             // Create and save consultation
             var consultation = new Consultation
             {

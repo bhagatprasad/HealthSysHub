@@ -255,7 +255,7 @@
                 return `
             <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
                 <button type="button" class="btn btn-sm btn-info btn-consultation" data-appointmentid="${appointmentId}">
-                    ${isMobile ? '<i class="fa fa-comments"></i>' : 'Consultation'}
+                    ${isMobile ? '<i class="fa fa-plus"></i>' : 'Create Consultation'}
                 </button>
             </div>
         `;
@@ -268,7 +268,17 @@
                 </button>
             </div>
         `;
-            } else {
+            } else if (status === "DoctorConsultationCreated") {
+                // If the status is DoctorConsulted, display both Print Prescription and Consultation buttons
+                return `
+        <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
+            <button type="button" class="btn btn-sm btn-warning btn-consultation" data-appointmentid="${appointmentId}">
+                ${isMobile ? '<i class="fa fa-plus"></i>' : 'Consultation'}
+            </button>
+        </div>
+    `;
+            }
+            else {
                 // Default case for other statuses
                 if (isMobile) {
                     return `
@@ -344,14 +354,14 @@
         });
 
         $('#closeSidebar, .modal-backdrop').on('click', function () {
-            $('#AddEditDoctorAppointmentForm')[0].reset();
+            $('#AddEditConsulationForm')[0].reset();
             $('#sidebar').removeClass('show');
             $('.modal-backdrop').remove();
         });
-        $('#AddEditDoctorAppointmentForm').on('submit', function (e) {
+        $('#AddEditConsulationForm').on('submit', function (e) {
             showLoader();
             e.preventDefault();
-            var formData = getFormData('#AddEditDoctorAppointmentForm');
+            var formData = getFormData('#AddEditConsulationForm');
             var doctorAppointment = addCommonProperties(formData);
             doctorAppointment.AppointmentId = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.AppointmentId : null;
             doctorAppointment.HospitalId = self.ApplicationUser.HospitalId;
@@ -359,7 +369,7 @@
             self.addeditDoctorAppointment(doctorAppointment, false);
         });
 
-        makeFormGeneric('#AddEditDoctorAppointmentForm', '#btnsubmit');
+        makeFormGeneric('#AddEditConsulationForm', '#btnsubmit');
         self.addeditDoctorAppointment = function (doctorAppointment, iscopy) {
             makeAjaxRequest({
                 url: "/DoctorAppointment/InsertOrUpdateDoctorAppointment",
