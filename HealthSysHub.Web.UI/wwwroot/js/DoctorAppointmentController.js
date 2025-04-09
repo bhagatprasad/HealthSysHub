@@ -323,17 +323,17 @@
                 $("#HealthIssue").val(self.currectSelectedDoctorAppointment.HealthIssue);
                 $("#Status").val(self.currectSelectedDoctorAppointment.Status);
                 $("#StatusMessage").val(self.currectSelectedDoctorAppointment.StatusMessage);
-                $('#sidebar').addClass('show');
+                $('.AddEditDoctorAppointment').addClass('show');
                 $('body').append('<div class="modal-backdrop fade show"></div>');
             } else {
-                $('#sidebar').removeClass('show');
+                $('.AddEditDoctorAppointment').removeClass('show');
                 $('.modal-backdrop').remove();
             }
 
         });
 
         $('#addBtn').on('click', function () {
-            $('#sidebar').addClass('show');
+            $('.AddEditDoctorAppointment').addClass('show');
             $('body').append('<div class="modal-backdrop fade show"></div>');
         });
 
@@ -345,7 +345,7 @@
             }
             else {
                 $('#AddEditDoctorAppointmentForm')[0].reset();
-                $('#sidebar').removeClass('show');
+                $('.AddEditDoctorAppointment').removeClass('show');
             }
             $('.modal-backdrop').remove();
         });
@@ -456,7 +456,7 @@
             doctorAppointment.TokenNo = self.currectSelectedDoctorAppointment ? self.currectSelectedDoctorAppointment.TokenNo : 0;
             self.addeditDoctorAppointment(doctorAppointment, false);
         });
-        makeFormGeneric('#AddEditDoctorConsultationFormSidebar', '#btnsubmit');
+        makeFormGeneric('#AddEditDoctorConsultationForm', '#btnsubmit');
         makeFormGeneric('#AddEditDoctorAppointmentForm', '#btnsubmit');
         self.addeditDoctorAppointment = function (doctorAppointment, iscopy) {
             makeAjaxRequest({
@@ -467,7 +467,7 @@
                     if (response) {
                         if (!iscopy) {
                             $('#AddEditDoctorAppointmentForm')[0].reset();
-                            $('#sidebar').removeClass('show');
+                            $('.AddEditDoctorAppointment').removeClass('show');
                             $('.modal-backdrop').remove();
                         }
                         table.setData();

@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AspNetCoreHero.ToastNotification.Notyf;
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +9,13 @@ namespace HealthSysHub.Web.UI.Controllers
     public class ConsultationController : Controller
     {
         private readonly IConsultationService _consultationService;
-        private readonly INotyfService _notyfService;
+        private readonly INotyfService _notifyService;
 
         public ConsultationController(IConsultationService consultationService,
-            INotyfService notyfService)
+            INotyfService notifyService)
         {
             _consultationService = consultationService;
-            _notyfService = notyfService;
+            _notifyService = notifyService;
         }
         public IActionResult Index()
         {
@@ -25,7 +26,7 @@ namespace HealthSysHub.Web.UI.Controllers
         {
             if (appointmentId == Guid.Empty)
             {
-                _notyfService.Error("Invalid appointment ID.");
+                _notifyService.Error("Invalid appointment ID.");
                 return BadRequest(new { status = false, message = "Invalid appointment ID." });
             }
 
@@ -35,7 +36,7 @@ namespace HealthSysHub.Web.UI.Controllers
 
                 if (consultationDetails == null || !consultationDetails.Any())
                 {
-                    _notyfService.Warning("No consultation details found for the specified appointment ID.");
+                    _notifyService.Warning("No consultation details found for the specified appointment ID.");
                     return Json(new { status = false, message = "No consultation details found." });
                 }
 
@@ -43,7 +44,7 @@ namespace HealthSysHub.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _notyfService.Error("An error occurred while retrieving consultation details.");
+                _notifyService.Error("An error occurred while retrieving consultation details.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
@@ -52,7 +53,7 @@ namespace HealthSysHub.Web.UI.Controllers
         {
             if (consultationDetails == null)
             {
-                _notyfService.Error("Consultation details cannot be null.");
+                _notifyService.Error("Consultation details cannot be null.");
                 return BadRequest(new { status = false, message = "Consultation details cannot be null." });
             }
 
@@ -62,16 +63,16 @@ namespace HealthSysHub.Web.UI.Controllers
 
                 if (response == null)
                 {
-                    _notyfService.Error("Unable to save consultation details, please check and re-submit again.");
+                    _notifyService.Error("Unable to save consultation details, please check and re-submit again.");
                     return Json(new { status = false, data = consultationDetails });
                 }
 
-                _notyfService.Success("Consultation details saved successfully.");
+                _notifyService.Success("Consultation details saved successfully.");
                 return Json(new { status = true, data = response });
             }
             catch (Exception ex)
             {
-                _notyfService.Error("An error occurred while saving consultation details.");
+                _notifyService.Error("An error occurred while saving consultation details.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
