@@ -28,6 +28,81 @@ namespace HealthSysHub.Web.DataManagers
         public Task<List<ConsultationDetails>> GetConsultationDetailsByHospitalAsync(Guid hospitalId)
             => ConsultationDetailsAsync(hospitalId: hospitalId);
 
+        
+
+        public async Task<List<Consultation>> GetConsultationsAsync()
+        {
+            return await _dbContext.consultations.ToListAsync();
+        }
+
+        public async Task<List<Consultation>> GetConsultationsByDoctorAsync(Guid doctorId)
+        {
+            return await _dbContext.consultations.Where(x => x.DoctorId == doctorId && x.IsActive).ToListAsync();
+        }
+
+        public async Task<List<Consultation>> GetConsultationsByHospitalAsync(Guid hospitalId)
+        {
+            return await _dbContext.consultations.Where(x => x.HospitalId == hospitalId && x.IsActive).ToListAsync();
+        }
+
+        public async Task<Consultation> InsertOrUpdateConsultationAsync(Consultation consultation)
+        {
+            if (consultation.ConsultationId == Guid.Empty)
+            {
+                await _dbContext.consultations.AddAsync(consultation);
+            }
+            else
+            {
+                var existingConsultation = await _dbContext.consultations.FindAsync(consultation.ConsultationId);
+
+                if (existingConsultation != null)
+                {
+                    var hasChanges = EntityUpdater.HasChanges(existingConsultation, consultation, nameof(Consultation.CreatedBy), nameof(Consultation.CreatedOn));
+
+                    if (hasChanges)
+                    {
+                        EntityUpdater.UpdateProperties(existingConsultation, consultation, nameof(Consultation.CreatedBy), nameof(Consultation.CreatedOn));
+                    }
+                }
+            }
+            await _dbContext.SaveChangesAsync();
+
+            return consultation;
+        }
+        public async Task<List<ConsultationDetails>> GetConsultationDetailsAsync()
+        {
+            return await ConsultationDetailsAsync();
+        }
+        public async Task<ConsultationDetails> InsertOrUpdateConsultationDetailsAsync(ConsultationDetails consultationDetails)
+        {
+            if (consultationDetails == null)
+            {
+                throw new ArgumentNullException(nameof(consultationDetails));
+            }
+
+            try
+            {
+                //using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+                if (consultationDetails.ConsultationId == Guid.Empty || consultationDetails.ConsultationId == null)
+                {
+                    await CreateNewConsultation(consultationDetails);
+                }
+                else
+                {
+                    await UpdateExistingConsultation(consultationDetails);
+                }
+
+                //await transaction.CommitAsync();
+                return consultationDetails;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                throw new ApplicationException("An error occurred while saving consultation details.", ex);
+            }
+        }
+
         // Helper methods for data retrieval
         private async Task<List<DoctorAppointment>> GetAppointmentsAsync()
             => await _dbContext.doctorAppointments.ToListAsync();
@@ -213,48 +288,79 @@ namespace HealthSysHub.Web.DataManagers
 
             return consultationDetails;
         }
-
-        public async Task<List<Consultation>> GetConsultationsAsync()
+        private async Task<List<ConsultationDetails>> ConsultationDetailsAsync(Guid? appointmentId = null, Guid? consultationId = null, Guid? doctorId = null, Guid? hospitalId = null)
         {
-            return await _dbContext.consultations.ToListAsync();
+            // Base query with optional filters
+            var consultationsQuery = _dbContext.consultations.AsQueryable();
+
+            if (appointmentId.HasValue)
+                consultationsQuery = consultationsQuery.Where(c => c.AppointmentId == appointmentId.Value);
+
+            if (consultationId.HasValue)
+                consultationsQuery = consultationsQuery.Where(c => c.ConsultationId == consultationId.Value);
+
+            if (doctorId.HasValue)
+                consultationsQuery = consultationsQuery.Where(c => c.DoctorId == doctorId.Value);
+
+            if (hospitalId.HasValue)
+                consultationsQuery = consultationsQuery.Where(c => c.HospitalId == hospitalId.Value);
+
+            // Get filtered consultations
+            var consultations = await consultationsQuery.ToListAsync();
+
+            if (!consultations.Any())
+                return new List<ConsultationDetails>();
+
+            // Start all data retrieval tasks
+            var appointmentsTask = GetAppointmentsAsync();
+            var patientsTask = GetPatientsAsync();
+            var patientVitalsTask = GetPatientVitalsAsync();
+            var patientPrescriptionsTask = GetPatientPrescriptionsAsync();
+            var pharmacyRequestsTask = GetPharmacyRequestsAsync();
+            var pharmacyRequestItemsTask = GetPharmacyRequestItemsAsync();
+            var labOrderRequestsTask = GetLabOrderRequestsAsync();
+            var labOrderRequestItemsTask = GetLabOrderRequestItemsAsync();
+            var medicinesTask = GetMedicinesAsync();
+            var labTestsTask = GetLabTestsAsync();
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(
+                appointmentsTask, patientsTask, patientVitalsTask, patientPrescriptionsTask,
+                pharmacyRequestsTask, pharmacyRequestItemsTask, labOrderRequestsTask,
+                labOrderRequestItemsTask, medicinesTask, labTestsTask);
+
+            // Get the results from each task
+            var appointments = await appointmentsTask;
+            var patients = await patientsTask;
+            var patientVitals = await patientVitalsTask;
+            var patientPrescriptions = await patientPrescriptionsTask;
+            var pharmacyRequests = await pharmacyRequestsTask;
+            var pharmacyRequestItems = await pharmacyRequestItemsTask;
+            var labOrderRequests = await labOrderRequestsTask;
+            var labOrderRequestItems = await labOrderRequestItemsTask;
+            var medicines = await medicinesTask;
+            var labTests = await labTestsTask;
+
+            // Create consultation details
+            var consultationDetails = consultations.Select(consultation =>
+                CreateConsultationDetails(
+                    consultation,
+                    appointments,
+                    patients,
+                    patientVitals,
+                    patientPrescriptions,
+                    pharmacyRequests,
+                    pharmacyRequestItems,
+                    labOrderRequests,
+                    labOrderRequestItems,
+                    medicines,
+                    labTests
+                )).ToList();
+
+            return consultationDetails;
         }
 
-        public async Task<List<Consultation>> GetConsultationsByDoctorAsync(Guid doctorId)
-        {
-            return await _dbContext.consultations.Where(x => x.DoctorId == doctorId && x.IsActive).ToListAsync();
-        }
-
-        public async Task<List<Consultation>> GetConsultationsByHospitalAsync(Guid hospitalId)
-        {
-            return await _dbContext.consultations.Where(x => x.HospitalId == hospitalId && x.IsActive).ToListAsync();
-        }
-
-        public async Task<Consultation> InsertOrUpdateConsultationAsync(Consultation consultation)
-        {
-            if (consultation.ConsultationId == Guid.Empty)
-            {
-                await _dbContext.consultations.AddAsync(consultation);
-            }
-            else
-            {
-                var existingConsultation = await _dbContext.consultations.FindAsync(consultation.ConsultationId);
-
-                if (existingConsultation != null)
-                {
-                    var hasChanges = EntityUpdater.HasChanges(existingConsultation, consultation, nameof(Consultation.CreatedBy), nameof(Consultation.CreatedOn));
-
-                    if (hasChanges)
-                    {
-                        EntityUpdater.UpdateProperties(existingConsultation, consultation, nameof(Consultation.CreatedBy), nameof(Consultation.CreatedOn));
-                    }
-                }
-            }
-            await _dbContext.SaveChangesAsync();
-
-            return consultation;
-        }
-
-        public async Task<ConsultationDetails> InsertOrUpdateConsultationDetailsAsync(ConsultationDetails consultationDetails)
+        public async Task<ConsultationDetails> SaveConsultationDetailsAsync(ConsultationDetails consultationDetails)
         {
             if (consultationDetails == null)
             {
@@ -263,18 +369,13 @@ namespace HealthSysHub.Web.DataManagers
 
             try
             {
-                //using var transaction = await _dbContext.Database.BeginTransactionAsync();
+                using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-                if (consultationDetails.ConsultationId == Guid.Empty || consultationDetails.ConsultationId == null)
+                if (consultationDetails.ConsultationId == Guid.Empty)
                 {
-                    await CreateNewConsultation(consultationDetails);
+                    await CreateNewConsultationDetails(consultationDetails);
                 }
-                else
-                {
-                    await UpdateExistingConsultation(consultationDetails);
-                }
-
-                //await transaction.CommitAsync();
+                await transaction.CommitAsync();
                 return consultationDetails;
             }
             catch (Exception ex)
@@ -283,6 +384,7 @@ namespace HealthSysHub.Web.DataManagers
                 throw new ApplicationException("An error occurred while saving consultation details.", ex);
             }
         }
+
         private async Task CreateNewConsultationDetails(ConsultationDetails consultationDetails)
         {
             // Create and save consultation
@@ -319,7 +421,7 @@ namespace HealthSysHub.Web.DataManagers
         private async Task CreateNewConsultation(ConsultationDetails consultationDetails)
         {
             var appointment = await _dbContext.doctorAppointments.FindAsync(consultationDetails.AppointmentId);
-            
+
             if (appointment != null)
             {
                 appointment.Status = consultationDetails.Status;
@@ -586,107 +688,6 @@ namespace HealthSysHub.Web.DataManagers
             if (EntityUpdater.HasChanges(dbPrescription, prescription, nameof(PatientPrescription.CreatedBy), nameof(PatientPrescription.CreatedOn), nameof(PatientPrescription.ModifiedBy), nameof(PatientPrescription.ModifiedOn)))
             {
                 EntityUpdater.UpdateProperties(dbPrescription, prescription, nameof(PatientPrescription.CreatedBy), nameof(PatientPrescription.CreatedOn));
-            }
-        }
-
-        public async Task<List<ConsultationDetails>> GetConsultationDetailsAsync()
-        {
-            return await ConsultationDetailsAsync();
-        }
-        private async Task<List<ConsultationDetails>> ConsultationDetailsAsync(Guid? appointmentId = null, Guid? consultationId = null, Guid? doctorId = null, Guid? hospitalId = null)
-        {
-            // Base query with optional filters
-            var consultationsQuery = _dbContext.consultations.AsQueryable();
-
-            if (appointmentId.HasValue)
-                consultationsQuery = consultationsQuery.Where(c => c.AppointmentId == appointmentId.Value);
-
-            if (consultationId.HasValue)
-                consultationsQuery = consultationsQuery.Where(c => c.ConsultationId == consultationId.Value);
-
-            if (doctorId.HasValue)
-                consultationsQuery = consultationsQuery.Where(c => c.DoctorId == doctorId.Value);
-
-            if (hospitalId.HasValue)
-                consultationsQuery = consultationsQuery.Where(c => c.HospitalId == hospitalId.Value);
-
-            // Get filtered consultations
-            var consultations = await consultationsQuery.ToListAsync();
-
-            if (!consultations.Any())
-                return new List<ConsultationDetails>();
-
-            // Start all data retrieval tasks
-            var appointmentsTask = GetAppointmentsAsync();
-            var patientsTask = GetPatientsAsync();
-            var patientVitalsTask = GetPatientVitalsAsync();
-            var patientPrescriptionsTask = GetPatientPrescriptionsAsync();
-            var pharmacyRequestsTask = GetPharmacyRequestsAsync();
-            var pharmacyRequestItemsTask = GetPharmacyRequestItemsAsync();
-            var labOrderRequestsTask = GetLabOrderRequestsAsync();
-            var labOrderRequestItemsTask = GetLabOrderRequestItemsAsync();
-            var medicinesTask = GetMedicinesAsync();
-            var labTestsTask = GetLabTestsAsync();
-
-            // Wait for all tasks to complete
-            await Task.WhenAll(
-                appointmentsTask, patientsTask, patientVitalsTask, patientPrescriptionsTask,
-                pharmacyRequestsTask, pharmacyRequestItemsTask, labOrderRequestsTask,
-                labOrderRequestItemsTask, medicinesTask, labTestsTask);
-
-            // Get the results from each task
-            var appointments = await appointmentsTask;
-            var patients = await patientsTask;
-            var patientVitals = await patientVitalsTask;
-            var patientPrescriptions = await patientPrescriptionsTask;
-            var pharmacyRequests = await pharmacyRequestsTask;
-            var pharmacyRequestItems = await pharmacyRequestItemsTask;
-            var labOrderRequests = await labOrderRequestsTask;
-            var labOrderRequestItems = await labOrderRequestItemsTask;
-            var medicines = await medicinesTask;
-            var labTests = await labTestsTask;
-
-            // Create consultation details
-            var consultationDetails = consultations.Select(consultation =>
-                CreateConsultationDetails(
-                    consultation,
-                    appointments,
-                    patients,
-                    patientVitals,
-                    patientPrescriptions,
-                    pharmacyRequests,
-                    pharmacyRequestItems,
-                    labOrderRequests,
-                    labOrderRequestItems,
-                    medicines,
-                    labTests
-                )).ToList();
-
-            return consultationDetails;
-        }
-
-        public async Task<ConsultationDetails> SaveConsultationDetailsAsync(ConsultationDetails consultationDetails)
-        {
-            if (consultationDetails == null)
-            {
-                throw new ArgumentNullException(nameof(consultationDetails));
-            }
-
-            try
-            {
-                using var transaction = await _dbContext.Database.BeginTransactionAsync();
-
-                if (consultationDetails.ConsultationId == Guid.Empty)
-                {
-                    await CreateNewConsultationDetails(consultationDetails);
-                }
-                await transaction.CommitAsync();
-                return consultationDetails;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception here
-                throw new ApplicationException("An error occurred while saving consultation details.", ex);
             }
         }
     }

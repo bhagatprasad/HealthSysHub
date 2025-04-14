@@ -272,7 +272,7 @@
                 // If the status is DoctorConsulted, display both Print Prescription and Consultation buttons
                 return `
         <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
-            <button type="button" class="btn btn-sm btn-warning btn-consultation" data-appointmentid="${appointmentId}">
+            <button type="button" class="btn btn-sm btn-warning btn-consultationcreated" data-appointmentid="${appointmentId}">
                 ${isMobile ? '<i class="fa fa-plus"></i>' : 'Consultation'}
             </button>
         </div>
@@ -313,6 +313,12 @@
                 table.deselectRow();
             }
             $('.childDoctorAppointmentChkbox').prop('checked', isChecked);
+        });
+        $(document).on('click', '.btn-consultationcreated', function () {
+            var rowId = $(this).data('appointmentid');
+            if (rowId) {
+                window.location.href = "/DoctorDashboard/ManageConsultationAppointment?appointmentId=" + rowId;
+            }
         });
 
         $(document).on('change', '.childDoctorAppointmentChkbox', function () {

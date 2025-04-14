@@ -351,20 +351,35 @@
         });
         $(document).on('click', '.create-consultation', function () {
             var rowId = $(this).data('appointmentid');
-            var row = table.getRows(function (data) {
-                return data.AppointmentId === rowId;
-            });
-            if (row && row[0]) {
-                self.ConsuatlationAppointment = row[0].getData();
+
+            // Better way to find the row
+            var row = table.getRow(rowId); // Directly get row by ID if possible
+
+            // If getRow doesn't work, try this alternative:
+            if (!row) {
+                var rows = table.getRows().filter(function (row) {
+                    var data = row.getData();
+                    return data.AppointmentId == rowId; // Use == instead of === for type coercion
+                });
+                row = rows.length > 0 ? rows[0] : null;
             }
-            console.log(row);
-            if (self.ConsuatlationAppointment && self.ConsuatlationAppointment.AppointmentId) {
-                $("#Name").val(self.ConsuatlationAppointment.PatientName);
-                $("#Phone").val(self.ConsuatlationAppointment.PatientPhone);
-                $("#Address").val(self.ConsuatlationAppointment.ComingFrom);
+
+            if (row) {
+                self.ConsultationAppointment = row.getData(); // Fixed typo in variable name
+                console.log("Found appointment:", self.ConsultationAppointment);
+
+                if (self.ConsultationAppointment && self.ConsultationAppointment.AppointmentId) {
+                    $("#Name").val(self.ConsultationAppointment.PatientName || '');
+                    $("#Phone").val(self.ConsultationAppointment.PatientPhone || '');
+                    $("#Address").val(self.ConsultationAppointment.ComingFrom || '');
+                }
+
+                $('.AddEditDoctorConsultationFormSidebar').addClass('show');
+                $('body').append('<div class="modal-backdrop fade show"></div>');
+            } else {
+                console.error("No appointment found with ID:", rowId);
+                toastr.error("Appointment not found!");
             }
-            $('.AddEditDoctorConsultationFormSidebar').addClass('show');
-            $('body').append('<div class="modal-backdrop fade show"></div>');
         });
         $('#AddEditDoctorConsultationForm').on('submit', function (e) {
 
@@ -400,7 +415,7 @@
             var patientDetails = {
                 PatientId: null,
                 PatientTypeId: "A0A632F2-DDA1-41A3-87FC-085228735A3E",
-                HealthIssue: self.ConsuatlationAppointment.HealthIssue,
+                HealthIssue: self.ConsultationAppointment.HealthIssue,
                 Name: consulationDetails.Name,
                 Phone: consulationDetails.Phone,
                 AttenderPhone: consulationDetails.AttenderPhone,
@@ -412,9 +427,9 @@
             };
             var consultationDetails = {
                 ConsultationId: null,
-                AppointmentId: self.ConsuatlationAppointment.AppointmentId,
-                HospitalId: self.ConsuatlationAppointment.HospitalId,
-                DoctorId: self.ConsuatlationAppointment.DoctorId,
+                AppointmentId: self.ConsultationAppointment.AppointmentId,
+                HospitalId: self.ConsultationAppointment.HospitalId,
+                DoctorId: self.ConsultationAppointment.DoctorId,
                 Status: "DoctorConsultationCreated",
                 CreatedBy: consulationDetails.CreatedBy,
                 CreatedOn: consulationDetails.CreatedOn,
@@ -433,7 +448,7 @@
                         $('.AddEditDoctorConsultationFormSidebar').removeClass('show');
                         $('.modal-backdrop').remove();
                         table.setData();
-                        self.ConsuatlationAppointment = {};
+                        self.ConsultationAppointment = {};
                     } else {
                         console.error(response.message);
                     }

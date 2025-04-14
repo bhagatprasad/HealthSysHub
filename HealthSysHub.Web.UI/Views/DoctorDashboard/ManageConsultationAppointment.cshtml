@@ -1,0 +1,267 @@
+﻿@{
+    ViewData["Title"] = "Admn Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <!-- Patient Details (Left Side) -->
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="patient-info">
+                            <h5 class="mb-1"><i class="fas fa-user-injured mr-2"></i> Patient Details</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3">
+                                    <div class="avatar avatar-lg bg-light-primary">
+                                        <i class="fas fa-user fa-2x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">John Doe</h4>
+                                    <div class="patient-meta">
+                                        <span class="badge badge-light mr-2"><i class="fas fa-id-card"></i> MRN: 123456</span>
+                                        <span class="badge badge-light mr-2"><i class="fas fa-birthday-cake"></i> 42 years</span>
+                                        <span class="badge badge-light"><i class="fas fa-venus-mars"></i> Male</span>
+                                    </div>
+                                    <div class="patient-contact mt-2">
+                                        <span class="text-muted mr-3"><i class="fas fa-phone"></i> (555) 123-4567</span>
+                                        <span class="text-muted"><i class="fas fa-envelope"></i> john.doe@example.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Details (Right Side) -->
+                    <div class="col-md-6">
+                        <div class="doctor-info">
+                            <h5 class="mb-1"><i class="fas fa-user-md mr-2"></i> Doctor Details</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3">
+                                    <div class="avatar avatar-lg bg-light-danger">
+                                        <i class="fas fa-user-md fa-2x text-danger"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">Dr. Sarah Smith</h4>
+                                    <div class="doctor-meta">
+                                        <span class="badge badge-light mr-2"><i class="fas fa-stethoscope"></i> Cardiology</span>
+                                        <span class="badge badge-light"><i class="fas fa-award"></i> 15 years experience</span>
+                                    </div>
+                                    <div class="doctor-rating mt-2">
+                                        <div class="stars mr-2">
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star-half-alt text-warning"></i>
+                                            <small class="ml-1">4.8 (120 reviews)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Left Side - Vitals (30%) -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card vitals-card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="fas fa-heartbeat mr-2"></i> Patient Vitals</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="vitals-grid">
+                                    <div class="vital-item">
+                                        <label>Body Temperature</label>
+                                        <div class="vital-value">98.6 °F</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Heart Rate</label>
+                                        <div class="vital-value">72 bpm</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Blood Pressure</label>
+                                        <div class="vital-value">120/80 mmHg</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Respiratory Rate</label>
+                                        <div class="vital-value">16 rpm</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Oxygen Saturation</label>
+                                        <div class="vital-value">98%</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Height</label>
+                                        <div class="vital-value">175 cm</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>Weight</label>
+                                        <div class="vital-value">70 kg</div>
+                                    </div>
+                                    <div class="vital-item">
+                                        <label>BMI</label>
+                                        <div class="vital-value">22.9</div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label>Notes</label>
+                                    <textarea class="form-control" rows="3" placeholder="Vital notes..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Prescription (70%) -->
+                    <div class="col-md-8">
+                        <div class="card prescription-card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="fas fa-prescription mr-2"></i> Prescription Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Diagnosis</label>
+                                            <textarea class="form-control" rows="3" placeholder="Enter diagnosis..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Treatment</label>
+                                            <textarea class="form-control" rows="3" placeholder="Enter treatment..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Advice</label>
+                                            <textarea class="form-control" rows="3" placeholder="Enter advice..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Follow-up Date</label>
+                                            <input type="datetime-local" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Lab Orders Section -->
+                                <div class="lab-orders-section mt-4">
+                                    <h6><i class="fas fa-flask mr-2"></i> Lab Orders</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Test Name</th>
+                                                    <th>Status</th>
+                                                    <th>Requested Date</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>CBC</td>
+                                                    <td><span class="badge badge-warning">Pending</span></td>
+                                                    <td>2023-05-15</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Pharmacy Orders Section -->
+                                <div class="pharmacy-orders-section mt-4">
+                                    <h6><i class="fas fa-pills mr-2"></i> Pharmacy Orders</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Medication</th>
+                                                    <th>Dosage</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Amoxicillin</td>
+                                                    <td>500mg 3x/day</td>
+                                                    <td><span class="badge badge-success">Filled</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label>Prescription Notes</label>
+                                    <textarea class="form-control" rows="2" placeholder="Additional notes..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Vitals Grid Layout */
+    .vitals-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .vital-item {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        border-left: 3px solid #4e73df;
+    }
+
+        .vital-item label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+    .vital-value {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    /* Card Customization */
+    .vitals-card, .prescription-card {
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.35rem;
+    }
+
+    .card-header {
+        padding: 0.75rem 1.25rem;
+    }
+
+    /* Section Headers */
+    .lab-orders-section h6,
+    .pharmacy-orders-section h6 {
+        color: #4e73df;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/ManageConsultationAppointmentController.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var ctrl = new ManageConsultationAppointmentController();
+        ctrl.init();
+    });
+</script>
