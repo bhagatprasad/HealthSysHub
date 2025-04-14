@@ -63,6 +63,7 @@ namespace HealthSysHub.Web.UI.Controllers
             try
             {
                 var response = await _staffService.InsertOrUpdateHospitalStaffAsync(hospitalStaff);
+                _notyfService.Success("Staff details processed successful");
                 return Json(new { data = response });
             }
             catch (Exception ex)

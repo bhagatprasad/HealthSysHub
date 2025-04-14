@@ -126,7 +126,35 @@
                         </li>
                     `;
                     break;
-
+                case "Admin":
+                    navHTML += `
+                        <li class="nav-item">
+                                        <a href="/Home/Index" class="nav-link">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">Dashboard</span>
+                                        </a>
+                                    </li>
+                            <li class="nav-item">
+                                <a href="/LabTest/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-flask"></i></span>
+                                    <span class="pcoded-mtext">Lab Test</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Medicine/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-pills"></i></span>
+                                    <span class="pcoded-mtext">Medicine</span>
+                                </a>
+                            </li>
+                         
+                            <li class="nav-item">
+                                <a href="/Staff/Index" class="nav-link">
+                                    <span class="pcoded-micon"><i class="fas fa-hospital"></i></span>
+                                    <span class="pcoded-mtext">Staff</span>
+                                </a>
+                            </li>
+                    `;
+                    break;
                 default:
                     navHTML += `
                          <li class="nav-item">
@@ -135,18 +163,6 @@
                                             <span class="pcoded-mtext">Dashboard</span>
                                         </a>
                                     </li>
-                            <li class="nav-item">
-                                <a href="/Department/Index" class="nav-link">
-                                    <span class="pcoded-micon"><i class="fas fa-building"></i></span>
-                                    <span class="pcoded-mtext">Department</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Role/Index" class="nav-link">
-                                    <span class="pcoded-micon"><i class="fas fa-user-tag"></i></span>
-                                    <span class="pcoded-mtext">Role</span>
-                                </a>
-                            </li>
                             <li class="nav-item">
                                 <a href="/HospitalType/Index" class="nav-link">
                                     <span class="pcoded-micon"><i class="fas fa-hospital"></i></span>

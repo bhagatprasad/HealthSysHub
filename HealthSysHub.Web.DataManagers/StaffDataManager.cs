@@ -16,7 +16,7 @@ namespace HealthSysHub.Web.DataManagers
         }
         public async Task<List<HospitalStaff>> GetAllHospitalStaffAsync(Guid hosptialId)
         {
-            return await _dbContext.hospitalStaffs.Where(x => x.HospitalId == hosptialId).ToListAsync();
+            return await _dbContext.hospitalStaffs.Where(x => x.HospitalId == hosptialId && x.IsActive == true).ToListAsync();
         }
 
         public async Task<List<Doctor>> GetDoctorsAsync()

@@ -18,14 +18,15 @@ namespace HealthSysHub.Web.UI.Services
             return await _repository.SendAsync<List<HospitalStaff>>(HttpMethod.Get, uri);
         }
 
-        public Task<HospitalStaff> GetHospitalStaffAsync(Guid hosptialId, Guid staffId)
+        public async Task<HospitalStaff> GetHospitalStaffAsync(Guid hosptialId, Guid staffId)
         {
-            throw new NotImplementedException();
+            var uri = Path.Combine("Staff/GetHospitalStaffAsync", hosptialId.ToString() + "/" + staffId.ToString());
+            return await _repository.SendAsync<HospitalStaff>(HttpMethod.Get, uri);
         }
 
-        public Task<HospitalStaff> InsertOrUpdateHospitalStaffAsync(HospitalStaff hospitalStaff)
+        public async Task<HospitalStaff> InsertOrUpdateHospitalStaffAsync(HospitalStaff hospitalStaff)
         {
-            throw new NotImplementedException();
+            return await _repository.SendAsync<HospitalStaff, HospitalStaff>(HttpMethod.Post, "Staff/InsertOrUpdateHospitalStaffAsync", hospitalStaff);
         }
     }
 }
