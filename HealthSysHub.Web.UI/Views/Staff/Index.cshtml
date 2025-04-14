@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Admn Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <partial name="~/Views/Shared/_gridHeaderPartial.cshtml" />
+            <div class="card-body card-body-padding">
+                <div id="StaffGrid">
+                </div>
+            </div>
+        </div>
+        <partial name="_insertOrUpdateStaffPartial.cshtml" />
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/StaffController.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var ctrl = new StaffController();
+        ctrl.init();
+    });
+</script>
