@@ -311,24 +311,6 @@ namespace HealthSysHub.Web.DataManagers
             if (!consultations.Any())
                 return new List<ConsultationDetails>();
 
-            //// Start all data retrieval tasks
-            //var appointmentsTask = GetAppointmentsAsync();
-            //var patientsTask = GetPatientsAsync();
-            //var patientVitalsTask = GetPatientVitalsAsync();
-            //var patientPrescriptionsTask = GetPatientPrescriptionsAsync();
-            //var pharmacyRequestsTask = GetPharmacyRequestsAsync();
-            //var pharmacyRequestItemsTask = GetPharmacyRequestItemsAsync();
-            //var labOrderRequestsTask = GetLabOrderRequestsAsync();
-            //var labOrderRequestItemsTask = GetLabOrderRequestItemsAsync();
-            //var medicinesTask = GetMedicinesAsync();
-            //var labTestsTask = GetLabTestsAsync();
-
-            //// Wait for all tasks to complete
-            //await Task.WhenAll(
-            //    appointmentsTask, patientsTask, patientVitalsTask, patientPrescriptionsTask,
-            //    pharmacyRequestsTask, pharmacyRequestItemsTask, labOrderRequestsTask,
-            //    labOrderRequestItemsTask, medicinesTask, labTestsTask);
-
             // Get the results from each task
             var appointments = await GetAppointmentsAsync();
             var patients = await GetPatientsAsync();

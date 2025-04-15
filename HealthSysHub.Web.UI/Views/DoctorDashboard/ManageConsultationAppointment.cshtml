@@ -18,15 +18,15 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="mb-0">John Doe</h4>
+                                    <h4 class="mb-0"></h4>
                                     <div class="patient-meta">
-                                        <span class="badge badge-light mr-2"><i class="fas fa-id-card"></i> MRN: 123456</span>
-                                        <span class="badge badge-light mr-2"><i class="fas fa-birthday-cake"></i> 42 years</span>
-                                        <span class="badge badge-light"><i class="fas fa-venus-mars"></i> Male</span>
+                                        <span class="badge badge-light mr-2"><i class="fas fa-id-card"></i></span>
+                                        <span class="badge badge-light mr-2"><i class="fas fa-birthday-cake"></i></span>
+                                        <span class="badge badge-light"><i class="fas fa-venus-mars"></i></span>
                                     </div>
                                     <div class="patient-contact mt-2">
-                                        <span class="text-muted mr-3"><i class="fas fa-phone"></i> (555) 123-4567</span>
-                                        <span class="text-muted"><i class="fas fa-envelope"></i> john.doe@example.com</span>
+                                        <span class="text-muted mr-3"><i class="fas fa-phone"></i></span>
+                                        <span class="text-muted"><i class="fas fa-envelope"></i> </span>
                                     </div>
                                 </div>
                             </div>
@@ -44,10 +44,10 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="mb-0">Dr. Sarah Smith</h4>
+                                    <h4 class="mb-0"></h4>
                                     <div class="doctor-meta">
-                                        <span class="badge badge-light mr-2"><i class="fas fa-stethoscope"></i> Cardiology</span>
-                                        <span class="badge badge-light"><i class="fas fa-award"></i> 15 years experience</span>
+                                        <span class="badge badge-light mr-2"><i class="fas fa-stethoscope"></i></span>
+                                        <span class="badge badge-light"><i class="fas fa-award"></i></span>
                                     </div>
                                     <div class="doctor-rating mt-2">
                                         <div class="stars mr-2">
@@ -77,35 +77,35 @@
                                 <div class="vitals-grid">
                                     <div class="vital-item">
                                         <label>Body Temperature</label>
-                                        <div class="vital-value">98.6 °F</div>
+                                        <div class="vital-value" id="BodyTemperature"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Heart Rate</label>
-                                        <div class="vital-value">72 bpm</div>
+                                        <div class="vital-value" id="HeartRate"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Blood Pressure</label>
-                                        <div class="vital-value">120/80 mmHg</div>
+                                        <div class="vital-value" id="BloodPressure"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Respiratory Rate</label>
-                                        <div class="vital-value">16 rpm</div>
+                                        <div class="vital-value" id="RespiratoryRate"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Oxygen Saturation</label>
-                                        <div class="vital-value">98%</div>
+                                        <div class="vital-value" id="OxygenSaturation"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Height</label>
-                                        <div class="vital-value">175 cm</div>
+                                        <div class="vital-value" id="Height"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>Weight</label>
-                                        <div class="vital-value">70 kg</div>
+                                        <div class="vital-value" id="Weight"></div>
                                     </div>
                                     <div class="vital-item">
                                         <label>BMI</label>
-                                        <div class="vital-value">22.9</div>
+                                        <div class="vital-value" id="BMI"></div>
                                     </div>
                                 </div>
                                 <div class="form-group mt-3">
@@ -127,77 +127,32 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Diagnosis</label>
-                                            <textarea class="form-control" rows="3" placeholder="Enter diagnosis..."></textarea>
+                                            <textarea class="form-control" rows="3" id="Diagnosis" placeholder="Enter diagnosis..."></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>Treatment</label>
-                                            <textarea class="form-control" rows="3" placeholder="Enter treatment..."></textarea>
+                                            <textarea class="form-control" rows="3" id="Diagnosis" placeholder="Enter treatment..."></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Advice</label>
-                                            <textarea class="form-control" rows="3" placeholder="Enter advice..."></textarea>
+                                            <textarea class="form-control" rows="3" id="Diagnosis" placeholder="Enter advice..."></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>Follow-up Date</label>
-                                            <input type="datetime-local" class="form-control">
+                                            <input type="datetime-local" id="FollowUpOn" class="form-control">
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Lab Orders Section -->
-                                <div class="lab-orders-section mt-4">
-                                    <h6><i class="fas fa-flask mr-2"></i> Lab Orders</h6>
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Test Name</th>
-                                                    <th>Status</th>
-                                                    <th>Requested Date</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>CBC</td>
-                                                    <td><span class="badge badge-warning">Pending</span></td>
-                                                    <td>2023-05-15</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div id="lab-orders-section">
                                 </div>
+                             
 
                                 <!-- Pharmacy Orders Section -->
-                                <div class="pharmacy-orders-section mt-4">
-                                    <h6><i class="fas fa-pills mr-2"></i> Pharmacy Orders</h6>
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Medication</th>
-                                                    <th>Dosage</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Amoxicillin</td>
-                                                    <td>500mg 3x/day</td>
-                                                    <td><span class="badge badge-success">Filled</span></td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div id="pharmacy-orders-section">
                                 </div>
 
                                 <div class="form-group mt-3">
@@ -208,6 +163,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card-footer text-right">
+                <button type="button" id="btnSubmitPatientConsultation"
+                        class="btn btn-primary btn-lg">
+                    Submit
+                </button>
             </div>
         </div>
     </div>
