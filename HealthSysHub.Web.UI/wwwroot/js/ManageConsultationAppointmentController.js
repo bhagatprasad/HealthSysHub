@@ -41,6 +41,7 @@
             return $.ajax(ajaxConfig);
         });
         $.when.apply($, requests).done(function () {
+
             var responses = arguments;
 
             console.log(responses);
@@ -50,6 +51,8 @@
             self.dbMedicines = responses[1][0].data ? responses[1][0].data : [];
 
             self.ConsultationDetails = responses[1][0].data ? responses[1][0].data : {};
+
+            console.log(self.ConsultationDetails);
 
             hideLoader();
 
