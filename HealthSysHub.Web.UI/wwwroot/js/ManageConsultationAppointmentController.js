@@ -115,13 +115,14 @@
         self.PriscriptionDetailsUI = function () {
             var data = self.ConsultationDetails.patientDetails.patientPrescriptionDetails;
 
-            $('#Diagnosis').val(data.diagnosis || '');
-            $('#Treatment').val(data.treatment || '');
-            $('#Advice').val(data.advice || '');
+            $('#Diagnosis').val(data.Diagnosis || '');
+            $('#Treatment').val(data.Treatment || '');
+            $('#Advice').val(data.Advice || '');
+            $('#PrescriptionNotes').val(data.Notes || '');
 
             // Format date for datetime-local input (remove timezone if present)
-            const followUpDate = data.followUpOn ?
-                data.followUpOn.split('+')[0].split('.')[0] :
+            const followUpDate = data.FallwoUpOn ?
+                data.FallwoUpOn.split('+')[0].split('.')[0] :
                 '';
             $('#FollowUpOn').val(followUpDate);
         }
@@ -210,7 +211,7 @@
                     )
                 );
             });
-          
+
 
             $labOrdersSection.append($header, $table, $mobileView);
             return $labOrdersSection;
@@ -300,7 +301,7 @@
                     );
                 });
             }
-          
+
 
             $pharmacySection.append($header, $table, $mobileView);
             return $pharmacySection;
@@ -365,7 +366,7 @@
             console.log("Lab test added:", labTestResponse);
             self.ConsultationDetails.patientDetails.patientPrescriptionDetails.labOrderRequestDetails = labTestResponse;
             self.RebuildLabordersUI();
-           
+
             hideLoader();
         };
 
@@ -378,6 +379,46 @@
 
             hideLoader();
         };
+
+        $(document).on("click", "#btnSubmitPatientConsultation", function () {
+            showLoader();
+            var diagnosis = $("#Diagnosis").val();
+            var treatment = $("#Treatment").val();
+            var advice = $("#Advice").val();
+            var followUpOn = $("#FollowUpOn").val();
+            var prescriptionNotes = $("#PrescriptionNotes").val();
+            //update status
+            self.ConsultationDetails.Status = "DoctorConsulted";
+            self.ConsultationDetails = addCommonProperties(self.ConsultationDetails);
+
+            //update consultation priscription details
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.Advice = advice;
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.Diagnosis = diagnosis;
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.FollowUpOn    = followUpOn ? new Date(followUpOn) : null;
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.Notes = prescriptionNotes;
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.Treatment = treatment;
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails = addCommonProperties(self.ConsultationDetails.patientDetails.patientPrescriptionDetails);
+
+            makeAjaxRequest({
+                url: "/Consultation/InsertOrUpdateConsultationDetails",
+                data: self.ConsultationDetails,
+                type: 'POST',
+                successCallback: function (response) {
+                    if (response.status) {
+                        self.ConsultationDetails = response.data;
+                        setTimeout(function () {
+                            window.location.href = "/DoctorDashboard/ManageDoctorAppointments";
+                        }, 1000);
+                    }
+                    hideLoader();
+                },
+                errorCallback: function (xhr, status, error) {
+                    console.error("Error adding lab test: " + error);
+                    hideLoader();
+                }
+            });
+
+        });
     };
 
 };

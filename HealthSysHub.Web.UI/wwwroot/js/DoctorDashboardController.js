@@ -263,8 +263,12 @@
                 // If the status is DoctorConsulted, display the Print Prescription button
                 return `
             <div class="btn-group ${isMobile ? 'mobile-actions' : 'desktop-actions'}" role="group">
-                <button type="button" class="btn btn-sm btn-warning btn-print-prescription" data-appointmentid="${appointmentId}">
-                    ${isMobile ? '<i class="fa fa-print"></i>' : 'Print Prescription'}
+            <button type="button" class="btn btn-sm btn-secondary btn-consultationcreated mr-1" data-appointmentid="${appointmentId}">
+                ${isMobile ? '<i class="fa fa-eye"></i>' : 'View'}
+            </button>
+            <br/>
+            <button type="button" class="btn btn-sm btn-warning btn-print-prescription" data-appointmentid="${appointmentId}">
+                    ${isMobile ? '<i class="fa fa-print"></i>' : 'Prescription'}
                 </button>
             </div>
         `;
