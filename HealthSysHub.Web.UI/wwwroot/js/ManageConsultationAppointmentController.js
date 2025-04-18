@@ -181,7 +181,7 @@
                         $('<td>').append(
                             $('<span>').addClass(`badge badge-${getStatusClass(labOrders.Status)}`).text(labOrders.Status)
                         ),
-                        $('<td>').text(labOrders.CreatedOn),
+                        $('<td>').text(order.CreatedOn),
                         $('<td>').append(
                             $('<button>').addClass('btn btn-sm btn-outline-primary').text('View')
                                 .click(function () { /* View handler */ })
@@ -261,43 +261,46 @@
             const $mobileView = $('<div>').addClass('d-md-none');
 
             // Process each pharmacy order
-            pharmacyOrders.forEach(order => {
-                // Add to table (desktop view)
-                $table.find('tbody').append(
-                    $('<tr>').append(
-                        $('<td>').text(order.medication),
-                        $('<td>').text(order.dosage),
-                        $('<td>').append(
-                            $('<span>').addClass(`badge badge-${getPharmacyStatusClass(order.status)}`).text(order.status)
-                        ),
-                        $('<td>').append(
-                            $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
-                                .click(function () { /* Delete handler */ })
+            if (pharmacyOrders.pharmacyOrderRequestItemDetails.length > 0) {
+                pharmacyOrders.pharmacyOrderRequestItemDetails.forEach(order => {
+                    // Add to table (desktop view)
+                    $table.find('tbody').append(
+                        $('<tr>').append(
+                            $('<td>').text(order.MedicineName),
+                            $('<td>').text(order.ItemQty),
+                            $('<td>').append(
+                                $('<span>').addClass(`badge badge-${pharmacyOrders.Status}`).text(pharmacyOrders.Status)
+                            ),
+                            $('<td>').append(
+                                $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
+                                    .click(function () { /* Delete handler */ })
+                            )
                         )
-                    )
-                );
+                    );
 
-                // Add to mobile view
-                $mobileView.append(
-                    $('<div>').addClass('card mb-2').append(
-                        $('<div>').addClass('card-body').append(
-                            $('<div>').addClass('row').append(
-                                $('<div>').addClass('col-8').append(
-                                    $('<h6>').addClass('mb-1 font-weight-bold').text(order.medication),
-                                    $('<div>').addClass('d-flex flex-wrap').append(
-                                        $('<small>').addClass('mr-2').html(`<strong>Dosage:</strong> ${order.dosage}`),
-                                        $('<small>').html(`<strong>Status:</strong> <span class="badge badge-${getPharmacyStatusClass(order.status)}">${order.status}</span>`)
+                    // Add to mobile view
+                    $mobileView.append(
+                        $('<div>').addClass('card mb-2').append(
+                            $('<div>').addClass('card-body').append(
+                                $('<div>').addClass('row').append(
+                                    $('<div>').addClass('col-8').append(
+                                        $('<h6>').addClass('mb-1 font-weight-bold').text(order.MedicineName),
+                                        $('<div>').addClass('d-flex flex-wrap').append(
+                                            $('<small>').addClass('mr-2').html(`<strong>Dosage:</strong> ${order.ItemQty}`),
+                                            $('<small>').html(`<strong>Status:</strong> <span class="badge badge-${pharmacyOrders.Status}">${pharmacyOrders.Status}</span>`)
+                                        )
+                                    ),
+                                    $('<div>').addClass('col-4 text-right').append(
+                                        $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
+                                            .click(function () { /* Delete handler */ })
                                     )
-                                ),
-                                $('<div>').addClass('col-4 text-right').append(
-                                    $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
-                                        .click(function () { /* Delete handler */ })
                                 )
                             )
                         )
-                    )
-                );
-            });
+                    );
+                });
+            }
+          
 
             $pharmacySection.append($header, $table, $mobileView);
             return $pharmacySection;
@@ -317,10 +320,7 @@
         // Usage:
 
         self.RebuildPharmacyOrdersUI = function () {
-            const pharmacyOrdersData = [
-                { medication: 'Amoxicillin', dosage: '500mg 3x/day', status: 'Filled' },
-                { medication: 'Lisinopril', dosage: '10mg 1x/day', status: 'Prescribed' }
-            ];
+            const pharmacyOrdersData = self.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails;
             $('#pharmacy-orders-section').append(buildPharmacyOrdersTable(pharmacyOrdersData));
         }
 
@@ -366,6 +366,16 @@
             self.ConsultationDetails.patientDetails.patientPrescriptionDetails.labOrderRequestDetails = labTestResponse;
             self.RebuildLabordersUI();
            
+            hideLoader();
+        };
+
+        self.onMedicineAdded = function (medicineResponse) {
+            showLoader();
+            $('#pharmacy-orders-section').html("");
+            console.log("medicine added:", medicineResponse);
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails = medicineResponse;
+            self.RebuildPharmacyOrdersUI();
+
             hideLoader();
         };
     };
