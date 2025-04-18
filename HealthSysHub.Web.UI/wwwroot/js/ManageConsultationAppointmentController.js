@@ -20,6 +20,7 @@
 
     self.init = function () {
         showLoader();
+
         var appUserInfo = storageService.get('ApplicationUser');
 
         if (appUserInfo)
@@ -147,7 +148,10 @@
             $header.append($('<h6>').addClass('mb-0').html('<i class="fas fa-flask mr-2"></i> Lab Orders'));
             $header.append(
                 $('<button>').addClass('btn btn-sm btn-primary').html('<i class="fas fa-plus"></i> Add')
-                    .click(function () { /* Add your click handler here */ })
+                    .click(function () {
+                        $('#LabTestInventoryModal').modal({ backdrop: 'static', keyboard: true });
+                        $("#LabTestInventoryModal").modal("show");
+                    })
             );
 
             // Table for large screens
@@ -169,15 +173,15 @@
             const $mobileView = $('<div>').addClass('d-md-none');
 
             // Process each lab order
-            labOrders.forEach(order => {
+            labOrders.labOrderRequestItemDetails.forEach(order => {
                 // Add to table (desktop view)
                 $table.find('tbody').append(
                     $('<tr>').append(
-                        $('<td>').text(order.testName),
+                        $('<td>').text(order.TestName),
                         $('<td>').append(
-                            $('<span>').addClass(`badge badge-${getStatusClass(order.status)}`).text(order.status)
+                            $('<span>').addClass(`badge badge-${getStatusClass(labOrders.Status)}`).text(labOrders.Status)
                         ),
-                        $('<td>').text(order.requestedDate),
+                        $('<td>').text(labOrders.CreatedOn),
                         $('<td>').append(
                             $('<button>').addClass('btn btn-sm btn-outline-primary').text('View')
                                 .click(function () { /* View handler */ })
@@ -191,10 +195,10 @@
                         $('<div>').addClass('card-body').append(
                             $('<div>').addClass('row').append(
                                 $('<div>').addClass('col-8').append(
-                                    $('<h6>').addClass('mb-1 font-weight-bold').text(order.testName),
+                                    $('<h6>').addClass('mb-1 font-weight-bold').text(order.TestName),
                                     $('<div>').addClass('d-flex flex-wrap').append(
-                                        $('<small>').addClass('mr-2').html(`<strong>Status:</strong> <span class="badge badge-${getStatusClass(order.status)}">${order.status}</span>`),
-                                        $('<small>').html(`<strong>Date:</strong> ${order.requestedDate}`)
+                                        $('<small>').addClass('mr-2').html(`<strong>Status:</strong> <span class="badge badge-${getStatusClass(labOrders.Status)}">${labOrders.Status}</span>`),
+                                        $('<small>').html(`<strong>Date:</strong> ${order.CreatedOn}`)
                                     )
                                 ),
                                 $('<div>').addClass('col-4 text-right').append(
@@ -206,6 +210,7 @@
                     )
                 );
             });
+          
 
             $labOrdersSection.append($header, $table, $mobileView);
             return $labOrdersSection;
@@ -230,8 +235,11 @@
             const $header = $('<div>').addClass('d-flex justify-content-between align-items-center mb-2');
             $header.append($('<h6>').addClass('mb-0').html('<i class="fas fa-pills mr-2"></i> Pharmacy Orders'));
             $header.append(
-                $('<button>').addClass('btn btn-sm btn-primary').html('<i class="fas fa-plus"></i> Add')
-                    .click(function () { /* Add medication handler */ })
+                $('<button>').addClass('btn btn-sm btn-primary').html('<i class="fas fa-plus"></i> Add').click(function () {
+                    $('#MedicineInventoryModal').modal({ backdrop: 'static', keyboard: true });
+                    $("#MedicineInventoryModal").modal("show");
+
+                })
             );
 
             // Table for large screens
@@ -239,9 +247,9 @@
                 $('<table>').addClass('table table-sm table-bordered').append(
                     $('<thead>').append(
                         $('<tr>').append(
-                            $('<th>').text('Medication'),
-                            $('<th>').text('Dosage'),
-                            $('<th>').text('Status'),
+                            $('<th>').text('Medicine Name'),
+                            $('<th>').text('Usage'),
+                            $('<th>').text('ItemQty'),
                             $('<th>').text('Actions')
                         )
                     ),
@@ -263,8 +271,6 @@
                             $('<span>').addClass(`badge badge-${getPharmacyStatusClass(order.status)}`).text(order.status)
                         ),
                         $('<td>').append(
-                            $('<button>').addClass('btn btn-sm btn-outline-primary mr-1').html('<i class="fas fa-eye"></i>')
-                                .click(function () { /* View handler */ }),
                             $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
                                 .click(function () { /* Delete handler */ })
                         )
@@ -284,8 +290,6 @@
                                     )
                                 ),
                                 $('<div>').addClass('col-4 text-right').append(
-                                    $('<button>').addClass('btn btn-sm btn-outline-primary mr-1').html('<i class="fas fa-eye"></i>')
-                                        .click(function () { /* View handler */ }),
                                     $('<button>').addClass('btn btn-sm btn-outline-danger').html('<i class="fas fa-trash"></i>')
                                         .click(function () { /* Delete handler */ })
                                 )
@@ -311,7 +315,7 @@
         }
 
         // Usage:
-       
+
         self.RebuildPharmacyOrdersUI = function () {
             const pharmacyOrdersData = [
                 { medication: 'Amoxicillin', dosage: '500mg 3x/day', status: 'Filled' },
@@ -319,16 +323,13 @@
             ];
             $('#pharmacy-orders-section').append(buildPharmacyOrdersTable(pharmacyOrdersData));
         }
-      
-    
+
+
         self.RebuildLabordersUI = function () {
-            const labOrdersData = [
-                { testName: 'CBC', status: 'Pending', requestedDate: '2023-05-15' },
-                { testName: 'Lipid Panel', status: 'Completed', requestedDate: '2023-05-10' }
-            ];
+            const labOrdersData = self.ConsultationDetails.patientDetails.patientPrescriptionDetails.labOrderRequestDetails;
             $('#lab-orders-section').append(buildLabOrdersTable(labOrdersData));
         }
-       
+
 
         self.RebuildVitalsUI = function () {
             var vitals = self.ConsultationDetails.patientDetails.patientVitalDetails;
@@ -356,6 +357,16 @@
         <span class="text-muted mr-3"><i class="fas fa-phone"></i> ${patientDetails.Phone}</span>
         <span class="text-muted"><i class="fas fa-map-marker-alt"></i> ${patientDetails.Address}</span>
     `);
+        };
+
+        self.onLabTestAdded = function (labTestResponse) {
+            showLoader();
+            $('#lab-orders-section').html("");
+            console.log("Lab test added:", labTestResponse);
+            self.ConsultationDetails.patientDetails.patientPrescriptionDetails.labOrderRequestDetails = labTestResponse;
+            self.RebuildLabordersUI();
+           
+            hideLoader();
         };
     };
 
