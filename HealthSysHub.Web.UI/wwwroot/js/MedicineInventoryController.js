@@ -104,5 +104,62 @@
         return `calc(${modalHeight}px - ${otherElementsHeight + formHeight}px)`;
     }
 
+    $(document).on("click", "#addToCart", function () {
+        showLoader();
+        // Prepare data to send, including ConsultationDetails if available
+        var pharmacyOrderRequestDetails = self.parentController.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails;
 
+        // Set common properties whether new or existing request
+        pharmacyOrderRequestDetails.DoctorName = self.parentController.ConsultedDoctor.FullName;
+        pharmacyOrderRequestDetails.HospitalId = self.parentController.ConsultedDoctor.HospitalId;
+        pharmacyOrderRequestDetails.HospitalName = self.parentController.ApplicationUser.HospitalName;
+        pharmacyOrderRequestDetails.Name = self.parentController.ConsultationDetails.patientDetails.Name;
+        pharmacyOrderRequestDetails.Phone = self.parentController.ConsultationDetails.patientDetails.Phone;
+        pharmacyOrderRequestDetails.PatientId = self.parentController.ConsultationDetails.patientDetails.PatientId;
+        pharmacyOrderRequestDetails.Notes = "Medicines are requested";
+        pharmacyOrderRequestDetails.Status = "SentForPharmacy";
+        pharmacyOrderRequestDetails.PatientPrescriptionId = self.parentController.ConsultationDetails.patientDetails.patientPrescriptionDetails.PatientPrescriptionId;
+        pharmacyOrderRequestDetails.PharmacyOrderRequestId = self.parentController.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails.PharmacyOrderRequestId == "00000000-0000-0000-0000-000000000000" ? null : self.parentController.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails.PharmacyOrderRequestId;
+        // Add common properties (created/modified info)
+        pharmacyOrderRequestDetails = addCommonProperties(pharmacyOrderRequestDetails);
+
+        // Create the medicine order item
+        var pharmacyOrderRequestItem = {
+            MedicineId: self.CurrentSelectedMedicine.MedicineId,
+            MedicineName: self.CurrentSelectedMedicine.MedicineName,
+            HospitalId: self.parentController.ConsultedDoctor.HospitalId,
+            ItemQty: $("#quantity").val(),
+            Usage: $("#usage").val()
+        };
+
+        // Add the item to the request
+        if (!pharmacyOrderRequestDetails.pharmacyOrderRequestItemDetails) {
+            pharmacyOrderRequestDetails.pharmacyOrderRequestItemDetails = [];
+        }
+        pharmacyOrderRequestDetails.pharmacyOrderRequestItemDetails.push(addCommonProperties(pharmacyOrderRequestItem));
+
+        console.log(pharmacyOrderRequestDetails);
+
+        makeAjaxRequest({
+            url: "/PharmacyOrderRequest/InsertOrUpdatePharmacyOrderRequestDetails",
+            data: pharmacyOrderRequestDetails,
+            type: 'POST',
+            successCallback: function (response) {
+                if (response) {
+                    // Update the parent controller with the response
+                    self.parentController.ConsultationDetails.patientDetails.patientPrescriptionDetails.pharmacyOrderRequestDetails = response.data;
+                    $('#MedicineInventoryModal').modal('hide');
+                }
+                hideLoader();
+                // Notify parent controller if callback exists
+                if (self.parentController && typeof self.parentController.onMedicineAdded === 'function') {
+                    self.parentController.onMedicineAdded(response.data);
+                }
+            },
+            errorCallback: function (xhr, status, error) {
+                console.error("Error adding medicine: " + error);
+                hideLoader();
+            }
+        });
+    });
 }

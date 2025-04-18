@@ -441,6 +441,7 @@ const hospitalStatuses = [
     { "StatusName": "Doctor consultation created", "StatusCode": "DoctorConsultationCreated" },
     { "StatusName": "Doctor consulted", "StatusCode": "DoctorConsulted" },
     { "StatusName": "Sent for test", "StatusCode": "SentForTests" },
+    { "StatusName": "Medicines are requested", "StatusCode": "SentForPharmacy" },
     { "StatusName": "Test completed", "StatusCode": "TestCompleted" },
     { "StatusName": "Reports Available", "StatusCode": "ReportsAvailable" },
     { "StatusName": "Doctor reports seen", "StatusCode": "DoctorReportsSeen" },
