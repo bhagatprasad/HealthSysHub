@@ -146,14 +146,13 @@
                                     </div>
                                 </div>
 
-                                <!-- Lab Orders Section -->
-                                <div id="lab-orders-section">
-                                </div>
-                             
-
                                 <!-- Pharmacy Orders Section -->
                                 <div id="pharmacy-orders-section">
                                 </div>
+                                <!-- Lab Orders Section -->
+                                <div id="lab-orders-section">
+                                </div>
+
 
                                 <div class="form-group mt-3">
                                     <label>Prescription Notes</label>
@@ -172,6 +171,8 @@
             </div>
         </div>
     </div>
+    <partial name="~/Views/Shared/_MedicineInventoryPopUp.cshtml" />
+    <partial name="~/Views/Shared/_LabTestInventoryPopUp.cshtml" />
 </div>
 <style>
     /* Vitals Grid Layout */
@@ -220,9 +221,17 @@
 </style>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/ManageConsultationAppointmentController.js"></script>
+<script src="~/js/MedicineInventoryController.js"></script>
+<script src="~/js/LabTestInventoryController.js"></script>
 <script type="text/javascript">
     $(function () {
         var ctrl = new ManageConsultationAppointmentController();
         ctrl.init();
+
+          var ctrlMedicine = new MedicineInventoryController();
+        ctrlMedicine.init(ctrl);
+
+         var ctrlLabTest = new LabTestInventoryController();
+        ctrlLabTest.init(ctrl);
     });
 </script>

@@ -1,0 +1,61 @@
+﻿<div class="modal fade bd-example-modal-lg" id="LabTestInventoryModal" tabindex="-1" role="dialog" aria-labelledby="LabTestInventoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LabTestInventoryModalLabel">Lab Tests Inventory</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <!-- Search and Table Section -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-container mb-3">
+                                <input type="text" id="searchLabTestInput" class="form-control" placeholder="Search tests...">
+                            </div>
+                            <div id="labTestTable" class="medicine-table"></div>
+                        </div>
+                    </div>
+
+                    <!-- Form Section (initially hidden) -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div id="selectedLabTestForm" class="selected-medicine-form">
+                                <h4>Selected Test</h4>
+                                <form id="selectedLabTestForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="selectedTestName" class="form-label">Test Name</label>
+                                            <input type="text" class="form-control" id="selectedTestName" readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="selectedDescription" class="form-label">Description</label>
+                                            <input type="text" class="form-control" id="selectedDescription" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="quantity" class="form-label">Quantity</label>
+                                            <input type="number" class="form-control" id="quantity" min="1" value="1">
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-primary" id="addToLabCart">Add to Cart</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        padding: 20px;
+    }
+</style>

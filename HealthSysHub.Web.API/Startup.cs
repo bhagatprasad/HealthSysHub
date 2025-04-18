@@ -76,7 +76,7 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IPharmacyOrderManager, PharmacyOrderDataManager>();
 
-            services.AddScoped<IConsultationManager, ConsultationDataManager>();
+            services.AddScoped<ILabOrderRequestManager, LabOrderRequestDataManager>();
 
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 

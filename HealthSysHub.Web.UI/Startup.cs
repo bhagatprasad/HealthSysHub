@@ -81,7 +81,10 @@ namespace HealthSysHub.Web.UI
 
             services.AddScoped<IStaffService, StaffService>();
 
+            services.AddScoped<ILabOrderRequestService, LabOrderRequestService>();
+
             services.AddScoped<IConsultationService, ConsultationService>();
+
 
             services.AddScoped<PdfLayoutService>();
 

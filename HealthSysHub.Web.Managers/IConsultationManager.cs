@@ -16,5 +16,6 @@ namespace HealthSysHub.Web.Managers
         Task<List<ConsultationDetails>> GetConsultationDetailsByConsultationIdAsync(Guid consultationId);
         Task<List<ConsultationDetails>> GetConsultationDetailsByDoctorAsync(Guid doctorId);
         Task<List<ConsultationDetails>> GetConsultationDetailsByHospitalAsync(Guid hospitalId);
+       
     }
 }
