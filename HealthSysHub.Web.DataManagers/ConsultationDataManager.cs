@@ -28,7 +28,7 @@ namespace HealthSysHub.Web.DataManagers
         public Task<List<ConsultationDetails>> GetConsultationDetailsByHospitalAsync(Guid hospitalId)
             => ConsultationDetailsAsync(hospitalId: hospitalId);
 
-        
+
 
         public async Task<List<Consultation>> GetConsultationsAsync()
         {
@@ -484,6 +484,9 @@ namespace HealthSysHub.Web.DataManagers
             // Update prescription
             await UpdatePatientPrescription(consultationDetails);
 
+            //update Doctor Appointment
+            await UpdateDoctorAppointment(consultationDetails);
+
             await _dbContext.SaveChangesAsync();
         }
 
@@ -670,6 +673,17 @@ namespace HealthSysHub.Web.DataManagers
             if (EntityUpdater.HasChanges(dbPrescription, prescription, nameof(PatientPrescription.CreatedBy), nameof(PatientPrescription.CreatedOn), nameof(PatientPrescription.ModifiedBy), nameof(PatientPrescription.ModifiedOn)))
             {
                 EntityUpdater.UpdateProperties(dbPrescription, prescription, nameof(PatientPrescription.CreatedBy), nameof(PatientPrescription.CreatedOn));
+            }
+        }
+
+        private async Task UpdateDoctorAppointment(ConsultationDetails consultationDetails)
+        {
+            var dbDoctorAppointment = await _dbContext.doctorAppointments.FindAsync(consultationDetails.AppointmentId);
+            if (dbDoctorAppointment != null)
+            {
+                dbDoctorAppointment.Status = consultationDetails.Status;
+                dbDoctorAppointment.ModifiedBy = consultationDetails.ModifiedBy;
+                dbDoctorAppointment.ModifiedOn = consultationDetails.ModifiedOn;
             }
         }
     }
