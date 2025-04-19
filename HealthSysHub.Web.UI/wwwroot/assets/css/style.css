@@ -30460,3 +30460,18 @@ input:checked + .slider {
         padding-bottom: 300px; /* Make space for the form at bottom */
     }
 }
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: 20px;
+}
+
+.action-group {
+    display: inline-block;
+}
+
+/* For cases where you want horizontal layout when there's only one button */
+.actions-container.single-button {
+    flex-direction: row;
+}
