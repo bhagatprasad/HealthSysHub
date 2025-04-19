@@ -244,43 +244,58 @@
             const isMobile = window.innerWidth <= 768;
             const data = cell.getData();
             const appointmentId = String(data.AppointmentId).replace(/"/g, '&quot;');
-            const status = data.Status; // Assuming the status is available in the data object
+            const status = data.Status;
 
             let actionsHtml = '';
+            let hasConsultationButton = false;
 
             // Check if the status is "HospitalVisited"
             if (status === "HospitalVisited") {
                 actionsHtml += `
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-primary create-consultation" data-appointmentid="${appointmentId}">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
+        <div class="action-group">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-primary create-consultation" data-appointmentid="${appointmentId}">
+                    <i class="fa fa-plus"></i>${isMobile ? '' : ' Create Consultation'}
+                </button>
+            </div>
+        </div>
+        `;
+                hasConsultationButton = true;
+            }
+
+            // Add receipt button
+            const receiptButton = `
+    <div class="action-group">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm btn-success pdf-print-receipt" data-appointmentid="${appointmentId}">
+                <i class="fa ${isMobile ? 'fa-file-pdf' : 'fa-receipt'}"></i>${isMobile ? '' : ' Receipt'}
+            </button>
+        </div>
+    </div>
+    `;
+
+            // Add prescription button if needed
+            let prescriptionButton = '';
+            if (status === 'DoctorConsulted') {
+                prescriptionButton = `
+        <div class="action-group">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-warning btn-print-prescription" data-appointmentid="${appointmentId}">
+                    <i class="fa ${isMobile ? 'fa-file-pdf' : 'fa-file-medical'}"></i>${isMobile ? '' : ' Print Prescription'}
+                </button>
+            </div>
+        </div>
         `;
             }
 
-            // Add mobile specific actions
-            if (isMobile) {
-                actionsHtml += `
-        <div class="btn-group mobile-actions" role="group">
-            <button type="button" 
-                    class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
-                <i class="fa fa-file-pdf"></i>
-            </button>
-        </div>
-        `;
-            } else {
-                // Add desktop specific actions
-                actionsHtml += `
-        <div class="btn-group desktop-actions" role="group">
-            <button type="button" class="btn btn-sm btn-success btn-pdf-icon pdf-print-receipt" data-appointmentid="${appointmentId}">
-                <i class="fa fa-receipt"></i> Receipt
-            </button>
-        </div>
-        `;
+            // Combine all buttons
+            actionsHtml += receiptButton;
+            if (prescriptionButton) {
+                actionsHtml += prescriptionButton;
             }
 
-            return actionsHtml;
+            // Wrap all action groups in a container with vertical layout
+            return `<div class="actions-container" style="display: flex; flex-direction: ${hasConsultationButton || prescriptionButton ? 'column' : 'row'}; gap: 5px;">${actionsHtml}</div>`;
         }
 
         // Update table columns based on screen size
@@ -381,6 +396,8 @@
                 toastr.error("Appointment not found!");
             }
         });
+
+
         $('#AddEditDoctorConsultationForm').on('submit', function (e) {
 
             showLoader();
@@ -520,7 +537,28 @@
                 }
             });
         });
+        $(document).on("click", ".btn-print-prescription", function () {
+            showLoader();
+            var rowId = $(this).data('appointmentid');
+            var row = table.getRows(function (data) {
+                return data.AppointmentId === rowId;
+            })[0];
+            console.log(row.getData());
 
+            $.ajax({
+                url: '/Report/PrintPatientPriscriptionReceipt',
+                type: 'GET',
+                data: { appointmentId: rowId },
+                success: function (status) {
+                    window.location.href = "/Report/PrintPatientPriscriptionReceipt?appointmentId=" + rowId;
+                    hideLoader();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    hideLoader();
+                }
+            });
+        });
         $(document).on("click", "#exportTemplate", function () {
             showLoader();
 
