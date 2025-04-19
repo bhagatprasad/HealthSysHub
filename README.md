@@ -81,3 +81,6 @@ Appointment Recepit :
 
 Appointments Report : filter, what cusotmer want to 
 ![image](https://github.com/user-attachments/assets/c5c48d59-8b23-4e20-8f06-a3dc09591072)
+
+Patient Priscription Report
+![image](https://github.com/user-attachments/assets/f4eba2e6-b72e-4a7f-b75e-cafabf6eca2a)
