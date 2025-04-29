@@ -1,0 +1,93 @@
+[33mf6a3cae[m[33m ([m[1;36mHEAD -> [m[1;32mFeature/Angular_Project_Setup[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m, [m[1;32mFeature/Print_Patient_Priscription[m[33m)[m Merge pull request #49 from bhagatprasad/Feature/Print_Patient_Priscription
+[33m5f90ec0[m[33m ([m[1;31morigin/Feature/Print_Patient_Priscription[m[33m)[m Merge remote-tracking branch 'origin/master' into Feature/Print_Patient_Priscription
+[33mdd6b3e9[m commit
+[33m06a35e6[m Merge pull request #48 from bhagatprasad/NaveenPunme-patch-1
+[33m26322ce[m Update README.md
+[33mef3f60f[m[33m ([m[1;32mFeature/Process_PatientConsulation[m[33m)[m Merge pull request #47 from bhagatprasad/Feature/Process_PatientConsulation
+[33mec128f0[m[33m ([m[1;31morigin/Feature/Process_PatientConsulation[m[33m)[m Doctor Consulation submited
+[33m98e7934[m Merge pull request #46 from bhagatprasad/Feature/PharmcyOrders
+[33mf8a595e[m[33m ([m[1;31morigin/Feature/PharmcyOrders[m[33m, [m[1;32mFeature/PharmcyOrders[m[33m)[m Pharmacy Order Request
+[33mfaa869f[m Merge pull request #45 from bhagatprasad/Feature/Patient_Consulation
+[33m86fa694[m[33m ([m[1;31morigin/Feature/Patient_Consulation[m[33m, [m[1;32mFeature/Patient_Consulation[m[33m)[m Lab Request Order Process
+[33mecd88a5[m Merge pull request #44 from bhagatprasad/Feature/Bind_Consulation_Data_UI
+[33m88c8d14[m[33m ([m[1;31morigin/Feature/Bind_Consulation_Data_UI[m[33m, [m[1;32mFeature/Bind_Consulation_Data_UI[m[33m)[m Consultation UI Rebuild
+[33m86432c9[m Merge remote-tracking branch 'origin/master'
+[33mb6b1a0f[m Merge pull request #43 from bhagatprasad/Feature/DoctorccDetails
+[33m90aade0[m[33m ([m[1;31morigin/Feature/DoctorccDetails[m[33m, [m[1;32mFeature/DoctorccDetails[m[33m)[m commnet
+[33mc299a2f[m get dcctor consultation details
+[33m03f1d49[m Merge pull request #42 from bhagatprasad/Feature/ReadyConsultation
+[33m3877562[m[33m ([m[1;31morigin/Feature/ReadyConsultation[m[33m, [m[1;32mFeature/ReadyConsultation[m[33m)[m display consulation details
+[33ma1819dd[m Merge pull request #41 from bhagatprasad/Feature/DoctorProcess
+[33mee5d67a[m[33m ([m[1;31morigin/Feature/DoctorProcess[m[33m, [m[1;32mFeature/DoctorProcess[m[33m)[m commit
+[33m2b78180[m[33m ([m[1;32mFeature/Doctor_Consualtion[m[33m)[m Merge pull request #40 from bhagatprasad/Feature/Doctor_Consualtion
+[33mf7a6c2d[m[33m ([m[1;31morigin/Feature/Doctor_Consualtion[m[33m)[m code changes for consulation form
+[33m6a75d6a[m Merge pull request #39 from bhagatprasad/Feature/InsertOrUpdateConsulation
+[33m882d9cc[m[33m ([m[1;31morigin/Feature/InsertOrUpdateConsulation[m[33m, [m[1;32mFeature/InsertOrUpdateConsulation[m[33m)[m Add/edit consultation
+[33me000f37[m[33m ([m[1;32mBug/HospitalId_undefind_account_controller[m[33m)[m Merge pull request #38 from bhagatprasad/Bug/HospitalId_undefind_account_controller
+[33m64ebd77[m[33m ([m[1;31morigin/Bug/HospitalId_undefind_account_controller[m[33m)[m Consulation Details
+[33m386fba0[m Merge pull request #37 from bhagatprasad/Feature/DoctorProcess
+[33ma9b41f8[m comit
+[33ma5defed[m Merge pull request #36 from bhagatprasad/bhagatprasad-patch-1
+[33mdb1caa5[m Update README.md
+[33mab31227[m Merge pull request #35 from bhagatprasad/Feature/Print_DialyPatientReport
+[33m1495127[m dotcot appointments
+[33m19ac71f[m Merge pull request #34 from bhagatprasad/Feature/AddingSwaggerConfirg
+[33m3ac1f15[m Merge remote-tracking branch 'origin/master' into Feature/AddingSwaggerConfirg
+[33m99bd84f[m commit
+[33mdfe56f2[m Merge pull request #33 from bhagatprasad/bhagatprasad-patch-1
+[33m109b781[m Update README.md
+[33m7da154b[m Merge pull request #32 from bhagatprasad/Feature/Print_PaymentChallan
+[33mba3aaae[m doctor functionality and invoice genarator
+[33m81ab1e3[m Merge pull request #31 from bhagatprasad/Feature/Genarate_Recipt
+[33m1cedfb7[m doctor appointment grid and slider mobile verson
+[33m9efe6a5[m Merge pull request #30 from bhagatprasad/Feature/Print_Invoice_Cash
+[33mad439e2[m common
+[33meb0d722[m Merge pull request #29 from bhagatprasad/Feature/QuestPDF_Customize_Service
+[33m18f6896[m commit
+[33mad84df1[m Merge remote-tracking branch 'origin/master' into Feature/QuestPDF_Customize_Service
+[33m2378feb[m commde
+[33me6835b9[m Merge pull request #28 from bhagatprasad/Feature/Implement_Invoice_genaration
+[33mfd3aafd[m commit
+[33m1e13077[m Merge pull request #27 from bhagatprasad/Feature/QuestPDF_Integration
+[33m8d89b21[m (Due to technical issues, the search service is temporarily unavailable.)
+[33m9f21943[m Merge pull request #26 from bhagatprasad/Feature/Adding_React_Lab_Project
+[33mf25c766[m Add React project healthsyshub.web.lab.ui
+[33mc66fe86[m Merge pull request #25 from bhagatprasad/Feature/Add_Pharmacy_AG_Project
+[33ma2b88ff[m commit
+[33me8919ab[m Merge pull request #24 from bhagatprasad/Feature/Add_Pharmacy_AG_Project
+[33md46607a[m Add Angular project HealthSysHub.Web.Pharmacy.UI
+[33ma77174f[m Merge pull request #23 from bhagatprasad/Feature/Manager_DoctorBooking
+[33m8fffff7[m Insert or update doctor oppoeintment
+[33m4fe87ac[m Merge pull request #22 from bhagatprasad/Feature/Appointment_Booking
+[33m233ad6d[m committ
+[33mbf6f186[m Merge pull request #21 from bhagatprasad/Feature/BookAppointment
+[33m7060ddc[m commit
+[33m679a8f4[m Merge pull request #20 from bhagatprasad/Feature/SlotBooking_GetCurrentToken
+[33m6386fb6[m commit
+[33mf02394e[m Merge pull request #19 from bhagatprasad/Feature/Hospital_Manager
+[33m7dd655e[m Hospital operations
+[33m211925e[m Merge pull request #18 from bhagatprasad/Feature/Manage_Hospital_infirmation
+[33m44008e0[m adding new partial
+[33m86b1b26[m Merge pull request #17 from bhagatprasad/Feature/Hospital_Login_Setup
+[33md160d3b[m commit
+[33m999885a[m Merge pull request #16 from bhagatprasad/Feature/Master_Lib_Setup
+[33m25384e8[m To make the navigation menu more visually distinct and meaningful, you can use **unique icons** for the **Payment Type** and **Patient Type** menu items. Below are the updated `<li>` elements with appropriate icons:
+[33md48ef44[m Merge pull request #15 from bhagatprasad/Feature/Master_Lib_Setup
+[33m315d96e[m commit
+[33m61b8832[m Merge pull request #14 from bhagatprasad/Feature/handsontable_Grids_Integration
+[33ma5e766a[m cimmit
+[33m1aef6af[m Merge pull request #13 from bhagatprasad/Feature/UI_INT
+[33mb5d719a[m[33m ([m[1;31morigin/Feature/UI_INT[m[33m)[m Authentication implemented both sides
+[33m6e40b1c[m Merge pull request #12 from bhagatprasad/Feature/Create_Manage_Staff
+[33m38cd53c[m[33m ([m[1;31morigin/Feature/Create_Manage_Staff[m[33m)[m If you want to avoid creating separate tables for each role (e.g., Doctor, Nurse, Lab Technician, etc.) and instead handle everything in a **single table**, you can use a **generic design** that accommodates all staff members in one table. This approach simplifies the schema and makes it easier to manage, but it requires careful design to ensure flexibility and maintainability.
+[33md954a4a[m Merge pull request #11 from bhagatprasad/Feature/UI_Integration
+[33m5031f01[m[33m ([m[1;31morigin/Feature/UI_Integration[m[33m)[m UI Integration
+[33m6080de3[m Merge pull request #10 from bhagatprasad/Feature/Client_Database_Project_Configuration
+[33m644dcc8[m[33m ([m[1;31morigin/Feature/Client_Database_Project_Configuration[m[33m)[m HospitalInformation model implemented
+[33me50ee88[m Merge pull request #9 from bhagatprasad/Feature/Log4Net_Integration
+[33mc2d6d6f[m[33m ([m[1;31morigin/Feature/Log4Net_Integration[m[33m)[m micro services configuratiion
+[33m1c0d132[m Merge pull request #8 from bhagatprasad/Feature/Authentication_Implementation_In_API
+[33m4b5e03c[m[33m ([m[1;31morigin/Feature/Authentication_Implementation_In_API[m[33m)[m remaining data managers
+[33mabd5559[m Merge pull request #7 from bhagatprasad/Feature/Authentication_Implementation_In_API
+[33m02b768b[m adding managers and hospital registarions
+[33mc3f
