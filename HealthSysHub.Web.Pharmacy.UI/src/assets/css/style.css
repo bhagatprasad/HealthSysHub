@@ -25443,7 +25443,8 @@ select.form-select.border-dark:focus {
 }
 @media (min-width: 992px) {
   .page-body-wrapper {
-    width: calc(100% - 260px);
+    /* width: calc(100% - 260px); */
+    width: 100% !important;
   }
 }
 .page-body-wrapper.full-page-wrapper {
