@@ -1,0 +1,21 @@
+    .form-control:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+    .password-toggle-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #6c757d;
+      font-size: 1.5rem;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .password-toggle-icon:hover {
+      color: #495057;
+    }
+    .position-relative {
+      position: relative;
+    }
