@@ -21,6 +21,8 @@ import { SharedModule } from './services/shared.module';
 import { PasswordToggleDirective } from './directives/password.toggle';
 import { FormValidatorDirective } from './directives/form.validator';
 import { NotificationService } from './services/notification.service';
+import { LoadingInterceptor } from './intercepters/loading.interceptor';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { NotificationService } from './services/notification.service';
     SidemenuComponent,
     TopmenuComponent,
     PasswordToggleDirective,
-    FormValidatorDirective
+    FormValidatorDirective,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { NotificationService } from './services/notification.service';
   exports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoaderComponent
   ]
 })
 export class AppModule { }

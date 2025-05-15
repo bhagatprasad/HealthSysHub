@@ -1,9 +1,9 @@
 export interface IAuthResponse
 {
-    JwtToken: string;
-    ValidUser:boolean;
-    ValidPassword:boolean;
-    IsActive:boolean;
-    StatusCode:number;
-    StatusMessage:string;
+    jwtToken: string;
+    validUser:boolean;
+    validPassword:boolean;
+    isActive:boolean;
+    statusCode:number;
+    statusMessage:string;
 }
