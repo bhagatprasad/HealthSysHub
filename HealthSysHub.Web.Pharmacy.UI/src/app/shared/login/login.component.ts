@@ -58,14 +58,14 @@ export class LoginComponent {
   }
 
   private handleAuthSuccess(authResponse: IAuthResponse): void {
-    if (!authResponse?.JwtToken) {
-      this.notificationService.showError(authResponse?.StatusMessage || 'Authentication failed');
+    if (!authResponse?.jwtToken) {
+      this.notificationService.showError(authResponse?.statusMessage || 'Authentication failed');
       return;
     }
 
     this.accountService.generateUserClaims(authResponse)
       .subscribe({
-        next: (user) => this.handleUserClaimsSuccess(user, authResponse.JwtToken),
+        next: (user) => this.handleUserClaimsSuccess(user, authResponse.jwtToken),
         error: (error) => this.handleAuthError(error)
       });
   }
@@ -78,7 +78,7 @@ export class LoginComponent {
 
     this.accountService.storeUserSession(user, token);
     this.notificationService.showSuccess('Login successful');
-    this.router.navigate(['/dashboard']); // Redirect to your desired route
+    this.router.navigate(['/landing']); // Redirect to your desired route
   }
 
   private handleAuthError(error: any): void {
