@@ -3,6 +3,7 @@
     [PharmacyOrderRequestItemId]    UNIQUEIDENTIFIER    PRIMARY KEY DEFAULT NEWID(),
     [PharmacyOrderRequestId]        UNIQUEIDENTIFIER    NULL,
     [HospitalId]                    UNIQUEIDENTIFIER    NULL,
+    [PharmacyId]                    UNIQUEIDENTIFIER    NULL,
     [MedicineId]                    UNIQUEIDENTIFIER    NULL,
     [ItemQty]                       DECIMAL(18,2)       NULL,  -- Added precision/scale for DECIMAL
     [Usage]                         VARCHAR(MAX)        NULL,

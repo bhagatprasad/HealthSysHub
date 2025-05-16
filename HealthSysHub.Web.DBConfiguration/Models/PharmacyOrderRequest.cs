@@ -11,6 +11,7 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public Guid PharmacyOrderRequestId { get; set; } 
         public Guid? PatientPrescriptionId { get; set; }
         public Guid? HospitalId { get; set; }
+        public Guid? PharmacyId { get; set; }
         public Guid? PatientId { get; set; }
         public string? HospitalName { get; set; }
         public string? DoctorName { get; set; }

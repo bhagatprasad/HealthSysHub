@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[PharmacyOrderItem]
 (
     [PharmacyOrderItemId]   UNIQUEIDENTIFIER    NOT NULL PRIMARY KEY DEFAULT NEWID(),
+    [PharmacyId]            UNIQUEIDENTIFIER    NULL,
     [PharmacyOrderId]       UNIQUEIDENTIFIER    NULL,
     [MedicineId]            UNIQUEIDENTIFIER    NULL,
     [ItemQty]               BIGINT              NULL,
