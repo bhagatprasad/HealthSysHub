@@ -3,6 +3,7 @@
     [PharmacyOrderRequestId]    UNIQUEIDENTIFIER    PRIMARY KEY DEFAULT NEWID(),
     [PatientPrescriptionId]     UNIQUEIDENTIFIER    NULL,
     [HospitalId]                UNIQUEIDENTIFIER    NULL,
+    [PharmacyId]                UNIQUEIDENTIFIER    NULL,
     [PatientId]                 UNIQUEIDENTIFIER    NULL,
     [HospitalName]              VARCHAR(MAX)        NULL,
     [DoctorName]                VARCHAR(MAX)        NULL,

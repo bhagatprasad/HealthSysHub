@@ -20,7 +20,12 @@ namespace HealthSysHub.Web.DataManagers
 
         public async Task<List<PharmacyOrder>> GetPharmacyOrdersAsync()
         {
-           return await _dbContext.pharmacyOrders.ToListAsync();
+            return await _dbContext.pharmacyOrders.ToListAsync();
+        }
+
+        public async Task<List<PharmacyOrder>> GetPharmacyOrdersByPharmacyAsync(Guid pharmacyId)
+        {
+            return await _dbContext.pharmacyOrders.Where(x => x.PharmacyId == pharmacyId).ToListAsync();
         }
 
         public async Task<PharmacyOrder> InsertOrUpdatePharmacyOrderAsync(PharmacyOrder pharmacyOrder)

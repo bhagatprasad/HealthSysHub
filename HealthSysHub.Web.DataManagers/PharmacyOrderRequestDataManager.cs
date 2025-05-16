@@ -3,6 +3,9 @@ using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace HealthSysHub.Web.DataManagers
 {
@@ -12,6 +15,30 @@ namespace HealthSysHub.Web.DataManagers
         public PharmacyOrderRequestDataManager(ApplicationDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsByPharmacyAsync(Guid pharmacyId)
+        {
+            return await GetPharmacyOrderRequestsAsync(x => x.PharmacyId == pharmacyId);
+        }
+        public async Task<PharmacyOrderRequestDetails> GetPharmacyOrderRequestDetailAsync(Guid pharmacyOrderRequestId)
+        {
+            var result = await GetPharmacyOrderRequestsAsync(x => x.PharmacyOrderRequestId == pharmacyOrderRequestId);
+            return result.FirstOrDefault();
+        }
+
+        public async Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsAsync()
+        {
+            return await GetPharmacyOrderRequestsAsync(); // no filter
+        }
+        public async Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsByHospitalAsync(Guid hospitalId)
+        {
+            return await GetPharmacyOrderRequestsAsync(x => x.HospitalId == hospitalId);
+        }
+
+        public async Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsByPatientAsync(Guid patientId)
+        {
+            return await GetPharmacyOrderRequestsAsync(x => x.PatientId == patientId);
         }
         public async Task<PharmacyOrderRequestDetails> InsertOrUpdatePharmacyOrderRequestDetailsAsync(PharmacyOrderRequestDetails requestDetails)
         {
@@ -207,5 +234,83 @@ namespace HealthSysHub.Web.DataManagers
 
             return requestDetails;
         }
+
+        private async Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsAsync(Expression<Func<PharmacyOrderRequest, bool>> filter = null)
+        {
+            var pharmacyOrderRequestDetails = new List<PharmacyOrderRequestDetails>();
+
+            try
+            {
+                var medicines = await _dbContext.pharmacyMedicines.ToListAsync();
+
+                var requestsQuery = _dbContext.pharmacyOrderRequests.AsQueryable();
+
+                if (filter != null)
+                {
+                    requestsQuery = requestsQuery.Where(filter);
+                }
+
+                var requests = await requestsQuery.ToListAsync();
+
+                if (!requests.Any())
+                    return pharmacyOrderRequestDetails;
+
+                var requestIds = requests.Select(r => r.PharmacyOrderRequestId).ToList();
+
+                var requestItems = await _dbContext.pharmacyOrderRequestItems
+                    .Where(x => x.PharmacyOrderRequestId != null && requestIds.Contains(x.PharmacyOrderRequestId.Value))
+                    .ToListAsync();
+
+                foreach (var request in requests)
+                {
+                    var items = requestItems
+                        .Where(x => x.PharmacyOrderRequestId == request.PharmacyOrderRequestId)
+                        .Select(item => new PharmacyOrderRequestItemDetails
+                        {
+                            CreatedBy = item.CreatedBy,
+                            CreatedOn = item.CreatedOn,
+                            HospitalId = item.HospitalId,
+                            IsActive = item.IsActive,
+                            ItemQty = item.ItemQty,
+                            MedicineId = item.MedicineId,
+                            MedicineName = medicines.FirstOrDefault(m => m.MedicineId == item.MedicineId)?.MedicineName,
+                            ModifiedBy = item.ModifiedBy,
+                            ModifiedOn = item.ModifiedOn,
+                            PharmacyId = item.PharmacyId,
+                            PharmacyOrderRequestItemId = item.PharmacyOrderRequestItemId,
+                            Usage = item.Usage
+                        })
+                        .ToList();
+
+                    pharmacyOrderRequestDetails.Add(new PharmacyOrderRequestDetails
+                    {
+                        CreatedBy = request.CreatedBy,
+                        CreatedOn = request.CreatedOn,
+                        DoctorName = request.DoctorName,
+                        HospitalId = request.HospitalId,
+                        HospitalName = request.HospitalName,
+                        IsActive = request.IsActive,
+                        ModifiedBy = request.ModifiedBy,
+                        ModifiedOn = request.ModifiedOn,
+                        Name = request.Name,
+                        Notes = request.Notes,
+                        PatientId = request.PatientId,
+                        PatientPrescriptionId = request.PatientPrescriptionId,
+                        PharmacyId = request.PharmacyId,
+                        PharmacyOrderRequestId = request.PharmacyOrderRequestId,
+                        Phone = request.Phone,
+                        Status = request.Status,
+                        pharmacyOrderRequestItemDetails = items
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return pharmacyOrderRequestDetails;
+        }
+
     }
 }

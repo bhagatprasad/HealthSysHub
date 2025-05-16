@@ -52,5 +52,6 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<Pharmacy> pharmacies { get; set; }
         public DbSet<LabStaff> labStaff { get; set; }
         public DbSet<PharmacyStaff> pharmacyStaff { get; set; }
+        public DbSet<PharmacyMedicine> pharmacyMedicines { get; set; }
     }
 }

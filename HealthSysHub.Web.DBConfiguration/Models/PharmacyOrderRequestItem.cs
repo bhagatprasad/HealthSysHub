@@ -9,6 +9,7 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         [Key]
         public Guid PharmacyOrderRequestItemId { get; set; }
         public Guid? PharmacyOrderRequestId { get; set; }
+        public Guid? PharmacyId { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? MedicineId { get; set; }
         public decimal? ItemQty { get; set; }
