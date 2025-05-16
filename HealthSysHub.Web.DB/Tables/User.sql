@@ -10,6 +10,8 @@
     [PasswordSalt]          nvarchar(max)       NULL,
     [RoleId]                uniqueidentifier    NULL,
     [StaffId]               uniqueidentifier    NULL,
+    [LabId]                 uniqueidentifier    NULL,
+    [PharmacyId]            uniqueidentifier    NULL,
     [LastPasswordChangedOn] datetimeoffset      NULL,
     [IsBlocked]             bit                 NULL      DEFAULT 0,
     [CreatedBy]             uniqueidentifier    NULL,

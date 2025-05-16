@@ -12,6 +12,8 @@
         public string? RoleName { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? StaffId { get; set; }
+        public Guid? LabId { get; set; }
+        public Guid? PharmacyId { get; set; }
         public string? HospitalName { get; set; }
         public string? Designation { get; set; }
     }

@@ -22,6 +22,8 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public string? PasswordSalt { get; set; }
         public Guid? RoleId { get; set; }
         public Guid? StaffId { get; set; }
+        public Guid? LabId { get; set; }
+        public Guid? PharmacyId { get; set; }
         public DateTimeOffset? LastPasswordChangedOn { get; set; }
         public bool? IsBlocked { get; set; }
         public Guid? CreatedBy { get; set; }
