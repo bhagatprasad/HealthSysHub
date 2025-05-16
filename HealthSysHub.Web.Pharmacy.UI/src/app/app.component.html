@@ -1,16 +1,15 @@
-<div style="display: inline-flex; width: 100%;" *ngIf="isAuthenticated">
+<!-- app.component.html -->
+<div style="display: inline-flex; width: 100%;" *ngIf="accountService.isAuthenticated()">
   <app-topmenu></app-topmenu>
   <div class="container-fluid page-body-wrapper">
-    <!-- partial:partials/_navbar.html -->
     <app-sidemenu></app-sidemenu>
-    <!-- partial -->
     <div class="main-panel">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
 
-<div class="container-scroller" *ngIf="!isAuthenticated"> 
+<div class="container-scroller" *ngIf="!accountService.isAuthenticated()"> 
   <div class="container-fluid page-body-wrapper full-page-wrapper">
     <div class="content-wrapper d-flex align-items-center auth">
       <div class="row flex-grow">
@@ -24,8 +23,6 @@
         </div>
       </div>
     </div>
-    <!-- content-wrapper ends -->
   </div>
-  <!-- page-body-wrapper ends -->
 </div>
 <app-loader></app-loader>

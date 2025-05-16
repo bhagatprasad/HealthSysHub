@@ -1,23 +1,31 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { IAuthResponse } from '../models/authresponse';
-import { IApplicationUser } from '../models/applicationuser';
-import { IUserAuthentication } from '../models/userauthentication';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { filter, distinctUntilChanged, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environment';
 import { ApiService } from './apiservice.service';
+import { IUserAuthentication } from '../models/userauthentication';
+import { IAuthResponse } from '../models/authresponse';
+import { IApplicationUser } from '../models/applicationuser';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class AccountService implements OnDestroy {
   private readonly authEndpoint = environment.UrlConstants.Authenticate;
   private readonly claimsEndpoint = environment.UrlConstants.GenerateUserCliams;
-  private authenticationState = new BehaviorSubject<boolean>(false);
+  private authenticationState = new BehaviorSubject<boolean | null>(null);
   private isBrowser: boolean;
+  private inactivityTimer: any;
+  private readonly INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+  private destroy$ = new Subject<void>();
+  public redirectUrl: string = '';
 
-  authenticationState$ = this.authenticationState.asObservable();
+  authenticationState$ = this.authenticationState.asObservable().pipe(
+    filter(state => state !== null),
+    distinctUntilChanged()
+  );
 
   constructor(
     private apiService: ApiService,
@@ -25,7 +33,60 @@ export class AccountService {
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-    this.checkAuthStatus();
+    this.initializeAuthState();
+    this.setupInactivityMonitoring();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.clearInactivityTimer();
+  }
+
+  private initializeAuthState(): void {
+    if (!this.isBrowser) {
+      this.authenticationState.next(false);
+      return;
+    }
+    
+    setTimeout(() => {
+      const isAuth = this.isAuthenticated();
+      this.authenticationState.next(isAuth);
+      if (isAuth) {
+        this.resetInactivityTimer();
+      }
+    }, 50);
+  }
+
+  private setupInactivityMonitoring(): void {
+    if (!this.isBrowser) return;
+
+    const events = ['mousemove', 'keypress', 'scroll', 'click'];
+    events.forEach(event => {
+      window.addEventListener(event, this.resetInactivityTimer.bind(this));
+    });
+  }
+
+  private resetInactivityTimer(): void {
+    this.clearInactivityTimer();
+    if (this.isAuthenticated()) {
+      this.inactivityTimer = setTimeout(
+        () => this.clearUserSession(), 
+        this.INACTIVITY_TIMEOUT
+      );
+    }
+  }
+
+  private clearInactivityTimer(): void {
+    if (this.inactivityTimer) {
+      clearTimeout(this.inactivityTimer);
+      this.inactivityTimer = null;
+    }
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.safeLocalStorageGet('ApplicationUser') && 
+           !!this.safeLocalStorageGet('AccessToken');
   }
 
   private safeLocalStorageGet(key: string): string | null {
@@ -53,31 +114,29 @@ export class AccountService {
   }
 
   storeUserSession(user: IApplicationUser, token: string): void {
-    this.safeLocalStorageRemove('ApplicationUser');
-    this.safeLocalStorageRemove('AccessToken');
     this.safeLocalStorageSet('ApplicationUser', JSON.stringify(user));
     this.safeLocalStorageSet('AccessToken', token);
     this.authenticationState.next(true);
+    this.resetInactivityTimer();
+    
+    const redirect = this.redirectUrl || '/dashboard';
+    this.redirectUrl = '';
+    this.router.navigateByUrl(redirect);
   }
 
   clearUserSession(): void {
     this.safeLocalStorageRemove('ApplicationUser');
     this.safeLocalStorageRemove('AccessToken');
     this.authenticationState.next(false);
-    if (this.isBrowser) {
+    this.clearInactivityTimer();
+    
+    if (this.isBrowser && !this.router.url.startsWith('/login')) {
       this.router.navigate(['/login']);
     }
   }
 
-  checkAuthStatus(): void {
-    if (!this.isBrowser) {
-      this.authenticationState.next(false);
-      return;
-    }
-    
-    const user = this.safeLocalStorageGet('ApplicationUser');
-    const token = this.safeLocalStorageGet('AccessToken');
-    this.authenticationState.next(!!user && !!token);
+  checkInitialAuthState(): boolean {
+    return this.isAuthenticated();
   }
 
   getCurrentUser(): IApplicationUser | null {

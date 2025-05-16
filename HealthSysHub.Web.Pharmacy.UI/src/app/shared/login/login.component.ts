@@ -15,11 +15,12 @@ import { FormValidatorDirective } from '../../directives/form.validator';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
     PasswordToggleDirective,
-    FormsModule,  // This provides ngForm directive
+    FormsModule,
     FormValidatorDirective
   ],
 })
@@ -78,7 +79,10 @@ export class LoginComponent {
 
     this.accountService.storeUserSession(user, token);
     this.notificationService.showSuccess('Login successful');
-    this.router.navigate(['/landing']); // Redirect to your desired route
+    
+    // Redirect to stored URL or default landing page
+    const redirectUrl = this.accountService.redirectUrl || '/landing';
+    this.router.navigateByUrl(redirectUrl);
   }
 
   private handleAuthError(error: any): void {
