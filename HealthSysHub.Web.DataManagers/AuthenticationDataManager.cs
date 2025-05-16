@@ -217,7 +217,9 @@ namespace HealthSysHub.Web.DataManagers
                             StaffId = user.StaffId,
                             Designation = staff?.Designation,
                             HospitalId = staff?.HospitalId,
-                            HospitalName = hospital?.HospitalName
+                            HospitalName = hospital?.HospitalName,
+                            LabId = user.LabId,
+                            PharmacyId = user.PharmacyId,
 
                         };
                     }

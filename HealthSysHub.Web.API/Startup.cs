@@ -2,8 +2,6 @@
 using HealthSysHub.Web.DBConfiguration;
 using HealthSysHub.Web.Managers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Connections.Features;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -79,6 +77,14 @@ namespace HealthSysHub.Web.API
             services.AddScoped<ILabOrderRequestManager, LabOrderRequestDataManager>();
 
             services.AddScoped<IPharmacyOrderRequestManager, PharmacyOrderRequestDataManager>();
+
+            services.AddScoped<IPharmacyManager, PharmacyDataManager>();
+
+            services.AddScoped<ILabManager, LabDataManager>();
+
+            services.AddScoped<IPharmacyStaffManager, PharmacyStaffDataManager>();
+
+            services.AddScoped<ILabStaffManager, LabStaffDataManager>();
 
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
