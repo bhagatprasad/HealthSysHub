@@ -3,6 +3,7 @@
     public class PharmacyOrder
     {
         public Guid? PharmacyOrderId { get; set; }
+        public Guid? PharmacyId { get; set; }
         public Guid? PharmacyOrderRequestId { get; set; }
         public long? ItemQty { get; set; }
         public decimal? TotalAmount { get; set; }

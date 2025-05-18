@@ -44,7 +44,7 @@ namespace HealthSysHub.Web.UI
             services.AddHttpClient();
 
             services.AddScoped<HttpClientService>();
-          
+
             services.AddTransient<TokenAuthorizationHttpClientHandler>();
 
             services.AddHttpClient("AuthorizedClient").AddHttpMessageHandler<TokenAuthorizationHttpClientHandler>();
@@ -72,7 +72,7 @@ namespace HealthSysHub.Web.UI
             services.AddScoped<IPaymentTypeService, PaymentTypeService>();
 
             services.AddScoped<IHospitalService, HospitalService>();
-     
+
             services.AddScoped<IDepartmentService, DepartmentService>();
 
             services.AddScoped<ISpecializationService, SpecializationService>();
@@ -86,6 +86,14 @@ namespace HealthSysHub.Web.UI
             services.AddScoped<IConsultationService, ConsultationService>();
 
             services.AddScoped<IPharmacyOrderRequestService, PharmacyOrderRequestService>();
+
+            services.AddScoped<IPharmacyStaffService, PharmacyStaffService>();
+
+            services.AddScoped<ILabStaffService, LabStaffService>();
+
+            services.AddScoped<IPharmacyMedicineService, PharmacyMedicineService>();
+
+            services.AddScoped<IPharmacyService, PharmacyService>();
 
             services.AddScoped<PdfLayoutService>();
 
@@ -103,7 +111,7 @@ namespace HealthSysHub.Web.UI
                 options.Cookie.IsEssential = true;
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.SlidingExpiration = false; 
+                options.SlidingExpiration = false;
                 options.AccessDeniedPath = "/Error/NotAccessable";
             });
 
