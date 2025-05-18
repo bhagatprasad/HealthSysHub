@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using HealthSysHub.Web.UI.Interfaces;
 using HealthSysHub.Web.UI.Models;
+using HealthSysHub.Web.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,14 @@ namespace HealthSysHub.Web.UI.Controllers
     {
         // Constructor with dependency injection
         private readonly IStaffService _staffService;
+  
         private readonly INotyfService _notyfService;
-        public StaffController(IStaffService staffService, INotyfService notyfService)
+        private readonly IPharmacyStaffService _pharmacyStaffService;
+        public StaffController(IStaffService staffService,  INotyfService notyfService, IPharmacyStaffService pharmacyStaffService)
         {
             _staffService = staffService;
             _notyfService = notyfService;
+            _pharmacyStaffService = pharmacyStaffService;
         }
 
         // Default action to return the Index view
@@ -72,5 +76,64 @@ namespace HealthSysHub.Web.UI.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPharmacyStaff(Guid? hospitalId, Guid? pharmacyId)
+        {
+            try
+            {
+                var response = await _pharmacyStaffService.GetPharmacyStaffAsync(hospitalId, pharmacyId);
+                return Json(new { data = response });
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error(ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPharmacyStaffById(Guid staffId)
+        {
+            try
+            {
+                var response = await _pharmacyStaffService.GetPharmacyStaffByIdAsync(staffId);
+                return Json(new { data = response });
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error(ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPharmacyStaffs(Guid staffId)
+        {
+            try
+            {
+                var response = await _pharmacyStaffService.GetPharmacyStaffsAsync();
+                return Json(new { data = response });
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error(ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+            [HttpPost]
+            public async Task<IActionResult> InsertOrUpdatePharmacyStaff([FromBody] PharmacyStaff hospitalStaff)
+            {
+                try
+                {
+                    var response = await _pharmacyStaffService.InsertOrUpdatePharmacyStaffAsync(hospitalStaff);
+                    _notyfService.Success("Staff details processed successful");
+                    return Json(new { data = response });
+                }
+                catch (Exception ex)
+                {
+                    _notyfService.Error(ex.Message);
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
     }
 }

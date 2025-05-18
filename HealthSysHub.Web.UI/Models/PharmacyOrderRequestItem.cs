@@ -1,14 +1,14 @@
 ﻿namespace HealthSysHub.Web.UI.Models
 {
-    public class PharmacyOrderItem
+    public class PharmacyOrderRequestItem
     {
-        public Guid? PharmacyOrderItemId { get; set; }
+        public Guid? PharmacyOrderRequestItemId { get; set; }
+        public Guid? PharmacyOrderRequestId { get; set; }
         public Guid? PharmacyId { get; set; }
-        public Guid? PharmacyOrderId { get; set; }
+        public Guid? HospitalId { get; set; }
         public Guid? MedicineId { get; set; }
-        public long? ItemQty { get; set; }
-        public decimal? UnitPrice { get; set; }
-        public decimal? TotalAmount { get; set; }
+        public decimal? ItemQty { get; set; }
+        public string? Usage { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTimeOffset? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }

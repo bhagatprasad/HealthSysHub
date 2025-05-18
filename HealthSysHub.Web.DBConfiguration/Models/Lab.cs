@@ -23,9 +23,9 @@ namespace HealthSysHub.Web.DBConfiguration.Models
         public string LogoUrl { get; set; }
         public Guid? HospitalId { get; set; }
         public Guid? CreatedBy { get; set; }
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTimeOffset? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
     }
 }
