@@ -7,6 +7,7 @@ namespace HealthSysHub.Web.Managers
         Task<PharmacyStaff> InsertOrUpdatePharmacyStaffAsync(PharmacyStaff staff);
         Task<PharmacyStaff> GetPharmacyStaffByIdAsync(Guid staffId);
         Task<List<PharmacyStaff>> GetPharmacyStaffAsync(Guid? hospitalId,Guid? pharmacyId);
+
         Task<List<PharmacyStaff>> GetPharmacyStaffsAsync();
     }
 }
