@@ -10,6 +10,9 @@ import { IUserAuthentication } from '../../models/userauthentication';
 import { CommonModule } from '@angular/common';
 import { PasswordToggleDirective } from '../../directives/password.toggle';
 import { FormValidatorDirective } from '../../directives/form.validator';
+import { PharmacyService } from '../../services/pharmacy.service';
+import { Pharmacy } from '../../models/pharmacy';
+import { Application } from 'express';
 
 @Component({
   selector: 'app-login',
@@ -36,8 +39,9 @@ export class LoginComponent {
   constructor(
     private accountService: AccountService,
     private notificationService: NotificationService,
+    private pharmacyService: PharmacyService,
     private router: Router
-  ) {}
+  ) { }
 
   requestToLogin(form: NgForm): void {
     if (form.invalid) {
@@ -63,7 +67,6 @@ export class LoginComponent {
       this.notificationService.showError(authResponse?.statusMessage || 'Authentication failed');
       return;
     }
-
     this.accountService.generateUserClaims(authResponse)
       .subscribe({
         next: (user) => this.handleUserClaimsSuccess(user, authResponse.jwtToken),
@@ -75,16 +78,30 @@ export class LoginComponent {
     if (!user) {
       this.notificationService.showError('Failed to load user claims');
       return;
+    } else if (!user?.pharmacyId) {
+      this.notificationService.showError('User is not associated with a pharmacy');
+      return;
     }
 
+    this.pharmacyService.GetPharmacyByIdAsync(user.pharmacyId)
+      .subscribe({
+        next: (pharmacy) => this.handlePharmacySuccess(pharmacy, token, user),
+        error: (error) => this.handleAuthError(error)
+      });
+
+  }
+  private handlePharmacySuccess(pharmacy: Pharmacy, token: string, user: IApplicationUser): void {
+    if (!pharmacy) {
+      this.notificationService.showError('Unable to find the pharmacy');
+      return;
+    }
     this.accountService.storeUserSession(user, token);
     this.notificationService.showSuccess('Login successful');
-    
+
     // Redirect to stored URL or default landing page
     const redirectUrl = this.accountService.redirectUrl || '/landing';
     this.router.navigateByUrl(redirectUrl);
   }
-
   private handleAuthError(error: any): void {
     console.error('Authentication error:', error);
     const errorMessage = error?.error?.message || error.message || 'Login failed';

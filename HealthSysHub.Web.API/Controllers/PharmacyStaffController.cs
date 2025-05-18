@@ -60,6 +60,20 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetPharmacyStaffByharmacyAsync/{pharmacyId}")]
+        public async Task<IActionResult> GetPharmacyStaffByharmacyAsync(Guid pharmacyId)
+        {
+            try
+            {
+                var response = await _pharmacyStaffManager.GetPharmacyStaffAsync(null, pharmacyId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [HttpGet]
         [Route("GetPharmacyStaffsAsync")]
