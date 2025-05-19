@@ -9,18 +9,16 @@ import { IUserAuthentication } from '../models/userauthentication';
 import { IAuthResponse } from '../models/authresponse';
 import { IApplicationUser } from '../models/applicationuser';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AccountService implements OnDestroy {
   private readonly authEndpoint = environment.UrlConstants.Authenticate;
   private readonly claimsEndpoint = environment.UrlConstants.GenerateUserCliams;
-  private authenticationState = new BehaviorSubject<boolean | null>(null);
+  public authenticationState = new BehaviorSubject<boolean | null>(null);
   private isBrowser: boolean;
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
   private destroy$ = new Subject<void>();
-  public redirectUrl: string = '';
+  public redirectUrl: string = '/landing'; // Set default to landing page
 
   authenticationState$ = this.authenticationState.asObservable().pipe(
     filter(state => state !== null),
@@ -48,14 +46,23 @@ export class AccountService implements OnDestroy {
       this.authenticationState.next(false);
       return;
     }
+
+    // Immediate synchronous check
+    const isAuth = this.isAuthenticated();
+    this.authenticationState.next(isAuth);
     
-    setTimeout(() => {
-      const isAuth = this.isAuthenticated();
-      this.authenticationState.next(isAuth);
-      if (isAuth) {
-        this.resetInactivityTimer();
-      }
-    }, 50);
+    // Auto-redirect if authenticated and on login page
+    if (isAuth && this.isLoginPage()) {
+      this.router.navigate([this.redirectUrl]);
+    }
+
+    if (isAuth) {
+      this.resetInactivityTimer();
+    }
+  }
+
+  private isLoginPage(): boolean {
+    return this.isBrowser && window.location.pathname.includes('/login');
   }
 
   private setupInactivityMonitoring(): void {
@@ -118,9 +125,10 @@ export class AccountService implements OnDestroy {
     this.safeLocalStorageSet('AccessToken', token);
     this.authenticationState.next(true);
     this.resetInactivityTimer();
-    
-    const redirect = this.redirectUrl || '/dashboard';
-    this.redirectUrl = '';
+
+    // Use redirectUrl if set, otherwise default to landing
+    const redirect = this.redirectUrl || '/landing';
+    this.redirectUrl = '/landing'; // Reset to default after use
     this.router.navigateByUrl(redirect);
   }
 
@@ -129,7 +137,7 @@ export class AccountService implements OnDestroy {
     this.safeLocalStorageRemove('AccessToken');
     this.authenticationState.next(false);
     this.clearInactivityTimer();
-    
+
     if (this.isBrowser && !this.router.url.startsWith('/login')) {
       this.router.navigate(['/login']);
     }
