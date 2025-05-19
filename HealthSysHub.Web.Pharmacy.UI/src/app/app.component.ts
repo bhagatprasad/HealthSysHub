@@ -5,7 +5,7 @@ import { TopmenuComponent } from './layout/topmenu/topmenu.component';
 import { SidemenuComponent } from './layout/sidemenu/sidemenu.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { AccountService } from './services/account.service';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +15,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Smaya-Sales';
+  title = 'HealthSysHub';
   isBrowser: boolean;
   private authSubscription?: Subscription;
+  showContent = false; // Changed from isLoading to showContent for better semantics
 
   constructor(
     public accountService: AccountService,
@@ -28,43 +29,51 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (!this.isBrowser) return;
-
-    // Immediate check before subscribing
-    const isInitiallyAuthenticated = this.accountService.checkInitialAuthState();
-    const isLoginPage = this.router.url.startsWith('/login');
-
-    if (isInitiallyAuthenticated && isLoginPage) {
-      this.router.navigate(['/landing']);
+    if (!this.isBrowser) {
+      this.showContent = true;
       return;
     }
 
-    if (!isInitiallyAuthenticated && !isLoginPage) {
-      this.router.navigate(['/login']);
+    // First synchronous check
+    const initialAuth = this.accountService.checkInitialAuthState();
+    this.accountService.authenticationState.next(initialAuth);
+
+    // Immediate redirect if authenticated and on login page
+    if (initialAuth && this.isLoginPage()) {
+      this.router.navigate([this.accountService.redirectUrl || '/landing']);
       return;
     }
 
-    // Subscribe to future changes
-    this.authSubscription = this.accountService.authenticationState$.subscribe({
+    this.authSubscription = this.accountService.authenticationState$.pipe(
+      filter(state => state !== null),
+      take(1) 
+    ).subscribe({
       next: (isAuthenticated) => {
-        const currentIsLoginPage = this.router.url.startsWith('/login');
-        
-        if (isAuthenticated && currentIsLoginPage) {
-          this.router.navigate(['/landing']);
-        } else if (!isAuthenticated && !currentIsLoginPage) {
-          this.router.navigate(['/login']);
-        }
+        this.handleAuthState(isAuthenticated);
+        this.showContent = true;
       },
       error: (err) => {
         console.error('Authentication state error:', err);
         this.accountService.clearUserSession();
+        this.showContent = true;
       }
     });
   }
 
-  ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
+  private isLoginPage(): boolean {
+    return this.router.url.startsWith('/login');
+  }
+
+  private handleAuthState(isAuthenticated: boolean): void {
+    if (isAuthenticated && this.isLoginPage()) {
+      const redirectUrl = this.accountService.redirectUrl || '/landing';
+      this.router.navigateByUrl(redirectUrl);
+    } else if (!isAuthenticated && !this.isLoginPage()) {
+      this.router.navigate(['/login']);
     }
+  }
+
+  ngOnDestroy() {
+    this.authSubscription?.unsubscribe();
   }
 }
