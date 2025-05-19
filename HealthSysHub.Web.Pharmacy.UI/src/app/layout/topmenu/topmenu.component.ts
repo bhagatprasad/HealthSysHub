@@ -20,7 +20,6 @@ export class TopmenuComponent implements OnInit {
   menuItems = [
     { title: 'Orders', icon: 'mdi-cart-outline', link: '/orders' },
     { title: 'Sales', icon: 'mdi-chart-line', link: '/sales' },
-    { title: 'Settings', icon: 'mdi-cog', link: '/settings' },
     { title: 'Change Password', icon: 'mdi-lock-reset', link: '/change-password' }
   ];
 
@@ -30,12 +29,12 @@ export class TopmenuComponent implements OnInit {
     this.loadUserData();
 
     // Add admin-specific items if needed
-    if (this.isAdmin) {
-      this.menuItems.splice(2, 0,
-        { title: 'User/Staff', icon: 'mdi-account-group', link: '/users' },
-        { title: 'Medicines', icon: 'mdi-pill', link: '/medicines' }
-      );
-    }
+    // if (this.isAdmin) {
+    //   this.menuItems.splice(2, 0,
+    //     { title: 'User/Staff', icon: 'mdi-account-group', link: '/users' },
+    //     { title: 'Medicines', icon: 'mdi-pill', link: '/medicines' }
+    //   );
+    // }
   }
 
   loadUserData() {
@@ -45,7 +44,7 @@ export class TopmenuComponent implements OnInit {
         const user = JSON.parse(userData);
         this.userName = user.fullName || 'User';
         this.userRole = user.roleName || 'Staff';
-        this.isAdmin = user.roleId === '971ECB66-1CFC-43F2-AB4E-0F352A0F9354';
+        this.isAdmin = user.roleId.toUpperCase() === '971ECB66-1CFC-43F2-AB4E-0F352A0F9354';
 
         if (user.profileImage) {
           this.userImage = user.profileImage;

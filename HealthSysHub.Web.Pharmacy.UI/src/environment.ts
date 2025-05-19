@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    baseUrl: 'http://localhost:5044/api',
+    baseUrl: 'https://healthsyshub.service.azurewebsites.bdprasad.in/api', //'http://localhost:5044/api'
     UrlConstants: {
         Authenticate: 'Account/AuthenticateUserAsync',
         VerifyAccesToken: 'Account/VerifyAccesToken',
@@ -39,12 +39,12 @@ export const environment = {
         fetchInTrasitOrders: 'Order/fetchInTrasitOrders',
         fetchUserSpecificOrders: 'Order/fetchUserSpecificOrders',
         PrivacyPolicy: 'PrivacyPolicy',
-        RefundAndExchange:'RefundAndExchange',
-        Refund:'Refund',
-        CancelationPolicy:'CancelationPolicy',
-        TermsAndConditions:'TermsAndConditions',
-        TermsOfUses:'TermsOfUses',
-        fetchUserSpecificPayment:'Payments/fetchUserSpecificPayment'
+        RefundAndExchange: 'RefundAndExchange',
+        Refund: 'Refund',
+        CancelationPolicy: 'CancelationPolicy',
+        TermsAndConditions: 'TermsAndConditions',
+        TermsOfUses: 'TermsOfUses',
+        fetchUserSpecificPayment: 'Payments/fetchUserSpecificPayment'
     },
     Messages: {
         InvalidPassword: "Authentication Failed due to Invalid Password ,Please enter correct password and try again",
