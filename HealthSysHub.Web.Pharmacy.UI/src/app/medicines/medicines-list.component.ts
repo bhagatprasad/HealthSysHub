@@ -17,29 +17,38 @@ export class MedicinesListComponent implements OnInit {
 
   constructor(private pharmacyMedicineService: PharmacyMedicineService, private notificationService: NotificationService) { }
 
-  ngOnInit() {
-    var appUser = localStorage.getItem("ApplicationUser");
+  ngOnInit(): void {
+    this.loadMedicines();
+  }
+
+  private loadMedicines(): void {
+    const appUser = localStorage.getItem("ApplicationUser");
     if (appUser) {
-      this.applicationUser = JSON.parse(appUser);
-      this.GetPharmacyMedicineByPharmacyAsync(this.applicationUser.pharmacyId);
+      try {
+        this.applicationUser = JSON.parse(appUser);
+        if (this.applicationUser?.pharmacyId) {
+          this.pharmacyMedicineService.GetPharmacyMedicineByPharmacyAsync(this.applicationUser.pharmacyId)
+            .subscribe({
+              next: (medicines) => this.handlePharmacyMedicineSuccess(medicines),
+              error: (error) => this.handleAuthError(error),
+            });
+        }
+      } catch (error) {
+        this.handleAuthError(new Error('Invalid user data in local storage'));
+      }
     }
   }
 
-  GetPharmacyMedicineByPharmacyAsync(pharmacyId?: string) {
-    if (pharmacyId) {
-      this.pharmacyMedicineService.GetPharmacyMedicineByPharmacyAsync(pharmacyId).subscribe({
-        next: (medicines) => this.handlePharmacyMedicineSuccess(medicines),
-        error: (error) => this.handleAuthError(error)
-      })
-    }
-  }
   private handlePharmacyMedicineSuccess(medicines: PharmacyMedicine[]): void {
-    this.medicines = medicines;
+    this.medicines = medicines.map(medicine => ({
+      ...medicine,
+      selected: false
+    }));
   }
-  private handleAuthError(error: any): void {
-    console.error('Authentication error:', error);
-    const errorMessage = error?.error?.message || error.message || 'Login failed';
+
+  private handleAuthError(error: Error | any): void {
+    console.error('Error:', error);
+    const errorMessage = error?.message || 'Failed to load medicines';
     this.notificationService.showError(errorMessage);
   }
-
 }
