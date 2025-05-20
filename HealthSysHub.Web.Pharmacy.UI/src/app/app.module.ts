@@ -66,4 +66,5 @@ import { LoaderComponent } from './shared/loader/loader.component';
     LoaderComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
