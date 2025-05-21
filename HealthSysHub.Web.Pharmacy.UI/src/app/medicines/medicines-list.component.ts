@@ -3,19 +3,23 @@ import { PharmacyMedicineService } from '../services/pharmacy-medicine-service';
 import { PharmacyMedicine } from '../models/pharmacymedicine';
 import { IApplicationUser } from '../models/applicationuser';
 import { NotificationService } from '../services/notification.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-medicines-list',
-  imports: [],
   templateUrl: './medicines-list.component.html',
-  styleUrl: './medicines-list.component.css'
+  styleUrls: ['./medicines-list.component.css'],
+  imports: [CommonModule]
 })
 export class MedicinesListComponent implements OnInit {
 
   medicines: PharmacyMedicine[] = [];
   applicationUser: IApplicationUser = {};
 
-  constructor(private pharmacyMedicineService: PharmacyMedicineService, private notificationService: NotificationService) { }
+  constructor(
+    private pharmacyMedicineService: PharmacyMedicineService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.loadMedicines();
@@ -50,5 +54,8 @@ export class MedicinesListComponent implements OnInit {
     console.error('Error:', error);
     const errorMessage = error?.message || 'Failed to load medicines';
     this.notificationService.showError(errorMessage);
+  }
+  requestMedicineProcess(medicine: PharmacyMedicine): void {
+    console.log(medicine);
   }
 }
