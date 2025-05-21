@@ -4,21 +4,24 @@ import { PharmacyMedicine } from '../models/pharmacymedicine';
 import { IApplicationUser } from '../models/applicationuser';
 import { NotificationService } from '../services/notification.service';
 import { CommonModule } from '@angular/common';
+import { MedicineSidebarComponent } from './medicine-sidebar.component';
 
 @Component({
   selector: 'app-medicines-list',
   templateUrl: './medicines-list.component.html',
   styleUrls: ['./medicines-list.component.css'],
-  imports: [CommonModule]
+  
+  imports: [CommonModule, MedicineSidebarComponent]
 })
 export class MedicinesListComponent implements OnInit {
 
   medicines: PharmacyMedicine[] = [];
   applicationUser: IApplicationUser = {};
-
+  showSidebar: boolean = false;
+  selectedMedicine: PharmacyMedicine | null = null;
   constructor(
     private pharmacyMedicineService: PharmacyMedicineService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +59,24 @@ export class MedicinesListComponent implements OnInit {
     this.notificationService.showError(errorMessage);
   }
   requestMedicineProcess(medicine: PharmacyMedicine): void {
+     this.selectedMedicine = medicine;
+    this.showSidebar = true;
+  }
+  requestGetMedicineSales(medicine: PharmacyMedicine): void {
     console.log(medicine);
+  }
+  openAddMedicine(): void {
+    this.selectedMedicine = null;
+    this.showSidebar = true;
+  }
+  onCloseSidebar(): void {
+    this.showSidebar = false;
+  }
+
+  onSaveMedicine(medicine: PharmacyMedicine): void {
+    // Handle save logic here
+    console.log('Medicine to save:', medicine);
+    // Call your API service to save/update the medicine
+    this.showSidebar = false;
   }
 }

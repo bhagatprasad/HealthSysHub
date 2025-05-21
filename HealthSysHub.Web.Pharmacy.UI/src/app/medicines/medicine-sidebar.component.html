@@ -1,0 +1,64 @@
+<div class="sidebar-overlay" *ngIf="isVisible" (click)="close()"></div>
+<div class="sidebar" [class.visible]="isVisible">
+    <div class="sidebar-header">
+        <h5 class="sidebar-title">{{ medicine?.medicineId ? 'Edit Medicine' : 'Add Medicine' }}</h5>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="sidebar-body">
+        <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="medicineName">Medicine Name</label>
+                <input type="text" class="form-control" id="medicineName" formControlName="medicineName"
+                    placeholder="Enter medicine name">
+            </div>
+            <div class="form-group">
+                <label for="genericName">Generic Name</label>
+                <input type="text" class="form-control" id="genericName" formControlName="genericName"
+                    placeholder="Enter generic name">
+            </div>
+            <div class="form-group">
+                <label for="dosageForm">Dosage Form</label>
+                <input type="text" class="form-control" id="dosageForm" formControlName="dosageForm"
+                    placeholder="Enter dosage form">
+            </div>
+            <div class="form-group">
+                <label for="strength">Strength</label>
+                <input type="text" class="form-control" id="strength" formControlName="strength"
+                    placeholder="Enter strength">
+            </div>
+            <div class="form-group">
+                <label for="manufacturer">Manufacturer</label>
+                <input type="text" class="form-control" id="manufacturer" formControlName="manufacturer"
+                    placeholder="Enter manufacturer">
+            </div>
+            <div class="form-group">
+                <label for="batchNumber">Batch Number</label>
+                <input type="text" class="form-control" id="batchNumber" formControlName="batchNumber"
+                    placeholder="Enter batch number">
+            </div>
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date</label>
+                <input type="date" class="form-control" id="expiryDate" formControlName="expiryDate">
+            </div>
+            <div class="form-group">
+                <label for="pricePerUnit">Price Per Unit</label>
+                <input type="number" class="form-control" id="pricePerUnit" formControlName="pricePerUnit"
+                    placeholder="Enter price">
+            </div>
+            <div class="form-group">
+                <label for="stockQuantity">Stock Quantity</label>
+                <input type="number" class="form-control" id="stockQuantity" formControlName="stockQuantity"
+                    placeholder="Enter quantity">
+            </div>
+            <!-- <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
+                <label class="form-check-label" for="isActive">Active</label>
+            </div> -->
+            <div class="sidebar-footer">
+                <button type="submit" class="btn btn-primary">{{ medicine?.medicineId ? 'Update' : 'Save' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
