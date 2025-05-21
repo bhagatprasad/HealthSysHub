@@ -22,8 +22,11 @@
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.8",
     "apex-grid": "^1.0.1",
+    "bootstrap": "^4.6.2",
     "express": "^4.18.2",
+    "jquery": "^3.7.1",
     "ngx-toastr": "^19.0.0",
+    "popper.js": "^1.16.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

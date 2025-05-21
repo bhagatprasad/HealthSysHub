@@ -37,7 +37,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
     TopmenuComponent,
     PasswordToggleDirective,
     FormValidatorDirective,
-    LoaderComponent
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
