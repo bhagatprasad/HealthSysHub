@@ -95,7 +95,7 @@ export class LoginComponent {
       this.notificationService.showError('Unable to find the pharmacy');
       return;
     }
-    this.accountService.storeUserSession(user, token);
+    this.accountService.storeUserSession(pharmacy, user, token);
     this.notificationService.showSuccess('Login successful');
 
     // Redirect to stored URL or default landing page

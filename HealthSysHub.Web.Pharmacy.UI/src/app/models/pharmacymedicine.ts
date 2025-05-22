@@ -15,5 +15,4 @@ export interface PharmacyMedicine {
   modifiedBy?: string | null;
   modifiedOn?: Date | string | null;
   isActive: boolean;
-  selected?: boolean;
 }

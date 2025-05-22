@@ -5,12 +5,13 @@ import { IApplicationUser } from '../models/applicationuser';
 import { NotificationService } from '../services/notification.service';
 import { CommonModule } from '@angular/common';
 import { MedicineSidebarComponent } from './medicine-sidebar.component';
+import { AuditFieldsService } from '../services/audit-fields.service';
 
 @Component({
   selector: 'app-medicines-list',
   templateUrl: './medicines-list.component.html',
   styleUrls: ['./medicines-list.component.css'],
-  
+
   imports: [CommonModule, MedicineSidebarComponent]
 })
 export class MedicinesListComponent implements OnInit {
@@ -22,6 +23,7 @@ export class MedicinesListComponent implements OnInit {
   constructor(
     private pharmacyMedicineService: PharmacyMedicineService,
     private notificationService: NotificationService,
+    private auditService: AuditFieldsService
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +61,7 @@ export class MedicinesListComponent implements OnInit {
     this.notificationService.showError(errorMessage);
   }
   requestMedicineProcess(medicine: PharmacyMedicine): void {
-     this.selectedMedicine = medicine;
+    this.selectedMedicine = { ...medicine };
     this.showSidebar = true;
   }
   requestGetMedicineSales(medicine: PharmacyMedicine): void {
@@ -73,10 +75,23 @@ export class MedicinesListComponent implements OnInit {
     this.showSidebar = false;
   }
 
-  onSaveMedicine(medicine: PharmacyMedicine): void {
+  onSaveMedicine(pharmacyMedicine: PharmacyMedicine): void {
     // Handle save logic here
-    console.log('Medicine to save:', medicine);
-    // Call your API service to save/update the medicine
+    console.log('Medicine to save:', pharmacyMedicine);
+
+    var _pharmacyMedicine = this.auditService.appendAuditFields(pharmacyMedicine);
+
+    console.log('Medicine final to save:', _pharmacyMedicine);
+    this.pharmacyMedicineService.InsertOrUpdatePharmacyMedicineAsync(_pharmacyMedicine).subscribe({
+      next: (medicine) => this.handlePharmacyMedicineInsertOrUpdateSuccess(medicine),
+      error: (error) => this.handleAuthError(error),
+    });
+    
+  }
+  private handlePharmacyMedicineInsertOrUpdateSuccess(medicine: PharmacyMedicine): void {
     this.showSidebar = false;
+    console.log('Medicine to saved:', medicine);
+    this.notificationService.showSuccess("Pharmacy Medicine Proccessed Successful");
+    this.loadMedicines();
   }
 }

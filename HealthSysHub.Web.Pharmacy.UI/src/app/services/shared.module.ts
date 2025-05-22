@@ -6,6 +6,7 @@ import { PharmacyService } from './pharmacy.service';
 import { PharmacyMedicineService } from './pharmacy-medicine-service';
 import { PharmacyStaffService } from './pharmacystaff.service';
 import { PharmacyOrderRequestService } from './pharmacy-order-request-service';
+import { AuditFieldsService } from './audit-fields.service';
 
 @NgModule({
   declarations: [],
@@ -19,6 +20,7 @@ import { PharmacyOrderRequestService } from './pharmacy-order-request-service';
     PharmacyMedicineService,
     PharmacyStaffService,
     PharmacyOrderRequestService,
+    AuditFieldsService
   ],
   exports: []
 })
