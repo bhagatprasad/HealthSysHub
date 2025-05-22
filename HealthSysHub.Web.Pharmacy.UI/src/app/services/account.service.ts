@@ -8,6 +8,7 @@ import { ApiService } from './apiservice.service';
 import { IUserAuthentication } from '../models/userauthentication';
 import { IAuthResponse } from '../models/authresponse';
 import { IApplicationUser } from '../models/applicationuser';
+import { Pharmacy } from '../models/pharmacy';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService implements OnDestroy {
@@ -50,7 +51,7 @@ export class AccountService implements OnDestroy {
     // Immediate synchronous check
     const isAuth = this.isAuthenticated();
     this.authenticationState.next(isAuth);
-    
+
     // Auto-redirect if authenticated and on login page
     if (isAuth && this.isLoginPage()) {
       this.router.navigate([this.redirectUrl]);
@@ -78,7 +79,7 @@ export class AccountService implements OnDestroy {
     this.clearInactivityTimer();
     if (this.isAuthenticated()) {
       this.inactivityTimer = setTimeout(
-        () => this.clearUserSession(), 
+        () => this.clearUserSession(),
         this.INACTIVITY_TIMEOUT
       );
     }
@@ -92,8 +93,8 @@ export class AccountService implements OnDestroy {
   }
 
   isAuthenticated(): boolean {
-    return !!this.safeLocalStorageGet('ApplicationUser') && 
-           !!this.safeLocalStorageGet('AccessToken');
+    return !!this.safeLocalStorageGet('ApplicationUser') &&
+      !!this.safeLocalStorageGet('AccessToken');
   }
 
   private safeLocalStorageGet(key: string): string | null {
@@ -120,8 +121,9 @@ export class AccountService implements OnDestroy {
     return this.apiService.send<IApplicationUser>('POST', this.claimsEndpoint, authResponse);
   }
 
-  storeUserSession(user: IApplicationUser, token: string): void {
+  storeUserSession(pharmacy: Pharmacy, user: IApplicationUser, token: string): void {
     this.safeLocalStorageSet('ApplicationUser', JSON.stringify(user));
+    this.safeLocalStorageSet('ApplicationUserPharmacy', JSON.stringify(pharmacy));
     this.safeLocalStorageSet('AccessToken', token);
     this.authenticationState.next(true);
     this.resetInactivityTimer();
@@ -135,6 +137,7 @@ export class AccountService implements OnDestroy {
   clearUserSession(): void {
     this.safeLocalStorageRemove('ApplicationUser');
     this.safeLocalStorageRemove('AccessToken');
+    this.safeLocalStorageRemove('ApplicationUserPharmacy');
     this.authenticationState.next(false);
     this.clearInactivityTimer();
 
@@ -154,5 +157,9 @@ export class AccountService implements OnDestroy {
 
   getAccessToken(): string | null {
     return this.safeLocalStorageGet('AccessToken');
+  }
+  getCurrentApplicationUserPharmacy(): Pharmacy | null {
+    const pharmacy = this.safeLocalStorageGet('ApplicationUserPharmacy');
+    return pharmacy ? JSON.parse(pharmacy) : null;
   }
 }
