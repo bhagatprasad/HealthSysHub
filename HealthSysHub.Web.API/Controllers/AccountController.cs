@@ -1,6 +1,5 @@
 ﻿using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSysHub.Web.API.Controllers
@@ -10,9 +9,11 @@ namespace HealthSysHub.Web.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthenticationManager _authenticationManager;
-        public AccountController(IAuthenticationManager authenticationManager)
+        private readonly IUserManager _userManager;
+        public AccountController(IAuthenticationManager authenticationManager, IUserManager userManager)
         {
             _authenticationManager = authenticationManager;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -47,7 +48,58 @@ namespace HealthSysHub.Web.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
+        }
 
+        [HttpPost]
+        [Route("ActivateOrInActivateUserAsync")]
+        public async Task<IActionResult> ActivateOrInActivateUserAsync(ActivateOrInActivateUser activateUser)
+        {
+            try
+            {
+                var response = await _userManager.ActivateOrInActivateUserAsync(activateUser);
+
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("ResetPasswordAsync")]
+        public async Task<IActionResult> ResetPasswordAsync(ResetPassword resetPassword)
+        {
+            try
+            {
+                var response = await _userManager.ResetPasswordAsync(resetPassword);
+
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("ForgotPasswordAsync")]
+        public async Task<IActionResult> ForgotPasswordAsync(ForgotPassword forgotPassword)
+        {
+            try
+            {
+                var response = await _userManager.ForgotPasswordAsync(forgotPassword);
+
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

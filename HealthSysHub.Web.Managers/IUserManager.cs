@@ -1,17 +1,13 @@
-﻿using HealthSysHub.Web.DBConfiguration.Models;
-using HealthSysHub.Web.Utility.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using HealthSysHub.Web.Utility.Models;
 namespace HealthSysHub.Web.Managers
 {
     public interface IUserManager
     {
 
         Task<IEnumerable<UserInfirmation>> FetchUsersAsync(Guid? hospitalId);
-
+        Task<ChangePasswordResult> ChangePasswordAsync(ChangePassword changePassword);
+        Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPassword forgotPassword);
+        Task<ResetPasswordResponse> ResetPasswordAsync(ResetPassword resetPassword);
+        Task<ActivateOrInActivateUserResponse> ActivateOrInActivateUserAsync(ActivateOrInActivateUser activateOrInActivateUser);
     }
 }

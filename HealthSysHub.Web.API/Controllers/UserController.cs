@@ -33,5 +33,22 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpPost]
+        [Route("ChangePasswordAsync")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePassword changePassword)
+        {
+            try
+            {
+                var response = await _userManager.ChangePasswordAsync(changePassword);
+
+
+                return Ok(response);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

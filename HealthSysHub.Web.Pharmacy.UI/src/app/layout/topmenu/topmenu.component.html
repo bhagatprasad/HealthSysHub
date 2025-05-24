@@ -51,7 +51,7 @@
     <!-- Admin Only Items -->
     <ng-container *ngIf="isAdmin">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/admin/users" routerLinkActive="active">
+        <a class="nav-link" routerLink="/users" routerLinkActive="active">
           <i class="mdi mdi-account-group menu-icon"></i>
           <span class="menu-title">User Management</span>
         </a>
@@ -60,6 +60,12 @@
         <a class="nav-link" routerLink="/medicines" routerLinkActive="active">
           <i class="mdi mdi-pill menu-icon"></i>
           <span class="menu-title">Medicine Inventory</span>
+        </a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" routerLink="/pharmcy" routerLinkActive="active">
+          <i class="mdi mdi-pill menu-icon"></i>
+          <span class="menu-title">Pharmcy Details</span>
         </a>
       </li>
     </ng-container>
@@ -77,7 +83,7 @@
             <a class="nav-link" routerLink="/settings/profile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/settings/change-password">Change Password</a>
+            <a class="nav-link" routerLink="/changepassword">Change Password</a>
           </li>
         </ul>
       </div>

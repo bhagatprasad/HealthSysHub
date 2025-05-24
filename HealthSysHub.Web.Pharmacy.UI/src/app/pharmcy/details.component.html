@@ -1,1 +1,231 @@
-<p>details works!</p>
+<div class="content-wrapper pb-0">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Pharmacy Details</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="pharmacyForm" class="forms-sample">
+          <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+              <!-- Pharmacy Name -->
+              <div class="form-group">
+                <label for="pharmacyName">Pharmacy Name*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-pharmacy"></i>
+                  </span>
+                  <input type="text" class="form-control" id="pharmacyName" 
+                    formControlName="pharmacyName" placeholder="Pharmacy Name"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+
+              <!-- Pharmacy Code -->
+              <div class="form-group">
+                <label for="pharmacyCode">Pharmacy Code</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-barcode"></i>
+                  </span>
+                  <input type="text" class="form-control bg-light" id="pharmacyCode" 
+                    [formControl]="pharmacyCodeControl" readonly>
+                </div>
+                <small class="text-muted">System-generated code</small>
+              </div>
+
+              <!-- Registration Number -->
+              <div class="form-group">
+                <label for="registrationNumber">Registration Number</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-certificate"></i>
+                  </span>
+                  <input type="text" class="form-control bg-light" id="registrationNumber" 
+                    [formControl]="registrationNumberControl" readonly>
+                </div>
+                <small class="text-muted">Official registration number</small>
+              </div>
+
+              <!-- Address -->
+              <div class="form-group">
+                <label for="address">Address*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-map-marker"></i>
+                  </span>
+                  <input type="text" class="form-control" id="address" 
+                    formControlName="address" placeholder="Street address"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+              <!-- City -->
+              <div class="form-group">
+                <label for="city">City*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-city"></i>
+                  </span>
+                  <input type="text" class="form-control" id="city" 
+                    formControlName="city" placeholder="City"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+
+              <!-- State -->
+              <div class="form-group">
+                <label for="state">State*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-map-marker-radius"></i>
+                  </span>
+                  <input type="text" class="form-control" id="state" 
+                    formControlName="state" placeholder="State/Province"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+
+              <!-- Country -->
+              <div class="form-group">
+                <label for="country">Country*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-earth"></i>
+                  </span>
+                  <input type="text" class="form-control" id="country" 
+                    formControlName="country" placeholder="Country"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+
+              <!-- Postal Code -->
+              <div class="form-group">
+                <label for="postalCode">Postal Code*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-mailbox"></i>
+                  </span>
+                  <input type="text" class="form-control" id="postalCode" 
+                    formControlName="postalCode" placeholder="ZIP/Postal code"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Second Row -->
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Phone Number -->
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-phone"></i>
+                  </span>
+                  <input type="text" class="form-control" id="phoneNumber" 
+                    formControlName="phoneNumber" placeholder="Phone number"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Email -->
+              <div class="form-group">
+                <label for="email">Email*</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-email"></i>
+                  </span>
+                  <input type="email" class="form-control" id="email" 
+                    formControlName="email" placeholder="Email address"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Third Row -->
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Website -->
+              <div class="form-group">
+                <label for="website">Website</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-web"></i>
+                  </span>
+                  <input type="text" class="form-control" id="website" 
+                    formControlName="website" placeholder="Website URL"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Logo URL -->
+              <div class="form-group">
+                <label for="logoUrl">Logo URL</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-image"></i>
+                  </span>
+                  <input type="text" class="form-control" id="logoUrl" 
+                    formControlName="logoUrl" placeholder="Logo image URL"
+                    [readonly]="!isEditing">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fourth Row -->
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Hospital ID -->
+              <div class="form-group">
+                <label for="hospitalId">Hospital ID</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-hospital-building"></i>
+                  </span>
+                  <input type="text" class="form-control bg-light" id="hospitalId" 
+                    [formControl]="hospitalIdControl" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Status Toggle -->
+              <div class="form-group">
+                <div class="form-check form-switch">
+                  <input type="checkbox" class="form-check-input" id="isActive" 
+                    formControlName="isActive" [disabled]="!isEditing">
+                  <label class="form-check-label" for="isActive">
+                    <i class="mdi mdi-check-circle-outline"></i> Pharmacy Status (Active/Inactive)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer d-flex justify-content-end">
+        <button *ngIf="!isEditing" type="button" class="btn btn-primary me-2" 
+          (click)="toggleEdit(true)">
+          <i class="mdi mdi-pencil"></i> Edit Details
+        </button>
+        <button *ngIf="isEditing" type="button" class="btn btn-light me-2" 
+          (click)="onCancel()">
+          <i class="mdi mdi-close-circle"></i> Cancel
+        </button>
+        <button *ngIf="isEditing" type="button" class="btn btn-primary" 
+          (click)="onSubmit()" [disabled]="pharmacyForm.invalid">
+          <i class="mdi mdi-content-save"></i> Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
