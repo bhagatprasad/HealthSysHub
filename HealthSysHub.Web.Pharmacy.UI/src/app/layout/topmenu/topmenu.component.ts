@@ -20,7 +20,6 @@ export class TopmenuComponent implements OnInit {
   menuItems = [
     { title: 'Orders', icon: 'mdi-cart-outline', link: '/orders' },
     { title: 'Sales', icon: 'mdi-chart-line', link: '/sales' },
-    { title: 'Change Password', icon: 'mdi-lock-reset', link: '/change-password' }
   ];
 
   constructor(private router: Router) { }

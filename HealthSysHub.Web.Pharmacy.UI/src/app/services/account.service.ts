@@ -9,6 +9,12 @@ import { IUserAuthentication } from '../models/userauthentication';
 import { IAuthResponse } from '../models/authresponse';
 import { IApplicationUser } from '../models/applicationuser';
 import { Pharmacy } from '../models/pharmacy';
+import { ForgotPassword } from '../models/forgotpassword';
+import { ForgotPasswordResponse } from '../models/forgotpasswordresponse';
+import { ResetPassword } from '../models/resetpassword';
+import { ResetPasswordResponse } from '../models/resetpasswordresponse';
+import { ActivateOrInActivateUser } from '../models/activateorinactivateuser';
+import { ActivateOrInActivateUserResponse } from '../models/activateorinactivateuserresponse';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService implements OnDestroy {
@@ -119,6 +125,16 @@ export class AccountService implements OnDestroy {
 
   generateUserClaims(authResponse: IAuthResponse): Observable<IApplicationUser> {
     return this.apiService.send<IApplicationUser>('POST', this.claimsEndpoint, authResponse);
+  }
+
+  forgotPasswordAsync(forgotpassword: ForgotPassword): Observable<ForgotPasswordResponse> {
+    return this.apiService.send<ForgotPasswordResponse>('POST', environment.UrlConstants.ForgotPasswordAsync, forgotpassword);
+  }
+  resetPasswordAsync(resetpassword: ResetPassword): Observable<ResetPasswordResponse> {
+    return this.apiService.send<ResetPasswordResponse>('POST', environment.UrlConstants.ResetPasswordAsync, resetpassword);
+  }
+  activateOrInActivateUserAsync(activateuser: ActivateOrInActivateUser): Observable<ActivateOrInActivateUserResponse> {
+    return this.apiService.send<ActivateOrInActivateUserResponse>('POST', environment.UrlConstants.ActivateOrInActivateUserAsync, activateuser);
   }
 
   storeUserSession(pharmacy: Pharmacy, user: IApplicationUser, token: string): void {

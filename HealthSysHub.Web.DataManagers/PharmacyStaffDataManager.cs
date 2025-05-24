@@ -90,6 +90,20 @@ namespace HealthSysHub.Web.DataManagers
                         EntityUpdater.UpdateProperties(existingStaff, staff, nameof(PharmacyStaff.CreatedBy), nameof(PharmacyStaff.CreatedOn));
                     }
                 }
+
+                var exisitngUser = await _dbContext.users.Where(x => x.StaffId == staff.StaffId).FirstOrDefaultAsync();
+                if (exisitngUser != null)
+                {
+                    exisitngUser.FirstName = staff.FirstName;
+                    exisitngUser.LastName = staff.LastName;
+                    exisitngUser.Phone = staff.PhoneNumber;
+                    exisitngUser.Email = staff.Email;
+                    exisitngUser.IsActive = staff.IsActive;
+                    exisitngUser.PharmacyId = staff.PharmacyId;
+                    exisitngUser.HospitalId = staff.HospitalId;
+                    exisitngUser.ModifiedBy = staff.ModifiedBy;
+                    exisitngUser.ModifiedOn = staff.ModifiedOn;
+                }
             }
 
             await _dbContext.SaveChangesAsync();

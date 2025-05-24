@@ -1,1 +1,66 @@
-<p>create works!</p>
+<div class="sidebar-overlay" *ngIf="isVisible" (click)="close()"></div>
+<div class="sidebar" [class.visible]="isVisible">
+    <div class="sidebar-header">
+        <h5 class="sidebar-title">{{ pharmacyStaff?.staffId ? 'Edit User' : 'Add User' }}</h5>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="sidebar-body">
+        <form [formGroup]="pharmacyStaffForm" (ngSubmit)="OnSubmit()">
+            <div class="form-group">
+                <label for="firstName">First Name*</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-account"></i>
+                    </span>
+                    <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                        placeholder="Enter first name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name*</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-account"></i>
+                    </span>
+                    <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                        placeholder="Enter last name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="designation">Designation</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-badge-account"></i>
+                    </span>
+                    <input type="text" class="form-control" id="designation" formControlName="designation"
+                        placeholder="Enter designation">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-phone"></i>
+                    </span>
+                    <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                        placeholder="Enter phone number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-email"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                        placeholder="Enter email">
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button type="submit" class="btn btn-primary">{{ pharmacyStaff?.staffId ? 'Update' : 'Save' }}</button>
+            </div>
+        </form>
+    </div>
+</div>

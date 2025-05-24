@@ -4,6 +4,9 @@ export const environment = {
     UrlConstants: {
         Authenticate: 'Account/AuthenticateUserAsync',
         VerifyAccesToken: 'Account/VerifyAccesToken',
+        ActivateOrInActivateUserAsync: 'Account/ActivateOrInActivateUserAsync',
+        ResetPasswordAsync: 'Account/ResetPasswordAsync',
+        ForgotPasswordAsync: 'Account/ForgotPasswordAsync',
         GenerateUserCliams: 'Account/GenarateUserClaimsAsync',
         GetHospitalsAsync: 'Hospital/GetHospitalsAsync',
         GetHospitalInformationsAsync: 'Hospital/GetHospitalInformationsAsync',
@@ -44,7 +47,8 @@ export const environment = {
         CancelationPolicy: 'CancelationPolicy',
         TermsAndConditions: 'TermsAndConditions',
         TermsOfUses: 'TermsOfUses',
-        fetchUserSpecificPayment: 'Payments/fetchUserSpecificPayment'
+        fetchUserSpecificPayment: 'Payments/fetchUserSpecificPayment',
+        ChangePasswordAsync: 'User/ChangePasswordAsync'
     },
     Messages: {
         InvalidPassword: "Authentication Failed due to Invalid Password ,Please enter correct password and try again",

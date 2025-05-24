@@ -11,7 +11,6 @@ import { AuditFieldsService } from '../services/audit-fields.service';
   selector: 'app-medicines-list',
   templateUrl: './medicines-list.component.html',
   styleUrls: ['./medicines-list.component.css'],
-
   imports: [CommonModule, MedicineSidebarComponent]
 })
 export class MedicinesListComponent implements OnInit {
@@ -70,7 +69,7 @@ export class MedicinesListComponent implements OnInit {
   openAddMedicine(): void {
     this.selectedMedicine = null;
     this.showSidebar = true;
-  }
+  } 
   onCloseSidebar(): void {
     this.showSidebar = false;
   }

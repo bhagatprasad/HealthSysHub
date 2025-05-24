@@ -13,6 +13,7 @@ import { PasswordChangeComponent } from './setting/password-change.component';
 import { UsersListComponent } from './users/list.component';
 import { MedicinesListComponent } from './medicines/medicines-list.component';
 import { LoginComponent } from './shared/login/login.component';
+import { DetailsComponent } from './pharmcy/details.component';
 
 export const routes: Routes = [
   { 
@@ -36,7 +37,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard] 
   },
    { 
-    path: 'change-password', 
+    path: 'changepassword', 
     component: PasswordChangeComponent,
     canActivate: [AuthGuard] 
   },
@@ -48,6 +49,11 @@ export const routes: Routes = [
    { 
     path: 'medicines', 
     component: MedicinesListComponent,
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'pharmcy', 
+    component: DetailsComponent,
     canActivate: [AuthGuard] 
   },
   { path: 'login', component: LoginComponent },
