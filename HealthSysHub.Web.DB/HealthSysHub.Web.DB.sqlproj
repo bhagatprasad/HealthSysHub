@@ -110,7 +110,6 @@
     <Build Include="Tables\PharmacyStaff.sql" />
     <Build Include="Tables\LabStaff.sql" />
     <Build Include="Tables\PharmacyMedicine.sql" />
-    <Build Include="Tables\Subscription.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
