@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TopmenuComponent } from './layout/topmenu/topmenu.component';
 import { SidemenuComponent } from './layout/sidemenu/sidemenu.component';
 import { LoaderComponent } from './shared/loader/loader.component';
@@ -17,6 +17,7 @@ import { Subscription, filter, take } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'HealthSysHub';
   isBrowser: boolean;
+  isSignUpRoute: boolean = false;
   private authSubscription?: Subscription;
   showContent = false; // Changed from isLoading to showContent for better semantics
 
@@ -29,6 +30,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.isSignUpRoute = event.url === '/signup'; // Check if the current route is '/signup'
+      });
+
     if (!this.isBrowser) {
       this.showContent = true;
       return;
@@ -46,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.authSubscription = this.accountService.authenticationState$.pipe(
       filter(state => state !== null),
-      take(1) 
+      take(1)
     ).subscribe({
       next: (isAuthenticated) => {
         this.handleAuthState(isAuthenticated);

@@ -31,7 +31,8 @@ export class UsersListComponent implements OnInit {
     var pharmacyDetails = this.accountService.getCurrentApplicationUserPharmacy();
     if (pharmacyDetails) {
       this.pharmcy = pharmacyDetails;
-      this.loadPharmacyStaffDetails(this.pharmcy.pharmacyId);
+      if (this.pharmcy.pharmacyId)
+        this.loadPharmacyStaffDetails(this.pharmcy.pharmacyId);
     }
   }
   loadPharmacyStaffDetails(pharmacyId: string): void {
@@ -68,7 +69,7 @@ export class UsersListComponent implements OnInit {
   handleInsertOrUpdatePharmacyStaffSuccss(staff: PharmacyStaff): void {
     this.selectedPharmacyStaff = null;
     this.showSidebar = false;
-    if (this.pharmcy) {
+    if (this.pharmcy?.pharmacyId) {
       this.loadPharmacyStaffDetails(this.pharmcy?.pharmacyId);
     }
   }

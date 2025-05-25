@@ -1,0 +1,15 @@
+﻿CREATE TABLE [dbo].[Subscription](
+    [SubscriptionId]          UNIQUEIDENTIFIER    PRIMARY KEY DEFAULT NEWID() NOT NULL,
+    [PharmacyId]              UNIQUEIDENTIFIER                                    NULL,
+    [HospitalId]              UNIQUEIDENTIFIER                                    NULL,
+    [LabId]                   UNIQUEIDENTIFIER                                    NULL,
+    [FromDate]                DATETIMEOFFSET                                      NULL,
+    [ToDate]                  DATETIMEOFFSET                                      NULL,
+    [SubscriptionType]        NVARCHAR(max)                                       NULL,
+    [Status]                  NVARCHAR(max)                                       NULL,
+    [CreatedBy]               UNIQUEIDENTIFIER                                    NULL,
+    [CreatedOn]               DATETIMEOFFSET      DEFAULT SYSDATETIMEOFFSET()     NULL,
+    [ModifiedBy]              UNIQUEIDENTIFIER                                    NULL,
+    [ModifiedOn]              DATETIMEOFFSET                                      NULL,
+    [IsActive]                BIT                 DEFAULT 1                       NULL,
+);

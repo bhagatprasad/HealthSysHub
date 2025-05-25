@@ -14,6 +14,7 @@ import { UsersListComponent } from './users/list.component';
 import { MedicinesListComponent } from './medicines/medicines-list.component';
 import { LoginComponent } from './shared/login/login.component';
 import { DetailsComponent } from './pharmcy/details.component';
+import { ThankyouComponent } from './shared/thankyou.component';
 
 export const routes: Routes = [
   { 
@@ -60,6 +61,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'forgotpassword', component: ForgotpasswordComponent },
   { path: 'resetpassword', component: ResetpasswordComponent },
+  { path: 'thankyou', component: ThankyouComponent },
   { 
     path: '', 
     redirectTo: 'login', 
