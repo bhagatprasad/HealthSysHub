@@ -85,7 +85,7 @@
                             <div class="form-group mb-3">
                                 <label for="hospital">Hospital</label>
                                 <select class="form-control custom-arrow" id="hospital"
-                                    [(ngModel)]="orderRequest.hospitalId" name="hospital" required>
+                                    [(ngModel)]="orderRequest.hospitalId" name="hospital">
                                     <option value="">Select Hospital</option>
                                     <option *ngFor="let hospital of hospitalInformation" [value]="hospital.hospitalId">
                                         {{ hospital.hospitalName }}
@@ -128,7 +128,11 @@
                                             <tr
                                                 *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index">
                                                 <td>{{ item.medicineName }}</td>
-                                                <td>{{ item.usage }}</td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        [(ngModel)]="item.usage" [name]="'usage_' + i"
+                                                        placeholder="Enter usage instructions">
+                                                </td>
                                                 <td>
                                                     <div class="input-group input-group-sm">
                                                         <button class="btn btn-outline-secondary"

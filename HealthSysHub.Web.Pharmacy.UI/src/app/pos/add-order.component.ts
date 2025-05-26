@@ -34,6 +34,7 @@ export class AddOrderComponent implements OnInit {
     doctorName: '',
     notes: '',
     isActive: true,
+    status: 'Pending',
     pharmacyOrderRequestItemDetails: []
   };
   constructor(private pharmacyMedicineService: PharmacyMedicineService,
@@ -208,6 +209,7 @@ export class AddOrderComponent implements OnInit {
     this.orderRequestService.InsertOrUpdatePharmacyOrderRequestAsync(_orderRequest).subscribe({
       next: (response) => {
         this.notifyService.showSuccess('Order submitted successfully');
+        this.router.navigate(["/orders"]);
         this.initializeOrderRequest();
       },
       error: (error) => {
@@ -229,10 +231,10 @@ export class AddOrderComponent implements OnInit {
       return false;
     }
 
-    if (!this.orderRequest.hospitalId) {
-      this.notifyService.showWarning('Please select a hospital');
-      return false;
-    }
+    // if (!this.orderRequest.hospitalId) {
+    //   this.notifyService.showWarning('Please select a hospital');
+    //   return false;
+    // }
 
     if (this.orderRequest.pharmacyOrderRequestItemDetails.length === 0) {
       this.notifyService.showWarning('Please add at least one medicine to the order');
