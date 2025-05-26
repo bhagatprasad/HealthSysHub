@@ -10,13 +10,14 @@ import { Pharmacy } from '../models/pharmacy';
 import { forkJoin } from 'rxjs';
 import { PharmacyOrderRequestDetails } from '../models/pharmacyorderrequestdetails';
 import { PharmacyOrderRequestItemDetails } from '../models/pharmacyorderrequestItemdetails';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HospitalInformation } from '../models/hospital-information';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-order',
-  imports: [CurrencyPipe,  CommonModule, ReactiveFormsModule],
+  imports: [CurrencyPipe, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './add-order.component.html',
   styleUrl: './add-order.component.css'
 })
@@ -40,7 +41,8 @@ export class AddOrderComponent implements OnInit {
     private hospitalService: HospitalService,
     private accountService: AccountService,
     private auditService: AuditFieldsService,
-    private notifyService: NotificationService
+    private notifyService: NotificationService,
+    private router: Router
 
   ) { }
   ngOnInit(): void {
@@ -71,7 +73,9 @@ export class AddOrderComponent implements OnInit {
     this.notifyService.showError(errorMessage);
   }
 
-
+  requestToOrders(): void {
+    this.router.navigate(["/orders"]);
+  }
   // Initialize an empty cart/order request
   initializeOrderRequest(): void {
     this.orderRequest = {
@@ -105,10 +109,10 @@ export class AddOrderComponent implements OnInit {
         itemQty: 1,
         usage: '',
         isActive: true,
-        pharmacyId: this.currentPharmacy?.pharmacyId,
         hospitalId: this.orderRequest.hospitalId
       };
-      this.orderRequest.pharmacyOrderRequestItemDetails.push(newItem);
+      this.orderRequest.pharmacyOrderRequestItemDetails.push(this.auditService.appendAuditFields(newItem));
+      console.log(this.orderRequest);
       this.notifyService.showSuccess(`${medicine.medicineName} added to cart`);
     }
   }
@@ -146,7 +150,8 @@ export class AddOrderComponent implements OnInit {
   }
 
   // Get maximum allowed quantity for a medicine
-  getMaxQuantity(medicineId: string): number {
+  getMaxQuantity(medicineId: string | undefined): number {
+    if (!medicineId) return 0;
     const medicine = this.pharmacyMedicines.find(m => m.medicineId === medicineId);
     return medicine ? medicine.stockQuantity : 0;
   }

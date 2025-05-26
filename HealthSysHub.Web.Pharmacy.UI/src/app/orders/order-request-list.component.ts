@@ -57,4 +57,7 @@ export class OrderRequestListComponent implements OnInit {
   requestGetOrderDetails(pharmacyOrderRequestDetails: PharmacyOrderRequestDetails) {
 
   }
+  requestToSales(): void {
+
+  }
 }
