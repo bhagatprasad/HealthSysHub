@@ -20,7 +20,4 @@
 
     CONSTRAINT [FK_PharmacyOrderRequestItem_Hospital] FOREIGN KEY ([HospitalId]) 
         REFERENCES [dbo].[Hospital]([HospitalId]),
-
-    CONSTRAINT [FK_PharmacyOrderRequestItem_Medicine] FOREIGN KEY ([MedicineId]) 
-        REFERENCES [dbo].[Medicine]([MedicineId])
 )
