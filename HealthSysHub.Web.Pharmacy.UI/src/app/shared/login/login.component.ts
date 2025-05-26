@@ -12,7 +12,6 @@ import { PasswordToggleDirective } from '../../directives/password.toggle';
 import { FormValidatorDirective } from '../../directives/form.validator';
 import { PharmacyService } from '../../services/pharmacy.service';
 import { Pharmacy } from '../../models/pharmacy';
-import { Application } from 'express';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +34,6 @@ export class LoginComponent {
 
   rememberMe = false;
   isSubmitting = false;
-
   constructor(
     private accountService: AccountService,
     private notificationService: NotificationService,
@@ -83,6 +81,7 @@ export class LoginComponent {
       return;
     }
 
+    this.accountService.storeUserSession(user, token);
     this.pharmacyService.GetPharmacyByIdAsync(user.pharmacyId)
       .subscribe({
         next: (pharmacy) => this.handlePharmacySuccess(pharmacy, token, user),
@@ -95,7 +94,7 @@ export class LoginComponent {
       this.notificationService.showError('Unable to find the pharmacy');
       return;
     }
-    this.accountService.storeUserSession(pharmacy, user, token);
+    this.accountService.storeUserPharmacy(pharmacy);
     this.notificationService.showSuccess('Login successful');
 
     // Redirect to stored URL or default landing page

@@ -1,7 +1,8 @@
 <div class="content-wrapper pb-0">
     <div class="page-header flex-wrap">
         <div class="header-left d-flex flex-wrap mt-2 mt-sm-0">
-             <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center" (click)="requestToSales()">
+            <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
+                (click)="requestToSales()">
                 <i class="mdi mdi-arrow-right-thin"></i> Go to Sales
             </button>
         </div>
@@ -31,12 +32,12 @@
                                 <tr>
                                     <th>Patient Name</th>
                                     <th>Hospital</th>
-                                     <th>Phone</th>
+                                    <th>Phone</th>
                                     <th>Doctor</th>
                                     <th>Notes</th>
                                     <th>Created On</th>
                                     <th>Modified On</th>
-                                     <th>Status</th>
+                                    <th>Status</th>
                                     <th>Active</th>
                                     <th>Options</th>
                                 </tr>
@@ -46,16 +47,18 @@
                                     <td><a class="btn-link" (click)="requestGetOrderDetails(request)">
                                             {{ request.name }}
                                         </a></td>
-                                         <td>{{ request.phone }}</td>
                                     <td>{{ request.hospitalName }}</td>
+                                    <td>{{ request.phone }}</td>
                                     <td>{{ request.doctorName }}</td>
                                     <td>{{ request.notes }}</td>
                                     <td>{{ request.createdOn | date }}</td>
                                     <td>{{ request.modifiedOn | date }}</td>
-                                      <td><label class="badge" [ngClass]="{'badge-primary': request.status === 'Pending', 
-                                   'badge-success': request.status === 'Completed',
-                                   'badge-warning': request.status === 'Processing',
-                                   'badge-danger': request.status === 'Cancelled'}">
+                                    <td><label class="badge" 
+                                        [ngClass]="{'badge-primary': request.status === 'Pending', 
+                                                    'badge-info': request.status === 'SentForPharmacy',
+                                                    'badge-success': request.status === 'Completed',
+                                                    'badge-warning': request.status === 'Processing',
+                                                    'badge-danger': request.status === 'Cancelled'}">
                                             {{ request.status }}
                                         </label>
                                     </td>
@@ -65,8 +68,11 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <a class="btn btn-primary btn-sm" (click)="requestOrderEdit(request)">
-                                            Edit
+                                        <a class="btn btn-primary btn-sm" (click)="requestOrderEdit(request)" *ngIf="request.status === 'Pending'">
+                                            Approve
+                                        </a>
+                                         <a class="btn btn-danger btn-sm buttonc-class" (click)="requestOrderEdit(request)" *ngIf="request.status !== 'Completed'">
+                                            Cancel
                                         </a>
                                     </td>
                                 </tr>

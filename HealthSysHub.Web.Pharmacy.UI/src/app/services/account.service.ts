@@ -137,9 +137,9 @@ export class AccountService implements OnDestroy {
     return this.apiService.send<ActivateOrInActivateUserResponse>('POST', environment.UrlConstants.ActivateOrInActivateUserAsync, activateuser);
   }
 
-  storeUserSession(pharmacy: Pharmacy, user: IApplicationUser, token: string): void {
+  storeUserSession(user: IApplicationUser, token: string): void {
     this.safeLocalStorageSet('ApplicationUser', JSON.stringify(user));
-    this.safeLocalStorageSet('ApplicationUserPharmacy', JSON.stringify(pharmacy));
+
     this.safeLocalStorageSet('AccessToken', token);
     this.authenticationState.next(true);
     this.resetInactivityTimer();
@@ -149,7 +149,9 @@ export class AccountService implements OnDestroy {
     this.redirectUrl = '/landing'; // Reset to default after use
     this.router.navigateByUrl(redirect);
   }
-
+  storeUserPharmacy(pharmacy: Pharmacy): void {
+    this.safeLocalStorageSet('ApplicationUserPharmacy', JSON.stringify(pharmacy));
+  }
   clearUserSession(): void {
     this.safeLocalStorageRemove('ApplicationUser');
     this.safeLocalStorageRemove('AccessToken');
