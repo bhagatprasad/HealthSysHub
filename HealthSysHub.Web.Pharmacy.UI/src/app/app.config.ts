@@ -6,12 +6,16 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { LoaderService } from './services/loader.service';
 import { LoadingInterceptor } from './intercepters/loading.interceptor';
+import { apiInterceptor } from './intercepters/api.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([LoadingInterceptor])
+      withInterceptors([
+        apiInterceptor,
+        LoadingInterceptor
+      ])
     ),
     provideAnimations(),
     provideToastr({

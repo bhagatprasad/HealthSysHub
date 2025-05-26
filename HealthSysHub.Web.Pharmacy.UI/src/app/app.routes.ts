@@ -14,16 +14,13 @@ import { UsersListComponent } from './users/list.component';
 import { MedicinesListComponent } from './medicines/medicines-list.component';
 import { LoginComponent } from './shared/login/login.component';
 import { DetailsComponent } from './pharmcy/details.component';
+import { OrderRequestListComponent } from './orders/order-request-list.component';
+import { AddOrderComponent } from './pos/add-order.component';
 
 export const routes: Routes = [
   { 
     path: 'landing', 
     component: AdminComponent,
-    canActivate: [AuthGuard] 
-  },
-   { 
-    path: 'orders', 
-    component: OrdersListComponent,
     canActivate: [AuthGuard] 
   },
    { 
@@ -54,6 +51,16 @@ export const routes: Routes = [
   { 
     path: 'pharmcy', 
     component: DetailsComponent,
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'orders', 
+    component: OrderRequestListComponent,
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'addorder', 
+    component: AddOrderComponent,
     canActivate: [AuthGuard] 
   },
   { path: 'login', component: LoginComponent },
