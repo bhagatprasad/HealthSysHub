@@ -2,7 +2,7 @@
     <div class="page-header flex-wrap">
         <div class="header-left d-flex flex-wrap mt-2 mt-sm-0">
             <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center">
-                <i class="mdi mdi-plus-circle"></i> Go to Sales
+                <i class="mdi mdi-arrow-right-thin"></i> Go to Sales
             </button>
         </div>
         <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
@@ -14,23 +14,23 @@
                     <p class="m-0">ADE-00234</p>
                 </a>
             </div>
-            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">
-                <i class="mdi mdi-plus-circle"></i> Add Orders
+            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToOrders()">
+                <i class="mdi mdi-arrow-left-thin"></i> Go to Orders
             </button>
         </div>
     </div>
     <div class="container-fluid mt-4">
         <div class="row">
             <!-- Left Side - Medicine Selection Grid -->
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Available Medicines</h5>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                    <div class="card-body card-body-padding">
+                        <div class="table-responsive" [ngClass]="{'scrollable-table': pharmacyMedicines.length > 50}">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark" style="background-color: gray;">
                                     <tr>
                                         <th>Medicine</th>
                                         <th>Price</th>
@@ -50,7 +50,7 @@
                                         <td>
                                             <button class="btn btn-sm btn-success" (click)="addToCart(medicine)"
                                                 [disabled]="medicine.stockQuantity <= 0">
-                                                <i class="fas fa-cart-plus"></i> Add
+                                                <i class="mdi mdi-cart"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -62,13 +62,113 @@
             </div>
 
             <!-- Right Side - Cart Form -->
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0">Order Details</h5>
                     </div>
                     <div class="card-body">
-                        
+                        <form #orderForm="ngForm" (ngSubmit)="submitOrder()">
+                            <!-- Patient Information -->
+                            <div class="form-group mb-3">
+                                <label for="patientName">Patient Name</label>
+                                <input type="text" class="form-control" id="patientName" [(ngModel)]="orderRequest.name"
+                                    name="patientName" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="patientPhone">Phone Number</label>
+                                <input type="tel" class="form-control" id="patientPhone"
+                                    [(ngModel)]="orderRequest.phone" name="patientPhone" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="hospital">Hospital</label>
+                                <select class="form-control custom-arrow" id="hospital"
+                                    [(ngModel)]="orderRequest.hospitalId" name="hospital" required>
+                                    <option value="">Select Hospital</option>
+                                    <option *ngFor="let hospital of hospitalInformation" [value]="hospital.hospitalId">
+                                        {{ hospital.hospitalName }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="doctorName">Doctor Name</label>
+                                <input type="text" class="form-control" id="doctorName"
+                                    [(ngModel)]="orderRequest.doctorName" name="doctorName">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="notes">Notes</label>
+                                <textarea class="form-control" id="notes" rows="2" [(ngModel)]="orderRequest.notes"
+                                    name="notes"></textarea>
+                            </div>
+
+                            <!-- Cart Items -->
+                            <div class="cart-items mb-3">
+                                <h6>Selected Medicines</h6>
+                                <div *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length === 0"
+                                    class="alert alert-info">
+                                    No items added to cart
+                                </div>
+
+                                <div class="table-responsive"
+                                    *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length > 0">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Medicine</th>
+                                                <th>Usage</th>
+                                                <th>Qty</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index">
+                                                <td>{{ item.medicineName }}</td>
+                                                <td>{{ item.usage }}</td>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <button class="btn btn-outline-secondary"
+                                                            (click)="decreaseQuantity(i)">-</button>
+                                                        <input type="number" class="form-control text-center"
+                                                            [(ngModel)]="item.itemQty" [name]="'qty_' + i" min="1"
+                                                            [max]="item.medicineId ? getMaxQuantity(item.medicineId) : 0">
+                                                        <button class="btn btn-outline-secondary"
+                                                            (click)="increaseQuantity(i)">+</button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-danger" (click)="removeItem(i)">
+                                                        <i class="mdi mdi-trash-can"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="order-summary mb-3 p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total Items:</strong>
+                                    <span>{{ orderRequest.pharmacyOrderRequestItemDetails.length }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total Quantity:</strong>
+                                    <span>{{ getTotalQuantity() }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100"
+                                [disabled]="orderForm.invalid || orderRequest.pharmacyOrderRequestItemDetails.length === 0">
+                                <i class="mdi mdi-file"></i> Submit Order
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
