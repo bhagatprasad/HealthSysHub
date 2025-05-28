@@ -25,7 +25,7 @@ export const routes: Routes = [
   },
    { 
     path: 'sales', 
-    component: SalesListComponent,
+    component: OrdersListComponent,
     canActivate: [AuthGuard] 
   },
    { 

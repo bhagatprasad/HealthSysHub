@@ -32,6 +32,21 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetPharmacyOrderByIdAsync/{pharmacyId}/{pharmacyOrderId}")]
+        public async Task<IActionResult> GetPharmacyOrderByIdAsync(Guid pharmacyId,Guid pharmacyOrderId)
+        {
+            try
+            {
+                var response = await _manager.GetPharmacyOrderByIdAsync(pharmacyId, pharmacyOrderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("ProcessPharmacyOrdersRequestAsync")]
         public async Task<IActionResult> ProcessPharmacyOrdersRequestAsync(PharmacyOrdersProcessRequest request)

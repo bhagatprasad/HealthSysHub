@@ -9,6 +9,7 @@ import { PharmacyOrderRequestService } from './pharmacy-order-request-service';
 import { AuditFieldsService } from './audit-fields.service';
 import { PasswordService } from './password.service';
 import { NotificationService } from './notification.service';
+import { OrderService } from './order.service';
 
 @NgModule({
   declarations: [],
@@ -16,7 +17,7 @@ import { NotificationService } from './notification.service';
     CommonModule
   ],
   providers: [
-    NotificationService,  
+    NotificationService,
     AccountService,
     HospitalService,
     PharmacyService,
@@ -24,7 +25,8 @@ import { NotificationService } from './notification.service';
     PharmacyStaffService,
     PharmacyOrderRequestService,
     AuditFieldsService,
-    PasswordService
+    PasswordService,
+    OrderService
   ],
   exports: []
 })
