@@ -19,10 +19,7 @@ namespace HealthSysHub.Web.DataManagers
             return await _dbContext.pharmacyOrders.FindAsync(pharmacyOrderId);
         }
 
-        public Task<PharmacyOrderDetails> GetPharmacyOrderByIdAsync(Guid pharmacyId, Guid pharmacyOrderId)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public async Task<List<PharmacyOrder>> GetPharmacyOrdersAsync()
         {
@@ -57,6 +54,12 @@ namespace HealthSysHub.Web.DataManagers
 
             return pharmacyOrder;
         }
+
+        public Task<PharmacyOrderDetails> GetPharmacyOrderByIdAsync(Guid pharmacyId, Guid pharmacyOrderId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<PharmacyOrderDetails>> GetPharmacyOrdersListByPharmacyAsync(Guid pharmacyId)
         {
             // Load all required data in parallel

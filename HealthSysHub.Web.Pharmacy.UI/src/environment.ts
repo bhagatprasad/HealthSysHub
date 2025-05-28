@@ -27,6 +27,7 @@ export const environment = {
         GetPharmacyOrderRequestsByPatientAsync: 'PharmacyOrderRequest/GetPharmacyOrderRequestsByPatientAsync',
         GetPharmacyOrderRequestDetailAsync: 'PharmacyOrderRequest/GetPharmacyOrderRequestDetailAsync',
         InsertOrUpdatePharmacyOrderRequestAsync: 'PharmacyOrderRequest/InsertOrUpdatePharmacyOrderRequestAsync',
+        ProcessPharmacyOrderRequestAsync:'PharmacyOrderRequest/ProcessPharmacyOrderRequestAsync',
         Tickets: 'Tickets',
         MyTickets: 'Tickets/GetAllUserTickets',
         PriorityType: 'PriorityTypes',
@@ -48,7 +49,9 @@ export const environment = {
         TermsAndConditions: 'TermsAndConditions',
         TermsOfUses: 'TermsOfUses',
         fetchUserSpecificPayment: 'Payments/fetchUserSpecificPayment',
-        ChangePasswordAsync: 'User/ChangePasswordAsync'
+        ChangePasswordAsync: 'User/ChangePasswordAsync',
+        GetPharmacyOrdersListByPharmacyAsync:'Order/GetPharmacyOrdersListByPharmacyAsync',
+        ProcessPharmacyOrdersRequestAsync:'Order/ProcessPharmacyOrdersRequestAsync'
     },
     Messages: {
         InvalidPassword: "Authentication Failed due to Invalid Password ,Please enter correct password and try again",

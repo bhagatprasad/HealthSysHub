@@ -1,6 +1,7 @@
 export interface PharmacyOrder {
   pharmacyOrderId: string;
   pharmacyOrderRequestId?: string | null;
+  orderReferance?: string | null;
   pharmacyId?: string | null;
   itemQty?: number | null;
   totalAmount?: number | null;
