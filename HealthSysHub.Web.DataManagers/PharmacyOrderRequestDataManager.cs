@@ -233,7 +233,7 @@ namespace HealthSysHub.Web.DataManagers
                             IsActive = item.IsActive,
                             Usage = item.Usage,
                         };
-                    }).ToList();
+                    }).OrderByDescending(c => c.ModifiedOn).ToList();
                 }
             }
 

@@ -1,5 +1,6 @@
 ﻿using HealthSysHub.Web.API.CustomFilters;
 using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,20 @@ namespace HealthSysHub.Web.API.Controllers
             try
             {
                 var response = await _manager.GetPharmacyOrdersListByPharmacyAsync(pharmacyId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("ProcessPharmacyOrdersRequestAsync")]
+        public async Task<IActionResult> ProcessPharmacyOrdersRequestAsync(PharmacyOrdersProcessRequest request)
+        {
+            try
+            {
+                var response = await _manager.ProcessPharmacyOrdersRequestAsync(request);
                 return Ok(response);
             }
             catch (Exception ex)
