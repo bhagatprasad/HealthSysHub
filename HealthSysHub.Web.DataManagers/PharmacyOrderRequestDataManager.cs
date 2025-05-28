@@ -1,10 +1,12 @@
-﻿using HealthSysHub.Web.DBConfiguration;
+﻿using Azure.Core;
+using HealthSysHub.Web.DBConfiguration;
 using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
+using HealthSysHub.Web.Utility.Extemsions;
 using System.Linq.Expressions;
 
 namespace HealthSysHub.Web.DataManagers
@@ -315,5 +317,146 @@ namespace HealthSysHub.Web.DataManagers
             return pharmacyOrderRequestDetails;
         }
 
+        public async Task<ProcessPharmacyOrderRequestResponse> ProcessPharmacyOrderRequestAsync(ProcessPharmacyOrderRequest requestDetails)
+        {
+            if (requestDetails == null)
+            {
+                throw new ArgumentNullException(nameof(requestDetails));
+            }
+
+            var response = new ProcessPharmacyOrderRequestResponse();
+
+            var pharmacyOrderRequest = await _dbContext.pharmacyOrderRequests
+                .FindAsync(requestDetails.PharmacyOrderRequestId);
+
+            if (pharmacyOrderRequest == null)
+            {
+                return new ProcessPharmacyOrderRequestResponse
+                {
+                    Success = false,
+                    Message = "Invalid request, please verify and retry again"
+                };
+            }
+
+            // Load related data
+            var pharmacyOrderRequestItems = await _dbContext.pharmacyOrderRequestItems
+                .Where(x => x.PharmacyOrderRequestId == requestDetails.PharmacyOrderRequestId)
+                .ToListAsync();
+
+            var medicines = await _dbContext.pharmacyMedicines.ToListAsync();
+
+            if (!pharmacyOrderRequestItems.Any())
+            {
+                return response; // Early return if no items
+            }
+
+            // Process items
+            var (pharmacyOrderItems, totalAmount) = ProcessOrderItems(pharmacyOrderRequestItems, medicines);
+
+            // Update the request
+            UpdatePharmacyOrderRequest(pharmacyOrderRequest, requestDetails);
+
+            if (requestDetails.Status == "Approve")
+            {
+                await CreateApprovedOrder(pharmacyOrderRequest, pharmacyOrderItems, totalAmount);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            response.Success = true;
+            response.Message = "Successfully processed the pharmacy request to sales";
+            return response;
+        }
+
+        private (List<PharmacyOrderItem>, decimal) ProcessOrderItems(
+            List<PharmacyOrderRequestItem> requestItems,
+            List<PharmacyMedicine> medicines)
+        {
+            var pharmacyOrderItems = new List<PharmacyOrderItem>();
+            decimal totalAmount = 0m;
+
+            foreach (var item in requestItems)
+            {
+                var medicine = medicines.FirstOrDefault(x => x.MedicineId == item.MedicineId);
+                if (medicine == null || item.ItemQty == null) continue;
+
+                decimal itemTotalAmount = item.ItemQty.Value * medicine.PricePerUnit.Value;
+                totalAmount += itemTotalAmount;
+
+                pharmacyOrderItems.Add(new PharmacyOrderItem
+                {
+                    PharmacyOrderItemId = Guid.NewGuid(),
+                    PharmacyOrderId = null,
+                    PharmacyId = item.PharmacyId,
+                    MedicineId = item.MedicineId,
+                    ItemQty = (long)item.ItemQty.Value,
+                    UnitPrice = medicine.PricePerUnit,
+                    TotalAmount = itemTotalAmount,
+                    CreatedBy = item.CreatedBy,
+                    CreatedOn = item.CreatedOn,
+                    ModifiedBy = item.ModifiedBy,
+                    ModifiedOn = item.ModifiedOn,
+                    IsActive = item.IsActive,
+                });
+            }
+
+            return (pharmacyOrderItems, totalAmount);
+        }
+
+        private void UpdatePharmacyOrderRequest(
+            PharmacyOrderRequest request,
+            ProcessPharmacyOrderRequest requestDetails)
+        {
+            request.Status = requestDetails.Status;
+            request.ModifiedBy = requestDetails.ModifiedBy;
+            request.ModifiedOn = requestDetails.ModifiedOn;
+            request.Notes = !string.IsNullOrEmpty(request.Notes) ? string.Join(",", request.Notes, requestDetails.Notes) : requestDetails.Notes;
+        }
+
+        private async Task CreateApprovedOrder(
+            PharmacyOrderRequest request,
+            List<PharmacyOrderItem> orderItems,
+            decimal totalAmount)
+        {
+            const decimal discountPercentage = 0.10m;
+            decimal discountAmount = totalAmount * discountPercentage;
+            decimal finalAmount = totalAmount - discountAmount;
+
+            // Create and save the order first
+
+            Guid pharmacyOrderId = Guid.NewGuid();
+
+            var pharmacyOrder = new PharmacyOrder
+            {
+                PharmacyOrderId = pharmacyOrderId,
+                PharmacyOrderRequestId = request.PharmacyOrderRequestId,
+                PharmacyId = request.PharmacyId,
+                OrderReferance = pharmacyOrderId.GenerateOrderReference("ORD"),
+                ItemQty = orderItems.Count,
+                TotalAmount = totalAmount,
+                DiscountAmount = discountAmount,
+                FinalAmount = finalAmount,
+                BalanceAmount = finalAmount,
+                Notes = request.Notes,
+                Status = request.Status,
+                CreatedBy = request.CreatedBy,
+                CreatedOn = request.CreatedOn,
+                ModifiedBy = request.ModifiedBy,
+                ModifiedOn = request.ModifiedOn,
+                IsActive = request.IsActive
+            };
+
+            _dbContext.pharmacyOrders.Add(pharmacyOrder);
+            await _dbContext.SaveChangesAsync(); // Save order to get the ID
+
+            // Update and save order items with the new order ID
+            foreach (var item in orderItems)
+            {
+                item.PharmacyOrderId = pharmacyOrder.PharmacyOrderId;
+                _dbContext.pharmacyOrderItems.Add(item);
+            }
+
+            await _dbContext.SaveChangesAsync(); // Save all order items
+        }
     }
 }

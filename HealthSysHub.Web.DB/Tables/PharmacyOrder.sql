@@ -3,6 +3,7 @@
     [PharmacyOrderId]          UNIQUEIDENTIFIER    PRIMARY KEY DEFAULT NEWID(),
     [PharmacyId]               UNIQUEIDENTIFIER    NULL,
     [PharmacyOrderRequestId]   UNIQUEIDENTIFIER    NULL,
+    [OrderReferance]           VARCHAR(MAX)        NULL,
     [ItemQty]                  BIGINT              NULL,
     [TotalAmount]              DECIMAL(22,11)      NULL,
     [DiscountAmount]           DECIMAL(22,11)      NULL,

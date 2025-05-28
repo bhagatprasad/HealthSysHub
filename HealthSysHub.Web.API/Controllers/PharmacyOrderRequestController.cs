@@ -104,5 +104,20 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("ProcessPharmacyOrderRequestAsync")]
+        public async Task<IActionResult> ProcessPharmacyOrderRequestAsync(ProcessPharmacyOrderRequest requestDetails)
+        {
+            try
+            {
+                var response = await _pharmacyOrderRequestManager.ProcessPharmacyOrderRequestAsync(requestDetails);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

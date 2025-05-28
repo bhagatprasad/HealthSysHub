@@ -10,5 +10,6 @@ namespace HealthSysHub.Web.Managers
         Task<List<PharmacyOrderRequestDetails>> GetPharmacyOrderRequestsByPatientAsync(Guid patientId);
         Task<PharmacyOrderRequestDetails> GetPharmacyOrderRequestDetailAsync(Guid pharmacyOrderRequestId);
         Task<PharmacyOrderRequestDetails> InsertOrUpdatePharmacyOrderRequestDetailsAsync(PharmacyOrderRequestDetails requestDetails);
+        Task<ProcessPharmacyOrderRequestResponse> ProcessPharmacyOrderRequestAsync(ProcessPharmacyOrderRequest requestDetails);
     }
 }
