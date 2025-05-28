@@ -73,7 +73,7 @@ namespace HealthSysHub.Web.DataManagers
                     .Where(i => i.PharmacyId == pharmacyId)
                     .ToListAsync();
 
-            var medicines = await  _dbContext.pharmacyMedicines
+            var medicines = await _dbContext.pharmacyMedicines
                     .Where(m => m.PharmacyId == pharmacyId)
                     .ToListAsync();
 
@@ -115,7 +115,7 @@ namespace HealthSysHub.Web.DataManagers
                         requestItems.Where(i => i.PharmacyOrderId == order.PharmacyOrderId).ToList(),
                         medicinesLookup)
                 };
-            }).ToList();
+            }).OrderByDescending(c => c.ModifiedOn).ToList();
         }
 
         private List<PharmacyOrderItemDetails> MapPharmacyOrderItemDetails(
@@ -142,6 +142,38 @@ namespace HealthSysHub.Web.DataManagers
                     PharmacyId = item.PharmacyId
                 };
             }).ToList();
+        }
+
+        public async Task<PharmacyOrdersProcessResponse> ProcessPharmacyOrdersRequestAsync(PharmacyOrdersProcessRequest request)
+        {
+            var response = new PharmacyOrdersProcessResponse();
+            if (request == null)
+            {
+                response.Success = false;
+                response.Message = "Invalid object for process order ,please verify and resend";
+                return response;
+            }
+            var pharmacyOrder = await _dbContext.pharmacyOrders.FindAsync(request.PharmacyOrderId);
+
+            if (pharmacyOrder == null)
+            {
+                response.Success = false;
+                response.Message = "Invalid orderid for process order ,please verify and resend";
+                return response;
+            }
+
+            pharmacyOrder.Status = request.Status;
+            pharmacyOrder.ModifiedBy = request.ModifiedBy;
+            pharmacyOrder.ModifiedOn = request.ModifiedOn;
+            pharmacyOrder.Notes = request.Notes;
+            pharmacyOrder.Notes = !string.IsNullOrEmpty(pharmacyOrder.Notes) ? string.Join(",", pharmacyOrder.Notes, pharmacyOrder.Notes) : request.Notes;
+            await _dbContext.SaveChangesAsync();
+
+            response.Success = true;
+            response.Message = "Successfully proccessed order";
+
+
+            return response;
         }
     }
 }
