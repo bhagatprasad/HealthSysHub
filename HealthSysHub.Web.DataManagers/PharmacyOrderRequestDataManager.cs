@@ -356,7 +356,7 @@ namespace HealthSysHub.Web.DataManagers
             // Update the request
             UpdatePharmacyOrderRequest(pharmacyOrderRequest, requestDetails);
 
-            if (requestDetails.Status == "Approve")
+            if (requestDetails.Status == "SentForPharmacy")
             {
                 await CreateApprovedOrder(pharmacyOrderRequest, pharmacyOrderItems, totalAmount);
             }
@@ -438,7 +438,7 @@ namespace HealthSysHub.Web.DataManagers
                 FinalAmount = finalAmount,
                 BalanceAmount = finalAmount,
                 Notes = request.Notes,
-                Status = request.Status,
+                Status = "Pending",
                 CreatedBy = request.CreatedBy,
                 CreatedOn = request.CreatedOn,
                 ModifiedBy = request.ModifiedBy,

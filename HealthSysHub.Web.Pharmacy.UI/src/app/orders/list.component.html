@@ -66,13 +66,8 @@
 
                                     <!-- Medications List -->
                                     <td>
-                                        <!-- Notes -->
-                                        <div *ngIf="request.notes" class="small text-muted mb-1">
-                                            <i class="fas fa-comment-alt"></i> {{ request.notes }}
-                                        </div>
-
                                         <!-- Order Items -->
-                                        <ul *ngIf="request.pharmacyOrderItemDetails?.length"
+                                        <ul *ngIf="request.pharmacyOrderItemDetails?.length" title="{{ request.notes }}"
                                             class="list-unstyled small mb-0">
                                             <li *ngFor="let item of request.pharmacyOrderItemDetails"
                                                 class="py-1 border-bottom">
@@ -93,7 +88,7 @@
                                                 'badge-primary': request.status === 'Pending', 
                                                 'badge-info': request.status === 'SentForPharmacy',
                                                 'badge-success': request.status === 'Completed',
-                                                'badge-warning': request.status === 'Processing',
+                                                'badge-warning': request.status === 'Approved',
                                                 'badge-danger': request.status === 'Cancelled'
                                             }">
                                             {{ request.status || 'N/A' }}
