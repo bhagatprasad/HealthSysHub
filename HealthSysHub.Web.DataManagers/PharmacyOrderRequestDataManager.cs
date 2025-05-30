@@ -343,7 +343,7 @@ namespace HealthSysHub.Web.DataManagers
                 .Where(x => x.PharmacyOrderRequestId == requestDetails.PharmacyOrderRequestId)
                 .ToListAsync();
 
-            var medicines = await _dbContext.pharmacyMedicines.ToListAsync();
+            var medicines = await _dbContext.pharmacyMedicines.Where(x => x.PharmacyId == requestDetails.PharmacyId).ToListAsync();
 
             if (!pharmacyOrderRequestItems.Any())
             {
