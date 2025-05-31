@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PharmacyService } from '../services/pharmacy.service';
-import { Router } from 'express';
 import { Pharmacy } from '../models/pharmacy';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
