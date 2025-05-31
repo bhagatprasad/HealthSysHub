@@ -19,4 +19,10 @@ export class SidemenuComponent {
     this.accountService.clearUserSession(); // Clear the user session
     this.router.navigate(['/login']); // Navigate to login page
   }
+   toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar-offcanvas');
+    if (sidebar) {
+      sidebar.classList.toggle('active');
+    }
+  }
 }
