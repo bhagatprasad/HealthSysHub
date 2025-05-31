@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router'; // Corrected import
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-topmenu',
@@ -22,7 +23,7 @@ export class TopmenuComponent implements OnInit {
     { title: 'Sales', icon: 'mdi-chart-line', link: '/sales' },
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private accountService: AccountService) { }
 
   ngOnInit() {
     this.loadUserData();
@@ -59,5 +60,9 @@ export class TopmenuComponent implements OnInit {
     if (this.searchQuery.trim()) {
       this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
     }
+  }
+  requestToLogOut(): void {
+    this.accountService.clearUserSession(); // Clear the user session
+    this.router.navigate(['/login']); // Navigate to login page
   }
 }
