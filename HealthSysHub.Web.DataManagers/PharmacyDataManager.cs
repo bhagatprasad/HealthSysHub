@@ -3,7 +3,6 @@ using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Helpers;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace HealthSysHub.Web.DataManagers
 {
@@ -50,75 +49,7 @@ namespace HealthSysHub.Web.DataManagers
         {
             if (pharmacy.PharmacyId == Guid.Empty)
             {
-                pharmacy.PharmacyId = Guid.NewGuid();
-
                 await _dbContext.pharmacies.AddAsync(pharmacy);
-                await _dbContext.SaveChangesAsync();
-
-                Subscription subscription = new Subscription()
-                {
-                    IsActive = true,
-                    HospitalId = pharmacy.HospitalId,
-                    PharmacyId = pharmacy.PharmacyId,
-                    CreatedBy = pharmacy.CreatedBy,
-                    CreatedOn = pharmacy.CreatedOn,
-                    FromDate = DateTimeOffset.Now,
-                    ToDate = DateTimeOffset.Now.AddDays(180),
-                    ModifiedBy = pharmacy.ModifiedBy,
-                    ModifiedOn = pharmacy.ModifiedOn,
-                    Status = "Active",
-                    SubscriptionType = "Free",
-                };
-
-                await _dbContext.subscriptions.AddAsync(subscription);
-                await _dbContext.SaveChangesAsync();
-
-                PharmacyStaff staff = new PharmacyStaff()
-                {
-                    Designation = "Admin",
-                    Email = "admin@" + pharmacy.PharmacyCode + ".com",
-                    CreatedBy = pharmacy.CreatedBy,
-                    CreatedOn = pharmacy.CreatedOn,
-                    ModifiedBy = pharmacy.ModifiedBy,
-                    ModifiedOn = pharmacy.ModifiedOn,
-                    IsActive = true,
-                    FirstName = "Admin",
-                    LastName = pharmacy.PharmacyCode,
-                    PharmacyId = pharmacy.PharmacyId,
-                    HospitalId = pharmacy.HospitalId,
-                    PhoneNumber = pharmacy.PhoneNumber,
-                    StaffId = Guid.NewGuid(),
-                };
-                await _dbContext.pharmacyStaff.AddAsync(staff);
-
-                await _dbContext.SaveChangesAsync();
-                // Generate a salted hash for the password
-                HealthSysHubHashSalt hashSalt = HealthSysHubHashSalt.GenerateSaltedHash("Admin@2025");
-
-                User user = new User()
-                {
-                    PharmacyId = staff.PharmacyId,
-                    FirstName = staff.FirstName,
-                    LastName = staff.LastName,
-                    Email = staff.Email,
-                    Phone = staff.PhoneNumber,
-                    StaffId = staff.StaffId,
-                    HospitalId = staff.HospitalId,
-                    IsActive = true,
-                    CreatedBy = staff.CreatedBy,
-                    CreatedOn = DateTimeOffset.UtcNow,
-                    IsBlocked = false,
-                    LastPasswordChangedOn = DateTimeOffset.Now,
-                    ModifiedBy = staff.ModifiedBy,
-                    ModifiedOn = staff.ModifiedOn,
-                    RoleId = staff.Designation == "Admin" ? Guid.Parse("971ECB66-1CFC-43F2-AB4E-0F352A0F9354") : Guid.Parse("F5B853E9-2409-4EDE-ACEC-4EA14C766784"),
-                    PasswordHash = hashSalt.Hash,
-                    PasswordSalt = hashSalt.Salt
-                };
-
-                await _dbContext.users.AddAsync(user);
-
-                await _dbContext.SaveChangesAsync();
             }
             else
             {

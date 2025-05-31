@@ -1,0 +1,31 @@
+.buttonc-class {
+    margin-left: 5px !important;
+}
+.table .thead-dark th {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+
+/* Apply scroll only if more than 50 records */
+.scrollable-table {
+    max-height: 680px;
+    /* Adjust height as needed */
+    overflow-y: auto;
+    display: block;
+}
+
+/* Fix header while scrolling (optional) */
+.scrollable-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: gray !important;
+    z-index: 1;
+}
+
+/* Ensure table takes full width inside scrollable container */
+.scrollable-table table {
+    width: 100%;
+    margin-bottom: 0;
+    /* Remove extra space */
+}

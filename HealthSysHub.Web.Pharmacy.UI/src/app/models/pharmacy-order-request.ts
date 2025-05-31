@@ -1,14 +1,18 @@
-export interface PharmacyOrderRequestItem {
-  pharmacyOrderRequestItemId: string;
-  pharmacyOrderRequestId?: string | null;
-  pharmacyId?: string | null;
-  hospitalId?: string | null;
-  medicineId?: string | null;
-  itemQty?: number | null;
-  usage?: string | null;
-  createdBy?: string | null;
-  createdOn?: Date | string | null;
-  modifiedBy?: string | null;
-  modifiedOn?: Date | string | null;
+export interface PharmacyOrderRequest {
+  pharmacyOrderRequestId: string;
+  patientPrescriptionId?: string;
+  hospitalId?: string;
+  pharmacyId?: string;
+  patientId?: string;
+  hospitalName?: string;
+  doctorName?: string;
+  name?: string;
+  phone?: string;
+  notes?: string;
+  status?: string;
+  createdBy?: string;
+  createdOn?: Date;
+  modifiedBy?: string;
+  modifiedOn?: Date;
   isActive: boolean;
 }

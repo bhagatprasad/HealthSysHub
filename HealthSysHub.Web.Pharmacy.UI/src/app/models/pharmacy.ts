@@ -1,5 +1,5 @@
 export interface Pharmacy {
-  pharmacyId?: string;
+  pharmacyId: string;
   pharmacyName: string;
   pharmacyCode: string;
   registrationNumber: string;

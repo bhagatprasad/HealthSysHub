@@ -1,1 +1,115 @@
-<p>order-request-list works!</p>
+<div class="content-wrapper pb-0">
+    <div class="page-header flex-wrap">
+        <div class="header-left d-flex flex-wrap mt-2 mt-sm-0">
+            <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
+                (click)="requestToSales()">
+                <i class="mdi mdi-arrow-right-thin"></i> Go to Sales
+            </button>
+        </div>
+        <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
+            <div class="d-flex align-items-center">
+                <a href="#">
+                    <p class="m-0 pe-3">Dashboard</p>
+                </a>
+                <a class="ps-3 me-4" href="#">
+                    <p class="m-0">ADE-00234</p>
+                </a>
+            </div>
+            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToAddOrder()">
+                <i class="mdi mdi-plus-circle"></i> Add Order Request
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 stretch-card grid-margin">
+            <div class="card">
+                <div class="card-body card-body-padding">
+                    <div class="table-responsive"
+                        [ngClass]="{'scrollable-table': pharmacyOrderRequestDetails.length > 10}">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark" style="background-color: gray;">
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Hospital</th>
+                                    <th>Phone</th>
+                                    <th>Doctor</th>
+                                    <th>Notes</th>
+                                    <th>Modified On</th>
+                                    <th>Status</th>
+                                    <th>Active</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let request of pharmacyOrderRequestDetails">
+                                    <td>
+                                        <a class="btn-link" (click)="requestGetOrderDetails(request)">
+                                            {{ request.name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ request.hospitalName }}</td>
+                                    <td>{{ request.phone }}</td>
+                                    <td>{{ request.doctorName }}</td>
+                                    <td>
+                                        <!-- Order Items -->
+                                        <ul *ngIf="request.pharmacyOrderRequestItemDetails?.length" title="{{ request.notes }}"
+                                            class="list-unstyled small mb-0">
+                                            <li *ngFor="let item of request.pharmacyOrderRequestItemDetails"
+                                                class="py-1 border-bottom">
+                                                <span class="font-weight-bold">{{ item.medicineName }}</span>
+                                                <span class="text-muted ml-2">×{{ item.itemQty }}</span>
+                                            </li>
+                                        </ul>
+                                        <span *ngIf="!request.notes && !request.pharmacyOrderRequestItemDetails?.length"
+                                            class="text-muted">N/A</span>
+                                    </td>
+                                    <td>{{ request.modifiedOn | date }}</td>
+                                    <td>
+                                        <label class="badge" [ngClass]="{
+                                    'badge-primary': request.status === 'Pending',
+                                    'badge-info': request.status === 'SentForPharmacy',
+                                    'badge-success': request.status === 'Completed',
+                                    'badge-warning': request.status === 'Approved',
+                                    'badge-danger': request.status === 'Cancelled'
+                                    }">
+                                            {{ request.status }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="badge"
+                                            [ngClass]="request.isActive ? 'badge-success' : 'badge-danger'">
+                                            {{ request.isActive ? 'Yes' : 'No' }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm" (click)="openModal(request, 'Approved')"
+                                            *ngIf="request.status === 'Pending'">
+                                            Approve
+                                        </a>
+                                        <a class="btn btn-danger btn-sm buttonc-class"
+                                            (click)="openModal(request, 'Cancelled')" *ngIf="request.status === 'Pending'">
+                                            Cancel
+                                        </a>
+                                         <a class="btn btn-primary btn-sm buttonc-class" (click)="openModal(request, 'SentForPharmacy')"
+                                            *ngIf="request.status === 'Approved'">
+                                            Sent to Pharmacy 
+                                        </a>
+                                        <a class="btn btn-danger btn-sm buttonc-class"
+                                            *ngIf="request.status !== 'Pending'">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal [isOpen]="showModal" [title]="modalTitle" [message]="modalMessage" (confirmed)="handleConfirm($event)"
+    (closed)="showModal = false">
+</app-modal>

@@ -3,6 +3,8 @@ import { ApiService } from "./apiservice.service";
 import { Observable } from "rxjs";
 import { environment } from "../../environment";
 import { PharmacyOrderRequestDetails } from "../models/pharmacyorderrequestdetails";
+import { ProcessPharmacyOrderRequest } from "../models/processpharmacyorderrequest";
+import { ProcessPharmacyOrderRequestResponse } from "../models/processpharmacyorderrequestresponse";
 
 @Injectable({
     providedIn: "root"
@@ -28,5 +30,8 @@ export class PharmacyOrderRequestService {
     }
     InsertOrUpdatePharmacyOrderRequestAsync(pharmacyOrderReques: PharmacyOrderRequestDetails): Observable<PharmacyOrderRequestDetails> {
         return this.apiService.send<PharmacyOrderRequestDetails>('POST', environment.UrlConstants.InsertOrUpdatePharmacyOrderRequestAsync, pharmacyOrderReques);
+    }
+    ProcessPharmacyOrderRequestAsync(requestDetails: ProcessPharmacyOrderRequest): Observable<ProcessPharmacyOrderRequestResponse> {
+        return this.apiService.send<ProcessPharmacyOrderRequestResponse>('POST', environment.UrlConstants.ProcessPharmacyOrderRequestAsync, requestDetails);
     }
 }

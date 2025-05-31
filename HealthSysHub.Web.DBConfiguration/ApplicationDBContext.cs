@@ -1,5 +1,6 @@
 ﻿using HealthSysHub.Web.DBConfiguration.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace HealthSysHub.Web.DBConfiguration
 {
@@ -52,6 +53,8 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<LabStaff> labStaff { get; set; }
         public DbSet<PharmacyStaff> pharmacyStaff { get; set; }
         public DbSet<PharmacyMedicine> pharmacyMedicines { get; set; }
-        public DbSet<Subscription> subscriptions { get; set; }
+        public DbSet<PharmacyPayment> pharmacyPayments { get; set; }
+        public DbSet<PharmacyInvoice> pharmacyInvoices { get; set; }
+        public DbSet<PharmacyInvoiceItem> pharmacyInvoiceItems { get; set; }
     }
 }

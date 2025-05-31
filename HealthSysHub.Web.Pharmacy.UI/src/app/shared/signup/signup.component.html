@@ -1,183 +1,33 @@
-<h6 class="fw-light">Register Your Pharmacy</h6>
-<form class="pt-3" [formGroup]="pharmacyForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-        <div class="col-md-12 col-12">
-            <div class="form-group">
-                <label for="pharmacyName">Pharmacy Name*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-store"></i>
-                    </span>
-                    <input type="text" class="form-control" id="pharmacyName" formControlName="pharmacyName"
-                        placeholder="Pharmacy Name" required (blur)="generatePharmacyCode()">
-                </div>
-            </div>
+<h6 class="fw-light">Signing up is easy. It only takes a few steps</h6>
+<form class="pt-3">
+    <div class="form-group">
+        <input type="text" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Username">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <select class="form-select form-select-lg" id="exampleFormControlSelect2">
+            <option>Country</option>
+            <option>United States of America</option>
+            <option>United Kingdom</option>
+            <option>India</option>
+            <option>Germany</option>
+            <option>Argentina</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="mb-4">
+        <div class="form-check">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input"> I agree to all Terms & Conditions </label>
         </div>
     </div>
-
-    <!-- Row 2 -->
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="pharmacyCode">Pharmacy Code*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-tablet"></i>
-                    </span>
-                    <input type="text" class="form-control" id="pharmacyCode" formControlName="pharmacyCode"
-                        placeholder="Pharmacy Code" required>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="registrationNumber">Registration Number*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-file-document"></i>
-                    </span>
-                    <input type="text" class="form-control" id="registrationNumber" formControlName="registrationNumber"
-                        placeholder="Registration Number" required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 3 -->
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="address">Address*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-map-marker"></i>
-                    </span>
-                    <input type="text" class="form-control" id="address" formControlName="address" placeholder="Address"
-                        required>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="city">City*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-city"></i>
-                    </span>
-                    <input type="text" class="form-control" id="city" formControlName="city" placeholder="City"
-                        required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 4 -->
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="state">State*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-map"></i>
-                    </span>
-                    <input type="text" class="form-control" id="state" formControlName="state" placeholder="State"
-                        required>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="country">Country*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-earth"></i>
-                    </span>
-                    <input type="text" class="form-control" id="country" formControlName="country" placeholder="Country"
-                        required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 5 -->
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="postalCode">Postal Code*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-postage-stamp"></i>
-                    </span>
-                    <input type="text" class="form-control" id="postalCode" formControlName="postalCode"
-                        placeholder="Postal Code" required>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="phoneNumber">Phone Number*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-phone"></i>
-                    </span>
-                    <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber"
-                        placeholder="Phone Number" required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 6 -->
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="email">Email*</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-email"></i>
-                    </span>
-                    <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email"
-                        required>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group">
-                <label for="website">Website</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-web"></i>
-                    </span>
-                    <input type="text" class="form-control" id="website" formControlName="website"
-                        placeholder="Website">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 7 (Single field) -->
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <label for="logoUrl">Logo URL</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="mdi mdi-image"></i>
-                    </span>
-                    <input type="text" class="form-control" id="logoUrl" formControlName="logoUrl"
-                        placeholder="Logo URL">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="mt-3 d-grid gap-2">
-        <button class="btn  btn-primary  fw-semibold auth-form-btn" [disabled]="!pharmacyForm.valid || !pharmacyForm.dirty"  type="submit">Register Pharmacy</button>
+        <a class="btn btn-block btn-primary btn-lg fw-semibold auth-form-btn" href="../../index.html">SIGN UP</a>
     </div>
-
-    <!-- Signup Link -->
-    <div class="text-center mt-4 fw-light">
-        Already have an account?
-        <a class="text-primary" [routerLink]="'/login'">Login</a>
+    <div class="text-center mt-4 fw-light"> Already have an account? <a [routerLink]="'/login'" class="text-primary">Login</a>
     </div>
 </form>

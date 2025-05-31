@@ -1,1 +1,131 @@
-<p>list works!</p>
+<div class="content-wrapper pb-0">
+    <div class="page-header flex-wrap">
+        <div class="header-left d-flex flex-wrap mt-2 mt-sm-0">
+            <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
+                (click)="requestToSales()">
+                <i class="mdi mdi-arrow-right-thin"></i> Go to Sales
+            </button>
+        </div>
+        <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
+            <div class="d-flex align-items-center">
+                <a href="#">
+                    <p class="m-0 pe-3">Dashboard</p>
+                </a>
+                <a class="ps-3 me-4" href="#">
+                    <p class="m-0">ADE-00234</p>
+                </a>
+            </div>
+            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToAddOrder()">
+                <i class="mdi mdi-plus-circle"></i> Add Order Request
+            </button>
+        </div>
+    </div>
+    <!-- first row starts here -->
+    <div class="row">
+        <div class="col-xl-12 stretch-card grid-margin ">
+            <div class="card">
+                <div class="card-body card-body-padding">
+                    <div class="table-responsive" [ngClass]="{'scrollable-table': pharmacyOrderDetails.length > 50}">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark" style="background-color: gray;">
+                                <tr>
+
+                                    <th>Referance</th>
+                                    <th>Patient Name</th>
+                                    <th>Contact</th>
+                                    <th>Doctor</th>
+                                    <th>Medications</th>
+                                    <th>Status</th>
+                                    <th>Active</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let request of pharmacyOrderDetails">
+                                    <!-- Patient Name -->
+                                    <td class="text-monospace small"><a class="btn-link font-weight-bold"
+                                            (click)="requestToPharmacyOrderDetails(request)">
+                                            {{ request.orderReference || 'N/A' }}
+                                        </a></td>
+                                    <td>
+                                        <a class="btn-link font-weight-bold"
+                                            (click)="requestToPharmacyOrderDetails(request)">
+                                            {{ request.name || 'N/A' }}
+                                        </a>
+                                    </td>
+
+                                    <!-- Order Reference -->
+
+
+                                    <!-- Phone -->
+                                    <td>{{ request.phone || 'N/A' }}</td>
+
+                                    <!-- Doctor -->
+                                    <td>{{ request.doctorName || 'N/A' }}</td>
+
+                                    <!-- Medications List -->
+                                    <td>
+                                        <!-- Order Items -->
+                                        <ul *ngIf="request.pharmacyOrderItemDetails?.length" title="{{ request.notes }}"
+                                            class="list-unstyled small mb-0">
+                                            <li *ngFor="let item of request.pharmacyOrderItemDetails"
+                                                class="py-1 border-bottom">
+                                                <span class="font-weight-bold">{{ item.medicineName }}</span>
+                                                <span class="text-muted ml-2">×{{ item.itemQty }}</span>
+                                                <span *ngIf="item.totalAmount" class="text-primary float-right">
+                                                    {{ item.totalAmount | currency:'USD':'symbol':'1.2-2' }}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <span *ngIf="!request.notes && !request.pharmacyOrderItemDetails?.length"
+                                            class="text-muted">N/A</span>
+                                    </td>
+
+                                    <!-- Status -->
+                                    <td>
+                                        <label class="badge badge-pill" [ngClass]="{
+                                                'badge-primary': request.status === 'Pending', 
+                                                'badge-info': request.status === 'SentForPharmacy',
+                                                'badge-success': request.status === 'Completed',
+                                                'badge-warning': request.status === 'Approved',
+                                                'badge-danger': request.status === 'Cancelled'
+                                            }">
+                                            {{ request.status || 'N/A' }}
+                                        </label>
+                                    </td>
+
+                                    <!-- Active -->
+                                    <td>
+                                        <label class="badge badge-pill"
+                                            [ngClass]="request.isActive ? 'badge-success' : 'badge-danger'">
+                                            {{ request.isActive ? 'Active' : 'Inactive' }}
+                                        </label>
+                                    </td>
+
+                                    <!-- Total Amount -->
+                                    <td class="font-weight-bold">
+                                        {{ request.finalAmount | currency:'USD':'symbol':'1.2-2' }}
+                                    </td>
+
+                                    <!-- Actions -->
+                                    <td class="text-nowrap">
+                                        <button class="btn btn-sm btn-success mr-1" (click)="requestOrderEdit(request)"
+                                            *ngIf="request.status === 'Pending'">
+                                            <i class="mdi mdi-check"></i> Approve
+                                        </button>
+                                        <button class="btn btn-sm btn-danger buttonc-class"
+                                            (click)="requestOrderEdit(request)" *ngIf="request.status !== 'Completed'">
+                                            <i class="mdi mdi-times"></i> Cancel
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

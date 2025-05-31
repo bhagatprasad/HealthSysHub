@@ -8,6 +8,8 @@ import { PharmacyStaffService } from './pharmacystaff.service';
 import { PharmacyOrderRequestService } from './pharmacy-order-request-service';
 import { AuditFieldsService } from './audit-fields.service';
 import { PasswordService } from './password.service';
+import { NotificationService } from './notification.service';
+import { OrderService } from './order.service';
 
 @NgModule({
   declarations: [],
@@ -15,6 +17,7 @@ import { PasswordService } from './password.service';
     CommonModule
   ],
   providers: [
+    NotificationService,
     AccountService,
     HospitalService,
     PharmacyService,
@@ -22,7 +25,8 @@ import { PasswordService } from './password.service';
     PharmacyStaffService,
     PharmacyOrderRequestService,
     AuditFieldsService,
-    PasswordService
+    PasswordService,
+    OrderService
   ],
   exports: []
 })
