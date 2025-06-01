@@ -6,7 +6,7 @@
 
 /* Apply scroll only if more than 50 records */
 .scrollable-table {
-    max-height: 680px;
+    max-height: 500px;
     /* Adjust height as needed */
     overflow-y: auto;
     display: block;

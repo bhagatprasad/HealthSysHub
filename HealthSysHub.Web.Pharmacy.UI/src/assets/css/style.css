@@ -29532,3 +29532,7 @@ select.form-select.border-dark:focus {
     padding-right: 10px !important;
   }
 }
+
+.p-5 {
+    padding: 2rem !important;
+}

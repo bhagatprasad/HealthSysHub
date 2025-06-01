@@ -1,257 +1,297 @@
 <div class="content-wrapper pb-0">
-    <div class="page-header flex-wrap">
-        <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
-            <!-- Left side - Single button -->
-            <div class="header-left">
-                <button type="button" class="btn btn-primary btn-sm btn-icon-text">
-                    <i class="mdi mdi-arrow-right-thin"></i> <span class="d-none d-sm-inline">Go to Sales</span>
-                </button>
-            </div>
+  <!-- Header Section -->
+  <div class="page-header flex-wrap">
+    <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
+      <!-- Left Header Button -->
+      <div class="header-left">
+        <button type="button" class="btn btn-primary btn-sm btn-icon-text">
+          <i class="mdi mdi-arrow-right-thin"></i>
+          <span class="d-none d-sm-inline">Go to Sales</span>
+        </button>
+      </div>
 
-            <!-- Right side - Compact layout -->
-            <div class="header-right d-flex align-items-center">
-                <div class="d-flex align-items-center me-2">
-                    <a href="#" class="pe-2 text-nowrap small">
-                        <span class="d-none d-sm-inline">Dashboard</span>
-                        <i class="mdi mdi-view-dashboard d-sm-none"></i>
-                    </a>
-                    <a href="#" class="ps-2 text-nowrap small">
-                        <span class="d-none d-sm-inline">ADE-00234</span>
-                        <i class="mdi mdi-identifier d-sm-none"></i>
-                    </a>
-                </div>
-                <button type="button" class="btn btn-primary btn-sm btn-icon-text" (click)="requestToOrders()">
-                    <i class="mdi mdi-arrow-left-thin"></i> <span class="d-none d-sm-inline">Go to Orders</span>
-                </button>
-            </div>
+      <!-- Right Header Content -->
+      <div class="header-right d-flex align-items-center">
+        <div class="d-flex align-items-center me-2">
+          <a href="#" class="pe-2 text-nowrap small">
+            <span class="d-none d-sm-inline">Dashboard</span>
+            <i class="mdi mdi-view-dashboard d-sm-none"></i>
+          </a>
+          <a href="#" class="ps-2 text-nowrap small">
+            <span class="d-none d-sm-inline">ADE-00234</span>
+            <i class="mdi mdi-identifier d-sm-none"></i>
+          </a>
         </div>
+        <button type="button" class="btn btn-primary btn-sm btn-icon-text" (click)="requestToOrders()">
+          <i class="mdi mdi-arrow-left-thin"></i>
+          <span class="d-none d-sm-inline">Go to Orders</span>
+        </button>
+      </div>
     </div>
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <!-- Left Side - Medicine Selection (Full width on mobile) -->
-            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Available Medicines</h5>
-                    </div>
-                    <div class="card-body card-body-padding">
-                        <!-- Mobile Search Filter -->
-                        <!-- Desktop Table (hidden on mobile) -->
-                        <div class="d-none d-md-block">
-                            <div class="table-responsive"
-                                [ngClass]="{'scrollable-table': pharmacyMedicines.length > 50}">
-                                <table class="table table-bordered">
-                                    <thead class="thead-dark" style="background-color: gray;">
-                                        <tr>
-                                            <th>Medicine</th>
-                                            <th>Price</th>
-                                            <th>Stock</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let medicine of pharmacyMedicines">
-                                            <td>{{ medicine.medicineName }}</td>
-                                            <td>{{ medicine.pricePerUnit | currency }}</td>
-                                            <td>
-                                                <span [class.text-danger]="medicine.stockQuantity <= 0">
-                                                    {{ medicine.stockQuantity }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-success" (click)="addToCart(medicine)"
-                                                    [disabled]="medicine.stockQuantity <= 0">
-                                                    <i class="mdi mdi-cart"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+  </div>
 
-                        <!-- Mobile Medicine Cards -->
-                        <div class="d-block d-md-none">
-                            <div class="row">
-                                <div *ngFor="let medicine of pharmacyMedicines" class="col-12 mb-2">
-                                    <div class="card mobile-medicine-card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">{{ medicine.medicineName }}</h6>
-                                                    <small class="text-muted">{{ medicine.pricePerUnit | currency
-                                                        }}</small>
-                                                </div>
-                                                <div class="text-end">
-                                                    <span class="d-block"
-                                                        [class.text-danger]="medicine.stockQuantity <= 0">
-                                                        Stock: {{ medicine.stockQuantity }}
-                                                    </span>
-                                                    <button class="btn btn-sm btn-success mt-1"
-                                                        (click)="addToCart(medicine)"
-                                                        [disabled]="medicine.stockQuantity <= 0">
-                                                        <i class="mdi mdi-cart"></i> Add
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Main Content -->
+  <div class="container-fluid mt-4">
+    <div class="row g-3">
+      <!-- Medicine Selection Panel -->
+      <div class="col-12 col-lg-6">
+        <div class="card h-100">
+          <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Available Medicines</h5>
+              <!-- Search Filter for All Screens -->
+              <div class="search-filter">
+                <input type="text" class="form-control form-control-sm" 
+                       placeholder="Search medicines..." 
+                       [(ngModel)]="searchTerm" 
+                       (input)="filterMedicines()">
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body p-0">
+            <!-- Desktop Table View -->
+            <div class="d-none d-lg-block">
+              <div class="table-responsive" [ngClass]="{'scrollable-table': filteredMedicines.length > 10}">
+                <table class="table table-hover mb-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Medicine</th>
+                      <th class="text-end">Price</th>
+                      <th class="text-end">Stock</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let medicine of filteredMedicines" 
+                        [class.table-danger]="medicine.stockQuantity <= 0">
+                      <td>{{ medicine.medicineName }}</td>
+                      <td class="text-end">{{ medicine.pricePerUnit | currency }}</td>
+                      <td class="text-end">{{ medicine.stockQuantity }}</td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-success" 
+                                (click)="addToCart(medicine)"
+                                [disabled]="medicine.stockQuantity <= 0"
+                                title="Add to cart">
+                          <i class="mdi mdi-cart-plus"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            <!-- Right Side - Cart Form (Full width on mobile) -->
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Order Details</h5>
+            <!-- Mobile Card View -->
+            <div class="d-block d-lg-none">
+              <div class="medicine-list" [ngClass]="{'scrollable-list': filteredMedicines.length > 5}">
+                <div *ngFor="let medicine of filteredMedicines" class="medicine-card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="mb-1">{{ medicine.medicineName }}</h6>
+                        <div class="d-flex">
+                          <span class="badge bg-light text-dark me-2">
+                            {{ medicine.pricePerUnit | currency }}
+                          </span>
+                          <span class="badge" 
+                                [class.bg-danger]="medicine.stockQuantity <= 0"
+                                [class.bg-success]="medicine.stockQuantity > 0">
+                            Stock: {{ medicine.stockQuantity }}
+                          </span>
+                        </div>
+                      </div>
+                      <button class="btn btn-success btn-sm" 
+                              (click)="addToCart(medicine)"
+                              [disabled]="medicine.stockQuantity <= 0"
+                              title="Add to cart">
+                        <i class="mdi mdi-cart-plus me-1 d-none d-sm-inline"></i>
+                        Add
+                      </button>
                     </div>
-                    <div class="card-body">
-                        <form #orderForm="ngForm" (ngSubmit)="submitOrder()">
-                            <!-- Patient Information -->
-                            <div class="form-group mb-3">
-                                <label for="patientName">Patient Name</label>
-                                <input type="text" class="form-control" id="patientName" [(ngModel)]="orderRequest.name"
-                                    name="patientName" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Details Panel -->
+      <div class="col-12 col-lg-6">
+        <div class="card h-100">
+          <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Order Details</h5>
+            <span class="badge bg-light text-dark">
+              {{ orderRequest.pharmacyOrderRequestItemDetails.length }} items
+            </span>
+          </div>
+          
+          <div class="card-body">
+            <form #orderForm="ngForm" (ngSubmit)="submitOrder()">
+              <!-- Patient Information -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="patientName" class="form-label">Patient Name</label>
+                  <input type="text" class="form-control" id="patientName" 
+                         [(ngModel)]="orderRequest.name" name="patientName" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="patientPhone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" id="patientPhone" 
+                         [(ngModel)]="orderRequest.phone" name="patientPhone" required>
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="hospital" class="form-label">Hospital</label>
+                  <select class="form-select" id="hospital" 
+                          [(ngModel)]="orderRequest.hospitalId" name="hospital">
+                    <option value="">Select Hospital</option>
+                    <option *ngFor="let hospital of hospitalInformation" 
+                            [value]="hospital.hospitalId">
+                      {{ hospital.hospitalName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="doctorName" class="form-label">Doctor Name</label>
+                  <input type="text" class="form-control" id="doctorName" 
+                         [(ngModel)]="orderRequest.doctorName" name="doctorName">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" id="notes" rows="2" 
+                          [(ngModel)]="orderRequest.notes" name="notes"></textarea>
+              </div>
+
+              <!-- Cart Items Section -->
+              <div class="cart-section mb-4">
+                <h6 class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Selected Medicines</span>
+                  <span class="badge bg-primary rounded-pill">
+                    {{ getTotalQuantity() }} total
+                  </span>
+                </h6>
+
+                <div *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length === 0" 
+                     class="alert alert-info mb-0">
+                  <i class="mdi mdi-cart-off me-2"></i> No items added to cart
+                </div>
+
+                <!-- Desktop Cart Items -->
+                <div *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length > 0" 
+                     class="d-none d-lg-block">
+                  <div class="table-responsive">
+                    <table class="table table-sm align-middle">
+                      <thead>
+                        <tr>
+                          <th>Medicine</th>
+                          <th>Usage</th>
+                          <th class="text-center">Qty</th>
+                          <th class="text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index">
+                          <td>{{ item.medicineName }}</td>
+                          <td>
+                            <input type="text" class="form-control form-control-sm" 
+                                   [(ngModel)]="item.usage" 
+                                   [name]="'usage_' + i"
+                                   placeholder="Usage instructions">
+                          </td>
+                          <td class="text-center">
+                            <div class="quantity-control d-flex justify-content-center">
+                              <button class="btn btn-sm btn-outline-secondary" 
+                                      (click)="decreaseQuantity(i)">
+                                <i class="mdi mdi-minus"></i>
+                              </button>
+                              <input type="number" class="form-control form-control-sm text-center mx-1" 
+                                     [(ngModel)]="item.itemQty" 
+                                     [name]="'qty_' + i" 
+                                     min="1" 
+                                     [max]="getMaxQuantity(item.medicineId)"
+                                     style="width: 50px;">
+                              <button class="btn btn-sm btn-outline-secondary" 
+                                      (click)="increaseQuantity(i)">
+                                <i class="mdi mdi-plus"></i>
+                              </button>
                             </div>
-
-                            <div class="form-group mb-3">
-                                <label for="patientPhone">Phone Number</label>
-                                <input type="tel" class="form-control" id="patientPhone"
-                                    [(ngModel)]="orderRequest.phone" name="patientPhone" required>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="hospital">Hospital</label>
-                                <select class="form-control custom-arrow" id="hospital"
-                                    [(ngModel)]="orderRequest.hospitalId" name="hospital">
-                                    <option value="">Select Hospital</option>
-                                    <option *ngFor="let hospital of hospitalInformation" [value]="hospital.hospitalId">
-                                        {{ hospital.hospitalName }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="doctorName">Doctor Name</label>
-                                <input type="text" class="form-control" id="doctorName"
-                                    [(ngModel)]="orderRequest.doctorName" name="doctorName">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="notes">Notes</label>
-                                <textarea class="form-control" id="notes" rows="2" [(ngModel)]="orderRequest.notes"
-                                    name="notes"></textarea>
-                            </div>
-
-                            <!-- Cart Items -->
-                            <div class="cart-items mb-3">
-                                <h6>Selected Medicines</h6>
-                                <div *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length === 0"
-                                    class="alert alert-info">
-                                    No items added to cart
-                                </div>
-
-                                <div class="table-responsive"
-                                    *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length > 0">
-                                    <!-- Desktop Table (hidden on mobile) -->
-                                    <table class="table table-sm d-none d-md-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Medicine</th>
-                                                <th>Usage</th>
-                                                <th>Qty</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index">
-                                                <td>{{ item.medicineName }}</td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        [(ngModel)]="item.usage" [name]="'usage_' + i"
-                                                        placeholder="Enter usage instructions">
-                                                </td>
-                                                <td>
-                                                    <div class="input-group input-group-sm">
-                                                        <button class="btn btn-outline-secondary"
-                                                            (click)="decreaseQuantity(i)">-</button>
-                                                        <input type="number" class="form-control text-center"
-                                                            [(ngModel)]="item.itemQty" [name]="'qty_' + i" min="1"
-                                                            [max]="item.medicineId ? getMaxQuantity(item.medicineId) : 0">
-                                                        <button class="btn btn-outline-secondary"
-                                                            (click)="increaseQuantity(i)">+</button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-danger" (click)="removeItem(i)">
-                                                        <i class="mdi mdi-trash-can"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <!-- Mobile Cart Items -->
-                                    <div class="d-block d-md-none">
-                                        <div *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index"
-                                            class="mb-3 p-2 border rounded">
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <strong>{{ item.medicineName }}</strong>
-                                                <button class="btn btn-sm btn-danger" (click)="removeItem(i)">
-                                                    <i class="mdi mdi-trash-can"></i>
-                                                </button>
-                                            </div>
-
-                                            <div class="form-group mb-2">
-                                                <label class="small">Usage Instructions</label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    [(ngModel)]="item.usage" [name]="'usage_' + i"
-                                                    placeholder="Enter usage instructions">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="small">Quantity</label>
-                                                <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-secondary"
-                                                        (click)="decreaseQuantity(i)">-</button>
-                                                    <input type="number" class="form-control text-center"
-                                                        [(ngModel)]="item.itemQty" [name]="'qty_' + i" min="1"
-                                                        [max]="item.medicineId ? getMaxQuantity(item.medicineId) : 0">
-                                                    <button class="btn btn-outline-secondary"
-                                                        (click)="increaseQuantity(i)">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Order Summary -->
-                            <div class="order-summary mb-3 p-3 bg-light rounded">
-                                <div class="d-flex justify-content-between">
-                                    <strong>Total Items:</strong>
-                                    <span>{{ orderRequest.pharmacyOrderRequestItemDetails.length }}</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <strong>Total Quantity:</strong>
-                                    <span>{{ getTotalQuantity() }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary w-100"
-                                [disabled]="orderForm.invalid || orderRequest.pharmacyOrderRequestItemDetails.length === 0">
-                                <i class="mdi mdi-file"></i> Submit Order
+                          </td>
+                          <td class="text-center">
+                            <button class="btn btn-sm btn-danger" 
+                                    (click)="removeItem(i)"
+                                    title="Remove item">
+                              <i class="mdi mdi-trash-can"></i>
                             </button>
-                        </form>
-                    </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-            </div>
+
+                <!-- Mobile Cart Items -->
+                <div *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length > 0" 
+                     class="d-block d-lg-none">
+                  <div class="cart-items-mobile">
+                    <div *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index" 
+                         class="cart-item-card mb-2 p-3 border rounded">
+                      <div class="d-flex justify-content-between mb-2">
+                        <strong>{{ item.medicineName }}</strong>
+                        <button class="btn btn-sm btn-danger" 
+                                (click)="removeItem(i)"
+                                title="Remove item">
+                          <i class="mdi mdi-trash-can"></i>
+                        </button>
+                      </div>
+                      
+                      <div class="mb-2">
+                        <label class="form-label small">Usage Instructions</label>
+                        <input type="text" class="form-control form-control-sm" 
+                               [(ngModel)]="item.usage" 
+                               [name]="'usage_' + i"
+                               placeholder="Enter usage">
+                      </div>
+                      
+                      <div>
+                        <label class="form-label small">Quantity</label>
+                        <div class="quantity-control d-flex align-items-center">
+                          <button class="btn btn-sm btn-outline-secondary" 
+                                  (click)="decreaseQuantity(i)">
+                            <i class="mdi mdi-minus"></i>
+                          </button>
+                          <input type="number" class="form-control form-control-sm text-center mx-1" 
+                                 [(ngModel)]="item.itemQty" 
+                                 [name]="'qty_' + i" 
+                                 min="1" 
+                                 [max]="getMaxQuantity(item.medicineId)"
+                                 style="width: 60px;">
+                          <button class="btn btn-sm btn-outline-secondary" 
+                                  (click)="increaseQuantity(i)">
+                            <i class="mdi mdi-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary w-100 py-2"
+                      [disabled]="orderForm.invalid || orderRequest.pharmacyOrderRequestItemDetails.length === 0">
+                <i class="mdi mdi-file-check me-2"></i>
+                Submit Order
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

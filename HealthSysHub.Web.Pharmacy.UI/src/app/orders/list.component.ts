@@ -6,20 +6,28 @@ import { OrderService } from '../services/order.service';
 import { Pharmacy } from '../models/pharmacy';
 import { PharmacyOrderDetails } from '../models/pharmacy-order-details';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { ModalComponent } from '../shared/popups/modal.component';
 
 @Component({
   selector: 'app-list',
-  imports: [CommonModule],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
 export class OrdersListComponent implements OnInit {
-
+  showModal = false;
+  modalTitle: string = '';
+  modalMessage: string = '';
+  actionType: string = '';
+  currentRequest: PharmacyOrderDetails | null = null;
   pharmacyOrderDetails: PharmacyOrderDetails[] = [];
 
   currentUserPharmacy: Pharmacy | null = null;
 
-  constructor(private accountService: AccountService, private notifyService: NotificationService, private auditService: AuditFieldsService, private orderService: OrderService) { }
+  constructor(private accountService: AccountService, private notifyService: NotificationService,
+    private auditService: AuditFieldsService, private orderService: OrderService,
+    private router: Router) { }
 
   ngOnInit(): void {
     var pharmacy = this.accountService.getCurrentApplicationUserPharmacy();
@@ -46,16 +54,28 @@ export class OrdersListComponent implements OnInit {
     const errorMessage = error?.message || 'Failed to fetch orders';
     this.notifyService.showError(errorMessage);
   }
-  requestOrderEdit(pharmacyOrderDetail: PharmacyOrderDetails) {
+  handleConfirm(notes: string): void {
+
+  }
+
+  openModal(request: PharmacyOrderDetails, action: string): void {
+    this.currentRequest = request;
+    this.actionType = action;
+    this.modalTitle = `${action} Order Request`;
+    this.modalMessage = `Are you sure you want to ${action} this order request?`;
+    this.showModal = true;
+  }
+
+  requestPayNow(request: PharmacyOrderDetails) {
 
   }
   requestToPharmacyOrderDetails(pharmacyOrderDetail: PharmacyOrderDetails): void {
 
   }
-  requestToSales(): void {
-
+  requestToOrders(): void {
+    this.router.navigate(["/orders"]);
   }
   requestToAddOrder(): void {
-
+    this.router.navigate(["/addorder"]);
   }
 }
