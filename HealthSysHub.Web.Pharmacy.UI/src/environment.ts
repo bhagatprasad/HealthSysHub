@@ -191,6 +191,10 @@ export const environment = {
             merchantId: 'q577ct9g9qyq8jt7',
             publicKey: 'bdgysbrrb98f7kb7',
             privateKey: '11568834eefc8a3448a59ac682a34a63',
+        },
+        ImageBlob:{
+            APIURL:"https://api.imgbb.com/1/upload",
+            KEY:"9b568bf6699a4ee6502356e0797c48b1"
         }
     }
 };

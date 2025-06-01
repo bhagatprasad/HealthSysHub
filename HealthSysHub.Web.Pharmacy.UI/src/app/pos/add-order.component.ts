@@ -26,6 +26,10 @@ export class AddOrderComponent implements OnInit {
   currentPharmacy: Pharmacy | null = null;
   pharmacyMedicines: PharmacyMedicine[] = [];
   hospitalInformation: HospitalInformation[] = [];
+  filteredMedicines: PharmacyMedicine[] = [];
+
+  searchTerm: string = "";
+
   orderRequest: PharmacyOrderRequestDetails = {
     pharmacyId: '',
     name: '',
@@ -66,6 +70,7 @@ export class AddOrderComponent implements OnInit {
   }
   private handlePharmacyMedicineSuccessResponse(pharmacyMedicine: PharmacyMedicine[]): void {
     this.pharmacyMedicines = pharmacyMedicine;
+    this.filteredMedicines = [...pharmacyMedicine]; // Initialize filtered list with all medicines
     console.log(pharmacyMedicine);
   }
   private handleAuthError(error: Error | any): void {
@@ -242,5 +247,17 @@ export class AddOrderComponent implements OnInit {
     }
 
     return true;
+  }
+
+  filterMedicines(): void {
+    if (!this.searchTerm) {
+      this.filteredMedicines = [...this.pharmacyMedicines];
+      return;
+    }
+
+    const searchTermLower = this.searchTerm.toLowerCase();
+    this.filteredMedicines = this.pharmacyMedicines.filter(medicine =>
+      medicine.medicineName?.toLowerCase().includes(searchTermLower)
+    );
   }
 }

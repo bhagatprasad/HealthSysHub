@@ -31,7 +31,7 @@ export class ThankyouComponent implements OnInit {
   private handlePharmacyResponse(pharmacy: Pharmacy): void {
     this.pharmacy = pharmacy;
   }
-  
+
   private handleAuthError(error: Error | any): void {
     console.error('Error:', error);
     const errorMessage = error?.message || 'Failed to process reset password request';
