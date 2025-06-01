@@ -4,7 +4,7 @@
             <!-- Left side - Single button -->
             <div class="header-left">
                 <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
-                    (click)="requestToSales()">
+                    (click)="requestToOrders()">
                     <i class="mdi mdi-arrow-right-thin"></i> <span class="d-none d-sm-inline">Go to Sales</span>
                 </button>
             </div>
@@ -124,12 +124,12 @@
                                         <!-- Actions -->
                                         <td class="text-nowrap">
                                             <button class="btn btn-sm btn-success mr-1"
-                                                (click)="requestOrderEdit(request)"
+                                                (click)="requestPayNow(request)"
                                                 *ngIf="request.status === 'Pending'">
-                                                <i class="mdi mdi-check"></i> Approve
+                                                <i class="mdi mdi-check"></i> Pay now
                                             </button>
                                             <button class="btn btn-sm btn-danger buttonc-class"
-                                                (click)="requestOrderEdit(request)"
+                                                (click)="openModal(request,'Cancelled')"
                                                 *ngIf="request.status !== 'Completed'">
                                                 <i class="mdi mdi-times"></i> Cancel
                                             </button>
@@ -225,12 +225,12 @@
                                             <!-- Action Buttons -->
                                             <div class="d-flex flex-wrap gap-2">
                                                 <button class="btn btn-sm btn-success flex-grow-1"
-                                                    (click)="requestOrderEdit(request)"
+                                                    (click)="requestPayNow(request)"
                                                     *ngIf="request.status === 'Pending'">
-                                                    <i class="mdi mdi-check"></i> Approve
+                                                    <i class="mdi mdi-check"></i> Pay now
                                                 </button>
                                                 <button class="btn btn-sm btn-danger flex-grow-1"
-                                                    (click)="requestOrderEdit(request)"
+                                                    (click)="openModal(request,'Cancelled')"
                                                     *ngIf="request.status !== 'Completed'">
                                                     <i class="mdi mdi-times"></i> Cancel
                                                 </button>
@@ -249,4 +249,7 @@
             </div>
         </div>
     </div>
+    <app-modal [isOpen]="showModal" [title]="modalTitle" [message]="modalMessage" (confirmed)="handleConfirm($event)"
+        (closed)="showModal = false">
+    </app-modal>
 </div>
