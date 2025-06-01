@@ -1,3 +1,41 @@
 .buttonc-class {
     margin-left: 5px !important;
 }
+
+/* Mobile Order Card Styles */
+.mobile-order-card {
+    border-left: 4px solid #4b49ac;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.mobile-order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .card-body-padding {
+        padding: 1rem;
+    }
+    
+    .mobile-order-card .btn {
+        flex: 1 0 auto;
+        min-width: 100px;
+        margin: 2px 0;
+    }
+    
+    .mobile-order-card .badge {
+        font-size: 0.75rem;
+        padding: 0.35em 0.65em;
+    }
+}
+
+/* Make sure table is hidden on mobile */
+@media (max-width: 767.98px) {
+    .table-responsive {
+        display: none;
+    }
+}

@@ -29,3 +29,35 @@
     margin-bottom: 0;
     /* Remove extra space */
 }
+
+/* Mobile Order Card Styles */
+.mobile-order-card {
+    border-left: 4px solid #4b49ac;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.mobile-order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .card-body-padding {
+        padding: 1rem;
+    }
+    
+    .mobile-order-card .btn {
+        flex: 1 0 auto;
+        min-width: 120px;
+        margin: 2px;
+    }
+}
+
+/* Make sure table is hidden on mobile */
+@media (max-width: 767.98px) {
+    .table-responsive {
+        display: none;
+    }
+}
