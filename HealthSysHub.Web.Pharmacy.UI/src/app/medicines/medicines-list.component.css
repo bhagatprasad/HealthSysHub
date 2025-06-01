@@ -28,3 +28,51 @@
     padding-top: 10px;
     padding-right: 4px;
 }
+
+/* Mobile Medicine Card Styles */
+.mobile-medicine-card {
+    border-left: 4px solid #4b49ac;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.mobile-medicine-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.medicine-details {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .card-body-padding {
+        padding: 1rem;
+    }
+    
+    .mobile-medicine-card .btn {
+        min-width: 80px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .mobile-medicine-card .badge {
+        font-size: 0.75rem;
+        padding: 0.35em 0.65em;
+    }
+    
+    .medicine-details .row > div {
+        margin-bottom: 8px;
+    }
+}
+
+/* Make sure table is hidden on mobile */
+@media (max-width: 767.98px) {
+    .table-responsive {
+        display: none;
+    }
+}

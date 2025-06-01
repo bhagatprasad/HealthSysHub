@@ -1,21 +1,31 @@
 <div class="content-wrapper pb-0">
     <div class="page-header flex-wrap">
-        <div class="header-left">
-            <button class="btn btn-primary mb-2 mb-md-0 me-2">Create new document</button>
-            <button class="btn btn-outline-primary bg-white mb-2 mb-md-0">Import documents</button>
-        </div>
-        <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
-            <div class="d-flex align-items-center">
-                <a href="#">
-                    <p class="m-0 pe-3">Dashboard</p>
-                </a>
-                <a class="ps-3 me-4" href="#">
-                    <p class="m-0">ADE-00234</p>
-                </a>
+        <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
+            <!-- Left side - Single button -->
+            <div class="header-left">
+                <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center">
+                    <i class="mdi mdi-arrow-right-thin"></i> <span class="d-none d-sm-inline">Go</span>
+                </button>
             </div>
-            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="openAddPharmacyStaff()">
-                <i class="mdi mdi-plus-circle"></i> Add Staff
-            </button>
+
+            <!-- Right side - Compact layout -->
+            <div class="header-right d-flex align-items-center">
+                <div class="d-flex align-items-center me-2">
+                    <a href="#" class="pe-2 text-nowrap small">
+                        <span class="d-none d-sm-inline">Dashboard</span>
+                        <i class="mdi mdi-view-dashboard d-sm-none"></i>
+                    </a>
+                    <a href="#" class="ps-2 text-nowrap small">
+                        <span class="d-none d-sm-inline">ADE-00234</span>
+                        <i class="mdi mdi-identifier d-sm-none"></i>
+                    </a>
+                </div>
+                <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text"
+                    (click)="openAddPharmacyStaff()">
+                    <i class="mdi mdi-plus-circle"></i> <span class="d-none d-sm-inline">Add Staff</span>
+                </button>
+
+            </div>
         </div>
     </div>
     <!-- first row starts here -->
@@ -23,46 +33,102 @@
         <div class="col-xl-12 stretch-card grid-margin ">
             <div class="card">
                 <div class="card-body card-body-padding">
-                    <div class="table-responsive" [ngClass]="{'scrollable-table': pharmacyStaffUser.length > 50}">
-                        <table class="table table-bordered">
-                            <thead class="thead-dark" style="background-color: gray;">
-                                <tr>
-                                    <th>Staff Name</th>
-                                    <th>Designation</th>
-                                    <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>Created On</th>
-                                    <th>Modified On</th>
-                                    <th>Active</th>
-                                    <th>Options</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let staff of pharmacyStaffUser">
-                                    <td><a class="btn-link" (click)="requestGetStaffDetails(staff)">
-                                            {{ staff.firstName }}
-                                        </a></td>
-                                    <td> <i class="mdi mdi-account-circle" *ngIf="staff.designation=='Admin'"></i> {{
-                                        staff.designation }}</td>
-                                    <td>{{ staff.phoneNumber }}</td>
-                                    <td>{{ staff.email }}</td>
-                                    <td>{{ staff.createdOn | date }}</td>
-                                    <td>{{ staff.modifiedOn | date }}</td>
-                                    <td><label class="badge"
-                                            [ngClass]="staff.isActive ? 'badge-success' : 'badge-danger'">{{
-                                            staff.isActive ? 'Yes' : 'No' }}</label>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" *ngIf="staff.designation!=='Admin'"
-                                            (click)="requestStaffEdit(staff)">
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="d-none d-md-block">
+                        <div class="table-responsive" [ngClass]="{'scrollable-table': pharmacyStaffUser.length > 50}">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark" style="background-color: gray;">
+                                    <tr>
+                                        <th>Staff Name</th>
+                                        <th>Designation</th>
+                                        <th>Phone Number</th>
+                                        <th>Email</th>
+                                        <th>Created On</th>
+                                        <th>Modified On</th>
+                                        <th>Active</th>
+                                        <th>Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let staff of pharmacyStaffUser">
+                                        <td><a class="btn-link" (click)="requestGetStaffDetails(staff)">
+                                                {{ staff.firstName }}
+                                            </a></td>
+                                        <td> <i class="mdi mdi-account-circle" *ngIf="staff.designation=='Admin'"></i>
+                                            {{
+                                            staff.designation }}</td>
+                                        <td>{{ staff.phoneNumber }}</td>
+                                        <td>{{ staff.email }}</td>
+                                        <td>{{ staff.createdOn | date }}</td>
+                                        <td>{{ staff.modifiedOn | date }}</td>
+                                        <td><label class="badge"
+                                                [ngClass]="staff.isActive ? 'badge-success' : 'badge-danger'">{{
+                                                staff.isActive ? 'Yes' : 'No' }}</label>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-primary btn-sm" *ngIf="staff.designation!=='Admin'"
+                                                (click)="requestStaffEdit(staff)">
+                                                Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <div class="d-block d-md-none">
+                        <div class="row">
+                            <div *ngFor="let staff of pharmacyStaffUser" class="col-12 mb-3">
+                                <div class="card mobile-staff-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h5 class="card-title mb-1">
+                                                <a class="text-primary" (click)="requestGetStaffDetails(staff)">
+                                                    {{ staff.firstName }}
+                                                </a>
+                                            </h5>
+                                            <span class="badge"
+                                                [ngClass]="staff.isActive ? 'badge-success' : 'badge-danger'">
+                                                {{ staff.isActive ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </div>
 
+                                        <div class="staff-details mt-2">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Designation:</strong><br>
+                                                    <i class="mdi mdi-account-circle"
+                                                        *ngIf="staff.designation=='Admin'"></i>
+                                                    {{ staff.designation }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <strong>Phone:</strong><br>
+                                                    {{ staff.phoneNumber || 'N/A' }}
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <strong>Email:</strong><br>
+                                                    {{ staff.email || 'N/A' }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <strong>Created:</strong><br>
+                                                    {{ staff.createdOn | date:'shortDate' }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button class="btn btn-sm btn-primary" *ngIf="staff.designation!=='Admin'"
+                                                (click)="requestStaffEdit(staff)">
+                                                <i class="mdi mdi-pencil"></i> Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <app-create [isVisible]="showSidebar" [pharmacyStaff]="selectedPharmacyStaff"

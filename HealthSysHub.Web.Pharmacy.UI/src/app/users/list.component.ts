@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, createComponent, OnInit } from '@angular/core';
 import { PharmacyStaff } from '../models/pharmacystaff';
 import { PharmacyStaffService } from '../services/pharmacystaff.service';
 import { NotificationService } from '../services/notification.service';
 import { AccountService } from '../services/account.service';
 import { Pharmacy } from '../models/pharmacy';
 import { CommonModule } from '@angular/common';
-import { CreateComponent } from './create.component';
 import { AuditFieldsService } from '../services/audit-fields.service';
-
+import { CreateComponent } from './create.component';
 @Component({
   selector: 'app-list',
-  imports: [CommonModule, CreateComponent],
+  imports: [CommonModule,CreateComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })

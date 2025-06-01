@@ -1,5 +1,5 @@
 <div class="sidebar-overlay" *ngIf="isVisible" (click)="close()"></div>
-<div class="sidebar" [class.visible]="isVisible">
+<div class="sidebar" [class.show]="isVisible">
     <div class="sidebar-header">
         <h5 class="sidebar-title">{{ pharmacyStaff?.staffId ? 'Edit User' : 'Add User' }}</h5>
         <button type="button" class="close" (click)="close()" aria-label="Close">

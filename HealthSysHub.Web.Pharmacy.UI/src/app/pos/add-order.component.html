@@ -1,68 +1,110 @@
 <div class="content-wrapper pb-0">
     <div class="page-header flex-wrap">
-        <div class="header-left d-flex flex-wrap mt-2 mt-sm-0">
-            <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center">
-                <i class="mdi mdi-arrow-right-thin"></i> Go to Sales
-            </button>
-        </div>
-        <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
-            <div class="d-flex align-items-center">
-                <a href="#">
-                    <p class="m-0 pe-3">Dashboard</p>
-                </a>
-                <a class="ps-3 me-4" href="#">
-                    <p class="m-0">ADE-00234</p>
-                </a>
+        <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
+            <!-- Left side - Single button -->
+            <div class="header-left">
+                <button type="button" class="btn btn-primary btn-sm btn-icon-text">
+                    <i class="mdi mdi-arrow-right-thin"></i> <span class="d-none d-sm-inline">Go to Sales</span>
+                </button>
             </div>
-            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToOrders()">
-                <i class="mdi mdi-arrow-left-thin"></i> Go to Orders
-            </button>
+
+            <!-- Right side - Compact layout -->
+            <div class="header-right d-flex align-items-center">
+                <div class="d-flex align-items-center me-2">
+                    <a href="#" class="pe-2 text-nowrap small">
+                        <span class="d-none d-sm-inline">Dashboard</span>
+                        <i class="mdi mdi-view-dashboard d-sm-none"></i>
+                    </a>
+                    <a href="#" class="ps-2 text-nowrap small">
+                        <span class="d-none d-sm-inline">ADE-00234</span>
+                        <i class="mdi mdi-identifier d-sm-none"></i>
+                    </a>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm btn-icon-text" (click)="requestToOrders()">
+                    <i class="mdi mdi-arrow-left-thin"></i> <span class="d-none d-sm-inline">Go to Orders</span>
+                </button>
+            </div>
         </div>
     </div>
     <div class="container-fluid mt-4">
         <div class="row">
-            <!-- Left Side - Medicine Selection Grid -->
-            <div class="col-md-6">
+            <!-- Left Side - Medicine Selection (Full width on mobile) -->
+            <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Available Medicines</h5>
                     </div>
                     <div class="card-body card-body-padding">
-                        <div class="table-responsive" [ngClass]="{'scrollable-table': pharmacyMedicines.length > 50}">
-                            <table class="table table-bordered">
-                                <thead class="thead-dark" style="background-color: gray;">
-                                    <tr>
-                                        <th>Medicine</th>
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let medicine of pharmacyMedicines">
-                                        <td>{{ medicine.medicineName }}</td>
-                                        <td>{{ medicine.pricePerUnit | currency }}</td>
-                                        <td>
-                                            <span [class.text-danger]="medicine.stockQuantity <= 0">
-                                                {{ medicine.stockQuantity }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-success" (click)="addToCart(medicine)"
-                                                [disabled]="medicine.stockQuantity <= 0">
-                                                <i class="mdi mdi-cart"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <!-- Mobile Search Filter -->
+                        <!-- Desktop Table (hidden on mobile) -->
+                        <div class="d-none d-md-block">
+                            <div class="table-responsive"
+                                [ngClass]="{'scrollable-table': pharmacyMedicines.length > 50}">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark" style="background-color: gray;">
+                                        <tr>
+                                            <th>Medicine</th>
+                                            <th>Price</th>
+                                            <th>Stock</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let medicine of pharmacyMedicines">
+                                            <td>{{ medicine.medicineName }}</td>
+                                            <td>{{ medicine.pricePerUnit | currency }}</td>
+                                            <td>
+                                                <span [class.text-danger]="medicine.stockQuantity <= 0">
+                                                    {{ medicine.stockQuantity }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-success" (click)="addToCart(medicine)"
+                                                    [disabled]="medicine.stockQuantity <= 0">
+                                                    <i class="mdi mdi-cart"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Medicine Cards -->
+                        <div class="d-block d-md-none">
+                            <div class="row">
+                                <div *ngFor="let medicine of pharmacyMedicines" class="col-12 mb-2">
+                                    <div class="card mobile-medicine-card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0">{{ medicine.medicineName }}</h6>
+                                                    <small class="text-muted">{{ medicine.pricePerUnit | currency
+                                                        }}</small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <span class="d-block"
+                                                        [class.text-danger]="medicine.stockQuantity <= 0">
+                                                        Stock: {{ medicine.stockQuantity }}
+                                                    </span>
+                                                    <button class="btn btn-sm btn-success mt-1"
+                                                        (click)="addToCart(medicine)"
+                                                        [disabled]="medicine.stockQuantity <= 0">
+                                                        <i class="mdi mdi-cart"></i> Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side - Cart Form -->
-            <div class="col-md-6">
+            <!-- Right Side - Cart Form (Full width on mobile) -->
+            <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0">Order Details</h5>
@@ -115,7 +157,8 @@
 
                                 <div class="table-responsive"
                                     *ngIf="orderRequest.pharmacyOrderRequestItemDetails.length > 0">
-                                    <table class="table table-sm">
+                                    <!-- Desktop Table (hidden on mobile) -->
+                                    <table class="table table-sm d-none d-md-table">
                                         <thead>
                                             <tr>
                                                 <th>Medicine</th>
@@ -152,6 +195,39 @@
                                             </tr>
                                         </tbody>
                                     </table>
+
+                                    <!-- Mobile Cart Items -->
+                                    <div class="d-block d-md-none">
+                                        <div *ngFor="let item of orderRequest.pharmacyOrderRequestItemDetails; let i = index"
+                                            class="mb-3 p-2 border rounded">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <strong>{{ item.medicineName }}</strong>
+                                                <button class="btn btn-sm btn-danger" (click)="removeItem(i)">
+                                                    <i class="mdi mdi-trash-can"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="form-group mb-2">
+                                                <label class="small">Usage Instructions</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    [(ngModel)]="item.usage" [name]="'usage_' + i"
+                                                    placeholder="Enter usage instructions">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="small">Quantity</label>
+                                                <div class="input-group input-group-sm">
+                                                    <button class="btn btn-outline-secondary"
+                                                        (click)="decreaseQuantity(i)">-</button>
+                                                    <input type="number" class="form-control text-center"
+                                                        [(ngModel)]="item.itemQty" [name]="'qty_' + i" min="1"
+                                                        [max]="item.medicineId ? getMaxQuantity(item.medicineId) : 0">
+                                                    <button class="btn btn-outline-secondary"
+                                                        (click)="increaseQuantity(i)">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -178,3 +254,4 @@
             </div>
         </div>
     </div>
+</div>

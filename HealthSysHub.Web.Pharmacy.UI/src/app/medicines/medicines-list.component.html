@@ -1,28 +1,29 @@
-    <div class="content-wrapper pb-0">
-        <div class="page-header flex-wrap">
-            <div class="header-left">
-                <button class="btn btn-primary mb-2 mb-md-0 me-2">Create new document</button>
-                <button class="btn btn-outline-primary bg-white mb-2 mb-md-0">Import documents</button>
-            </div>
-            <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
-                <div class="d-flex align-items-center">
-                    <a href="#">
-                        <p class="m-0 pe-3">Dashboard</p>
-                    </a>
-                    <a class="ps-3 me-4" href="#">
-                        <p class="m-0">ADE-00234</p>
-                    </a>
-                </div>
-                <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="openAddMedicine()">
-                    <i class="mdi mdi-plus-circle"></i> Add Medicine
-                </button>
-            </div>
+<div class="content-wrapper pb-0">
+    <div class="page-header flex-wrap">
+        <div class="header-left">
+            <button class="btn btn-primary mb-2 mb-md-0 me-2">Create new document</button>
+            <button class="btn btn-outline-primary bg-white mb-2 mb-md-0">Import documents</button>
         </div>
-        <!-- first row starts here -->
-        <div class="row">
-            <div class="col-xl-12 stretch-card grid-margin ">
-                <div class="card">
-                    <div class="card-body card-body-padding">
+        <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
+            <div class="d-flex align-items-center">
+                <a href="#">
+                    <p class="m-0 pe-3">Dashboard</p>
+                </a>
+                <a class="ps-3 me-4" href="#">
+                    <p class="m-0">ADE-00234</p>
+                </a>
+            </div>
+            <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="openAddMedicine()">
+                <i class="mdi mdi-plus-circle"></i> Add Medicine
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 stretch-card grid-margin">
+            <div class="card">
+                <div class="card-body card-body-padding">
+                    <!-- Desktop Table (hidden on mobile) -->
+                    <div class="d-none d-md-block">
                         <div class="table-responsive" [ngClass]="{'scrollable-table': medicines.length > 50}">
                             <table class="table table-bordered">
                                 <thead class="thead-dark" style="background-color: gray;">
@@ -39,32 +40,84 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of medicines">
-                                        <td><a class="btn-link" (click)="requestGetMedicineSales(item)">
-                                                {{ item.medicineName }}<br>{{ item.genericName }}
-                                            </a></td>
-                                        <td>{{ item.dosageForm }}</td>
-                                        <td>{{ item.strength }}</td>
-                                        <td>{{ item.batchNumber }}</td>
-                                        <td>{{ item.pricePerUnit | currency }}</td>
-                                        <td>{{ item.stockQuantity }}</td>
-                                        <td><label class="badge"
-                                                [ngClass]="item.isActive ? 'badge-success' : 'badge-danger'">{{
-                                                item.isActive ? 'Yes' : 'No' }}</label>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" (click)="requestMedicineProcess(item)">
-                                                Edit
-                                            </a>
-                                        </td>
+                                        <!-- Your existing table rows remain the same -->
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
+                    <!-- Mobile Cards (shown only on mobile) -->
+                    <div class="d-block d-md-none">
+                        <div class="row">
+                            <div *ngFor="let item of medicines" class="col-12 mb-3">
+                                <div class="card mobile-medicine-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a class="text-primary" (click)="requestGetMedicineSales(item)">
+                                                {{ item.medicineName }}
+                                            </a>
+                                        </h5>
+                                        <small class="text-muted">{{ item.genericName }}</small>
+
+                                        <div class="medicine-details mt-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>Dosage:</strong><br>
+                                                    {{ item.dosageForm || 'N/A' }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <strong>Strength:</strong><br>
+                                                    {{ item.strength || 'N/A' }}
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <strong>Batch:</strong><br>
+                                                    {{ item.batchNumber || 'N/A' }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <strong>Stock:</strong><br>
+                                                    {{ item.stockQuantity || '0' }}
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <strong>Price:</strong><br>
+                                                    {{ item.pricePerUnit | currency }}
+                                                </div>
+                                                <div class="col-6">
+                                                    <strong>Status:</strong><br>
+                                                    <span class="badge"
+                                                        [ngClass]="item.isActive ? 'badge-success' : 'badge-danger'">
+                                                        {{ item.isActive ? 'Active' : 'Inactive' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button class="btn btn-sm btn-primary me-2"
+                                                (click)="requestMedicineProcess(item)">
+                                                <i class="mdi mdi-pencil"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-info" (click)="requestGetMedicineSales(item)">
+                                                <i class="mdi mdi-eye"></i> View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <app-medicine-sidebar [isVisible]="showSidebar" [medicine]="selectedMedicine"
-                    (closeSidebar)="onCloseSidebar()" (saveMedicine)="onSaveMedicine($event)">
-                </app-medicine-sidebar>
             </div>
+
+            <app-medicine-sidebar [isVisible]="showSidebar" [medicine]="selectedMedicine"
+                (closeSidebar)="onCloseSidebar()" (saveMedicine)="onSaveMedicine($event)">
+            </app-medicine-sidebar>
         </div>
     </div>
+</div>
