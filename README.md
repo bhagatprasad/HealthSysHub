@@ -28,6 +28,149 @@ The **Custom Hospital Management System** is a comprehensive software solution d
    - Track medical supplies, equipment, and pharmacy stock.
    - Automate reordering and inventory alerts.
    - Manage drug prescriptions and dispensation.
+   - Here's a comprehensive workflow chart for your pharmacy management system:
+
+### Pharmacy Management System Workflow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                     │
+│                                        PHARMACY MANAGEMENT SYSTEM                                    │
+│                                                                                                     │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                              │
+                                              ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                     │
+│                                         USER AUTHENTICATION                                          │
+│                                                                                                     │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                              │
+                           ┌──────────────────┴───────────────────┐
+                           │                                      │
+                           ▼                                      ▼
+┌───────────────────────────────────┐              ┌─────────────────────────────────────────────┐
+│                                   │              │                                             │
+│        PHARMACY SHOP USER         │              │            PHARMACY ADMIN                   │
+│                                   │              │                                             │
+└───────────────────────────────────┘              └─────────────────────────────────────────────┘
+          │                                                          │
+          │                                                          │
+          ▼                                                          ▼
+┌───────────────────────┐                                ┌───────────────────────────────┐
+│                       │                                │                               │
+│  1. Medicine Search   │                                │   1. Dashboard Overview       │
+│                       │                                │                               │
+└───────────┬───────────┘                                └───────────────┬───────────────┘
+            │                                                          │
+            ▼                                                          ▼
+┌───────────────────────┐                                ┌───────────────────────────────┐
+│                       │                                │                               │
+│ 2. Add to Cart/Order  │                                │   2. Order Management         │
+│                       │                                │                               │
+└───────────┬───────────┘                                └───────────────┬───────────────┘
+            │                                                          │
+            ▼                                                          ▼
+┌───────────────────────┐                                ┌───────────────────────────────┐
+│                       │                                │                               │
+│   3. Checkout/Payment │                                │   3. Sales Management         │
+│                       │                                │                               │
+└───────────┬───────────┘                                └───────────────┬───────────────┘
+            │                                                          │
+            ▼                                                          ▼
+┌───────────────────────┐                                ┌───────────────────────────────┐
+│                       │                                │                               │
+│  4. Invoice Printing  │                                │   4. User Management          │
+│                       │                                │                               │
+└───────────┬───────────┘                                └───────────────┬───────────────┘
+            │                                                          │
+            ▼                                                          ▼
+┌───────────────────────┐                                ┌───────────────────────────────┐
+│                       │                                │                               │
+│  5. Order Completion  │                                │   5. Inventory Management     │
+│                       │                                │                               │
+└───────────────────────┘                                └───────────────┬───────────────┘
+                                                                       │
+                                                                       ▼
+                                                         ┌───────────────────────────────┐
+                                                         │                               │
+                                                         │   6. Reports & Analytics      │
+                                                         │                               │
+                                                         └───────────────────────────────┘
+```
+
+### Detailed Workflow Breakdown:
+
+**Pharmacy Shop User Flow:**
+1. **Medicine Search**
+   - Search by name/generic name
+   - Filter by category/price/availability
+   - View medicine details
+
+2. **Add to Cart/Order**
+   - Select quantity
+   - Add usage instructions
+   - View cart summary
+
+3. **Checkout/Payment**
+   - Enter patient details
+   - Select payment method (Cash/Card/Insurance)
+   - Confirm order
+
+4. **Invoice Printing**
+   - Generate printable invoice
+   - Email/SMS receipt option
+   - Prescription copy attachment
+
+5. **Order Completion**
+   - Dispense medicines
+   - Update inventory
+   - Order tracking
+
+**Pharmacy Admin Flow:**
+1. **Dashboard Overview**
+   - Today's sales/orders
+   - Low stock alerts
+   - Pending orders
+
+2. **Order Management**
+   - View all orders
+   - Filter by status/date
+   - Process/update orders
+   - Cancel/refund orders
+
+3. **Sales Management**
+   - Daily/monthly sales reports
+   - Sales by medicine/category
+   - Discount/promotion management
+
+4. **User Management**
+   - Staff accounts management
+   - Roles & permissions
+   - Activity logs
+
+5. **Inventory Management**
+   - Stock levels monitoring
+   - Reorder points
+   - Expiry date tracking
+   - Supplier management
+
+6. **Reports & Analytics**
+   - Financial reports
+   - Sales trends
+   - Customer analytics
+   - Tax/VAT reports
+
+### Key System Features:
+- **Real-time inventory updates**
+- **Barcode scanning support**
+- **Prescription management**
+- **Insurance claim processing**
+- **Multi-branch support** (if applicable)
+- **Mobile app integration**
+- **Data backup & security**
+
+Would you like me to elaborate on any specific part of this workflow or provide more detailed sub-flows for particular functions?
 
 6. **Reporting and Analytics:**
    - Generate detailed reports on patient statistics, revenue, and resource utilization.
