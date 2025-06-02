@@ -8,6 +8,7 @@ namespace HealthSysHub.Web.Managers
         Task<ChangePasswordResult> ChangePasswordAsync(ChangePassword changePassword);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPassword forgotPassword);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPassword resetPassword);
+        Task<ProfileUpdateRequestResponse> ProfileUpdateRequestAsync(ProfileUpdateRequest request);
         Task<ActivateOrInActivateUserResponse> ActivateOrInActivateUserAsync(ActivateOrInActivateUser activateOrInActivateUser);
     }
 }

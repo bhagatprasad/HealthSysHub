@@ -1,0 +1,71 @@
+<div class="content-wrapper pb-0">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Change Password</h4>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="profileFrom" (ngSubmit)="OnSubmit()">
+                    <div class="form-group">
+                        <label for="firstName">First Name*</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-account"></i>
+                            </span>
+                            <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                                placeholder="Enter first name">
+                        </div>
+                        <div *ngIf="profileFrom.get('firstName')?.invalid && (profileFrom.get('firstName')?.dirty || profileFrom.get('firstName')?.touched)"
+                            class="text-danger">
+                            <small *ngIf="profileFrom.get('firstName')?.errors?.['required']">
+                                First name is required
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name*</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-account"></i>
+                            </span>
+                            <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                                placeholder="Enter last name">
+                        </div>
+                        <div *ngIf="profileFrom.get('lastName')?.invalid && (profileFrom.get('lastName')?.dirty || profileFrom.get('lastName')?.touched)"
+                            class="text-danger">
+                            <small *ngIf="profileFrom.get('lastName')?.errors?.['required']">
+                                Last name is required
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone*</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-phone"></i>
+                            </span>
+                            <input type="text" class="form-control" id="phone" formControlName="phone"
+                                placeholder="Enter phone number">
+                        </div>
+                        <div *ngIf="profileFrom.get('phone')?.invalid && (profileFrom.get('phone')?.dirty || profileFrom.get('phone')?.touched)"
+                            class="text-danger">
+                            <small *ngIf="profileFrom.get('phone')?.errors?.['required']">
+                                Phone number is required
+                            </small>
+                        </div>
+                    </div>
+
+
+                    <div class="sidebar-footer">
+                        <button type="submit" class="btn btn-primary"
+                            [disabled]="!profileFrom.valid || !profileFrom.dirty">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
