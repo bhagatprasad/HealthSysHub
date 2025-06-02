@@ -1,197 +1,74 @@
 <div class="content-wrapper pb-0">
-      <div class="page-header flex-wrap">
-        <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
-            <!-- Left side - Single button -->
-            <div class="header-left">
-                <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
-                    (click)="requestToSales()">
-                    <i class="mdi mdi-arrow-right-thin"></i> <span class="d-none d-sm-inline">Go to Sales</span>
-                </button>
-            </div>
-
-            <!-- Right side - Compact layout -->
-            <div class="header-right d-flex align-items-center">
-                <div class="d-flex align-items-center me-2">
-                    <a href="#" class="pe-2 text-nowrap small">
-                        <span class="d-none d-sm-inline">Dashboard</span>
-                        <i class="mdi mdi-view-dashboard d-sm-none"></i>
-                    </a>
-                    <a href="#" class="ps-2 text-nowrap small">
-                        <span class="d-none d-sm-inline">ADE-00234</span>
-                        <i class="mdi mdi-identifier d-sm-none"></i>
-                    </a>
-                </div>
-                <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToOrders()">
-                    <i class="mdi mdi-arrow-left-thin"></i> <span class="d-none d-sm-inline">Go to Orders</span>
-                </button>
-
-            </div>
+  <div class="page-header flex-wrap">
+    <div class="d-flex flex-wrap justify-content-between w-100 align-items-center">
+      <div class="header-left">
+        <button type="button" class="btn btn-primary btn-icon-text d-flex align-items-center"
+          (click)="requestToSales()">
+          <i class="mdi mdi-arrow-right-thin"></i>
+          <span class="d-none d-sm-inline">Go to Sales</span>
+        </button>
+      </div>
+      <div class="header-right d-flex align-items-center">
+        <div class="d-flex align-items-center me-2">
+          <a href="#" class="pe-2 text-nowrap small">
+            <span class="d-none d-sm-inline">Dashboard</span>
+            <i class="mdi mdi-view-dashboard d-sm-none"></i>
+          </a>
+          <a href="#" class="ps-2 text-nowrap small">
+            <span class="d-none d-sm-inline">ADE-00234</span>
+            <i class="mdi mdi-identifier d-sm-none"></i>
+          </a>
         </div>
+        <button type="button" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text" (click)="requestToOrders()">
+          <i class="mdi mdi-arrow-left-thin"></i>
+          <span class="d-none d-sm-inline">Go to Orders</span>
+        </button>
+      </div>
     </div>
+  </div>
 
-  <!-- first row starts here -->
+  <!-- Charts Row -->
   <div class="row">
-    <div class="col-xl-9 stretch-card grid-margin">
+    <div class="col-xl-12 stretch-card grid-margin">
       <div class="card">
+        <div class="card-header bg-primary">
+          <h5>Order Summary</h5>
+        </div>
         <div class="card-body">
-          <div class="d-flex justify-content-between flex-wrap">
-            <div>
-              <div class="card-title mb-0">Sales Revenue</div>
-              <h3 class="fw-bold mb-0">$32,409</h3>
-            </div>
-            <div>
-              <div class="d-flex flex-wrap pt-2 justify-content-between sales-header-right">
-                <div class="d-flex me-5">
-                  <button type="button" class="btn btn-social-icon btn-outline-sales">
-                    <i class="mdi mdi-inbox-arrow-down"></i>
-                  </button>
-                  <div class="ps-2">
-                    <h4 class="mb-0 fw-semibold head-count">$8,217</h4>
-                    <span class="font-10 fw-semibold text-muted">TOTAL SALES</span>
-                  </div>
-                </div>
-                <div class="d-flex me-3 mt-2 mt-sm-0">
-                  <button type="button" class="btn btn-social-icon btn-outline-sales profit">
-                    <i class="mdi mdi-cash text-info"></i>
-                  </button>
-                  <div class="ps-2">
-                    <h4 class="mb-0 fw-semibold head-count">2,804</h4>
-                    <span class="font-10 fw-semibold text-muted">TOTAL PROFIT</span>
-                  </div>
-                </div>
+          <div class="col-12 col-sm-6 col-md-3 pb-1">
+            <button class="btn btn-status btn-warning w-100" (click)="filterOrdersByStatus('Pending')">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <span class="status-label"><i class="mdi mdi-clock-outline me-2"></i>Pending</span>
+                <span class="status-count">{{orderCounts.Pending}}</span>
               </div>
-            </div>
+            </button>
           </div>
-          <p class="text-muted font-13 mt-2 mt-sm-0">Your sales monitoring dashboard template.
-            <a class="text-muted font-13" href="#"><u>Learn more</u></a>
-          </p>
-          <div class="flot-chart-wrapper">
-            <div id="flotChart" class="flot-chart">
-              <canvas class="flot-base"></canvas>
-            </div>
+          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
+            <button class="btn btn-status btn-info w-100" (click)="filterOrdersByStatus('SentForPharmacy')">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <span class="status-label"><i class="mdi mdi-hospital-building me-2"></i>Sent to Pharmacy</span>
+                <span class="status-count">{{orderCounts.SentForPharmacy}}</span>
+              </div>
+            </button>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 stretch-card grid-margin">
-      <div class="card card-img">
-        <div class="card-body d-flex align-items-center">
-          <div class="text-white">
-            <h1 class="font-20 fw-semibold mb-0">Get premium</h1>
-            <h1 class="font-20 fw-semibold">account!</h1>
-            <p>to optimize your selling Product</p>
-            <p class="font-10 fw-semibold">Enjoy the advantage of premium.</p>
-            <button class="btn bg-white text-dark font-12">Get Premium</button>
+          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
+            <button class="btn btn-status btn-success w-100" (click)="filterOrdersByStatus('Completed')">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <span class="status-label"><i class="mdi mdi-check-circle-outline me-2"></i>Completed</span>
+                <span class="status-count">{{orderCounts.Completed}}</span>
+              </div>
+            </button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- image card row starts here -->
-  <div class="row">
-    <div class="col-sm-4 stretch-card grid-margin">
-      <div class="card">
-        <div class="card-body p-0">
-          <img class="img-fluid w-100" src="../assets/images/dashboard/img_1.jpg" alt="">
-        </div>
-        <div class="card-body px-3 text-dark">
-          <div class="d-flex justify-content-between">
-            <p class="text-muted font-13 mb-0">ENTIRE APARTMENT</p>
-            <i class="mdi mdi-heart-outline"></i>
+          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
+            <button class="btn btn-status btn-danger w-100" (click)="filterOrdersByStatus('Cancelled')">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <span class="status-label"><i class="mdi mdi-close-circle-outline me-2"></i>Cancelled</span>
+                <span class="status-count">{{orderCounts.Cancelled}}</span>
+              </div>
+            </button>
           </div>
-          <h5 class="fw-semibold">Cosy Studio flat in London</h5>
-          <div class="d-flex justify-content-between fw-semibold">
-            <p class="mb-0"><i class="mdi mdi-star star-color pe-1"></i>4.60 (35)</p>
-            <p class="mb-0">$5,267/night</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4 stretch-card grid-margin">
-      <div class="card">
-        <div class="card-body p-0">
-          <img class="img-fluid w-100" src="../assets/images/dashboard/img_2.jpg" alt="">
-        </div>
-        <div class="card-body px-3 text-dark">
-          <div class="d-flex justify-content-between">
-            <p class="text-muted font-13 mb-0">ENTIRE APARTMENT</p>
-            <i class="mdi mdi-heart-outline"></i>
-          </div>
-          <h5 class="fw-semibold">Victoria Bedsit Studio Ensuite</h5>
-          <div class="d-flex justify-content-between fw-semibold">
-            <p class="mb-0"><i class="mdi mdi-star star-color pe-1"></i>4.83 (12)</p>
-            <p class="mb-0">$6,144/night</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4 stretch-card grid-margin">
-      <div class="card">
-        <div class="card-body p-0">
-          <img class="img-fluid w-100" src="../assets/images/dashboard/img_3.jpg" alt="">
-        </div>
-        <div class="card-body px-3 text-dark">
-          <div class="d-flex justify-content-between">
-            <p class="text-muted font-13 mb-0">ENTIRE APARTMENT</p>
-            <i class="mdi mdi-heart-outline"></i>
-          </div>
-          <h5 class="fw-semibold">Fabulous Huge Room</h5>
-          <div class="d-flex justify-content-between fw-semibold">
-            <p class="mb-0"><i class="mdi mdi-star star-color pe-1"></i>3.83 (15)</p>
-            <p class="mb-0">$5,267/night</p>
-          </div>
+
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6 col-xl-4 stretch-card grid-margin">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-title mb-2">Upcoming events (3)</div>
-          <h3 class="mb-3">23 September 2019</h3>
-          <div class="d-flex border-bottom border-top py-3">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" checked>
-              </label>
-            </div>
-            <div class="ps-2">
-              <span class="font-12 text-muted">Tue, Mar 5, 9.30am</span>
-              <p class="m-0 text-black">Hey, I attached some new PSD files…</p>
-            </div>
-          </div>
-          <div class="d-flex border-bottom py-3">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-              </label>
-            </div>
-            <div class="ps-2">
-              <span class="font-12 text-muted">Mon, Mar 11, 4.30 PM</span>
-              <p class="m-0 text-black">Discuss performance with manager</p>
-            </div>
-          </div>
-          <div class="d-flex border-bottom py-3">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-              </label>
-            </div>
-            <div class="ps-2">
-              <span class="font-12 text-muted">Tue, Mar 5, 9.30am</span>
-              <p class="m-0 text-black">Meeting with Alisa</p>
-            </div>
-          </div>
-          <div class="d-flex pt-3">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
