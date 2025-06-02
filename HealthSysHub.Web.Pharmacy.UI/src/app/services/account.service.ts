@@ -15,6 +15,8 @@ import { ResetPassword } from '../models/resetpassword';
 import { ResetPasswordResponse } from '../models/resetpasswordresponse';
 import { ActivateOrInActivateUser } from '../models/activateorinactivateuser';
 import { ActivateOrInActivateUserResponse } from '../models/activateorinactivateuserresponse';
+import { ProfileUpdateRequest } from '../models/profile-update-request';
+import { ProfileUpdateRequestResponse } from '../models/profile-update-request-response';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService implements OnDestroy {
@@ -135,6 +137,10 @@ export class AccountService implements OnDestroy {
   }
   activateOrInActivateUserAsync(activateuser: ActivateOrInActivateUser): Observable<ActivateOrInActivateUserResponse> {
     return this.apiService.send<ActivateOrInActivateUserResponse>('POST', environment.UrlConstants.ActivateOrInActivateUserAsync, activateuser);
+  }
+
+  profileUpdateRequestAsync(profileUpdateRequest: ProfileUpdateRequest): Observable<ProfileUpdateRequestResponse> {
+    return this.apiService.send<ProfileUpdateRequestResponse>('POST', environment.UrlConstants.ProfileUpdateRequestAsync, profileUpdateRequest);
   }
 
   storeUserSession(user: IApplicationUser, token: string): void {

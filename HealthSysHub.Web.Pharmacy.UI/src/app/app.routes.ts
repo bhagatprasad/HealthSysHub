@@ -15,6 +15,7 @@ import { LoginComponent } from './shared/login/login.component';
 import { DetailsComponent } from './pharmcy/details.component';
 import { OrderRequestListComponent } from './orders/order-request-list.component';
 import { AddOrderComponent } from './pos/add-order.component';
+import { ProfileComponent } from './shared/profile/profile.component';
 
 export const routes: Routes = [
   { 
@@ -35,6 +36,11 @@ export const routes: Routes = [
    { 
     path: 'changepassword', 
     component: PasswordChangeComponent,
+    canActivate: [AuthGuard] 
+  },
+   { 
+    path: 'profile', 
+    component: ProfileComponent,
     canActivate: [AuthGuard] 
   },
    { 

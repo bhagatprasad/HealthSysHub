@@ -27,7 +27,7 @@ export const environment = {
         GetPharmacyOrderRequestsByPatientAsync: 'PharmacyOrderRequest/GetPharmacyOrderRequestsByPatientAsync',
         GetPharmacyOrderRequestDetailAsync: 'PharmacyOrderRequest/GetPharmacyOrderRequestDetailAsync',
         InsertOrUpdatePharmacyOrderRequestAsync: 'PharmacyOrderRequest/InsertOrUpdatePharmacyOrderRequestAsync',
-        ProcessPharmacyOrderRequestAsync:'PharmacyOrderRequest/ProcessPharmacyOrderRequestAsync',
+        ProcessPharmacyOrderRequestAsync: 'PharmacyOrderRequest/ProcessPharmacyOrderRequestAsync',
         Tickets: 'Tickets',
         MyTickets: 'Tickets/GetAllUserTickets',
         PriorityType: 'PriorityTypes',
@@ -50,11 +50,12 @@ export const environment = {
         TermsOfUses: 'TermsOfUses',
         fetchUserSpecificPayment: 'Payments/fetchUserSpecificPayment',
         ChangePasswordAsync: 'User/ChangePasswordAsync',
-        GetPharmacyOrdersListByPharmacyAsync:'Order/GetPharmacyOrdersListByPharmacyAsync',
-        ProcessPharmacyOrdersRequestAsync:'Order/ProcessPharmacyOrdersRequestAsync',
-        ProcessPharmacyOrderPaymentAsync:'PharmacyPayment/ProcessPharmacyOrderPaymentAsync',
-        GetPharmacyPaymentListAsync:'PharmacyPayment/GetPharmacyPaymentListAsync',
-        GetPharmacyPaymentDetailAsync:'PharmacyPayment/GetPharmacyPaymentDetailAsync'
+        ProfileUpdateRequestAsync: 'User/ProfileUpdateRequestAsync',
+        GetPharmacyOrdersListByPharmacyAsync: 'Order/GetPharmacyOrdersListByPharmacyAsync',
+        ProcessPharmacyOrdersRequestAsync: 'Order/ProcessPharmacyOrdersRequestAsync',
+        ProcessPharmacyOrderPaymentAsync: 'PharmacyPayment/ProcessPharmacyOrderPaymentAsync',
+        GetPharmacyPaymentListAsync: 'PharmacyPayment/GetPharmacyPaymentListAsync',
+        GetPharmacyPaymentDetailAsync: 'PharmacyPayment/GetPharmacyPaymentDetailAsync'
     },
     Messages: {
         InvalidPassword: "Authentication Failed due to Invalid Password ,Please enter correct password and try again",
@@ -195,9 +196,9 @@ export const environment = {
             publicKey: 'bdgysbrrb98f7kb7',
             privateKey: '11568834eefc8a3448a59ac682a34a63',
         },
-        ImageBlob:{
-            APIURL:"https://api.imgbb.com/1/upload",
-            KEY:"9b568bf6699a4ee6502356e0797c48b1"
+        ImageBlob: {
+            APIURL: "https://api.imgbb.com/1/upload",
+            KEY: "9b568bf6699a4ee6502356e0797c48b1"
         }
     }
 };

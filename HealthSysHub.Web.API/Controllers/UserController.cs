@@ -50,5 +50,23 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpPost]
+        [Route("ProfileUpdateRequestAsync")]
+        public async Task<IActionResult> ProfileUpdateRequestAsync(ProfileUpdateRequest profile)
+        {
+            try
+            {
+                var response = await _userManager.ProfileUpdateRequestAsync(profile);
+
+
+                return Ok(response);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
     }
 }

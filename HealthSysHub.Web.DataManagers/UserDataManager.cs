@@ -432,5 +432,118 @@ namespace HealthSysHub.Web.DataManagers
             return result;
         }
 
+        public async Task<ProfileUpdateRequestResponse> ProfileUpdateRequestAsync(ProfileUpdateRequest request)
+        {
+            var response = new ProfileUpdateRequestResponse();
+
+            var user = await _dBContext.users.FindAsync(request.Id);
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "Unable to find user,please try again";
+
+                return response;
+            }
+
+            if (user != null)
+            {
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                user.Phone = request.Phone;
+                user.ModifiedBy = request.ModifiedBy;
+                user.ModifiedOn = request.ModifiedOn;
+
+                switch (request.EntityType)
+                {
+                    case "Hospital":
+                        response = await HandleProfileUpdateForHospitalAsync(request);
+                        break;
+
+                    case "Pharmacy":
+                        response = await HandleProfileUpdateForPharmacyAsync(request);
+                        break;
+
+                    case "Lab":
+                        response = await HandleProfileUpdateForLabAsync(request);
+                        break;
+                    default:
+                        response.Success = false;
+                        response.Message = "Invalid entity type.";
+                        break;
+
+                }
+            }
+
+            await _dBContext.SaveChangesAsync();
+
+            return response;
+        }
+
+        private async Task<ProfileUpdateRequestResponse> HandleProfileUpdateForHospitalAsync(ProfileUpdateRequest request)
+        {
+            var response = new ProfileUpdateRequestResponse();
+
+            var staff = await _dBContext.hospitalStaffs.Where(x => x.HospitalId == request.HospitalId && x.StaffId == request.StaffId).FirstOrDefaultAsync();
+
+            if (staff != null)
+            {
+
+                staff.FirstName = request.FirstName;
+                staff.LastName = request.LastName;
+                staff.Phone = request.Phone;
+                staff.ModifiedBy = request.ModifiedBy;
+                staff.ModifiedOn = request.ModifiedOn;
+                await _dBContext.SaveChangesAsync();
+
+                response.Message = "Request for updating profile is successfully processed";
+                response.Success = true;
+            }
+            return response;
+        }
+        private async Task<ProfileUpdateRequestResponse> HandleProfileUpdateForPharmacyAsync(ProfileUpdateRequest request)
+        {
+            var response = new ProfileUpdateRequestResponse();
+
+            var staff = await _dBContext.pharmacyStaff.Where(x => x.PharmacyId == request.PharmacyId && x.StaffId == request.StaffId).FirstOrDefaultAsync();
+            if (staff != null)
+            {
+
+                staff.FirstName = request.FirstName;
+                staff.LastName = request.LastName;
+                staff.PhoneNumber = request.Phone;
+                staff.ModifiedBy = request.ModifiedBy;
+                staff.ModifiedOn = request.ModifiedOn;
+                await _dBContext.SaveChangesAsync();
+
+                response.Message = "Request for updating profile is successfully processed";
+                response.Success = true;
+            }
+
+            return response;
+        }
+
+        private async Task<ProfileUpdateRequestResponse> HandleProfileUpdateForLabAsync(ProfileUpdateRequest request)
+        {
+            var response = new ProfileUpdateRequestResponse();
+            var staff = await _dBContext.labStaff.Where(x => x.LabId == request.LabId && x.StaffId == request.StaffId).FirstOrDefaultAsync();
+
+            if (staff != null)
+            {
+
+                staff.FirstName = request.FirstName;
+                staff.LastName = request.LastName;
+                staff.PhoneNumber = request.Phone;
+                staff.ModifiedBy = request.ModifiedBy;
+                staff.ModifiedOn = request.ModifiedOn;
+                await _dBContext.SaveChangesAsync();
+
+                response.Message = "Request for updating profile is successfully processed";
+                response.Success = true;
+            }
+
+            return response;
+        }
+
     }
 }
