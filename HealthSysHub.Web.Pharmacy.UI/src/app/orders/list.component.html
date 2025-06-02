@@ -123,8 +123,7 @@
 
                                         <!-- Actions -->
                                         <td class="text-nowrap">
-                                            <button class="btn btn-sm btn-success mr-1"
-                                                (click)="requestPayNow(request)"
+                                            <button class="btn btn-sm btn-success mr-1" (click)="requestPayNow(request)"
                                                 *ngIf="request.status === 'Pending'">
                                                 <i class="mdi mdi-check"></i> Pay now
                                             </button>
@@ -252,4 +251,8 @@
     <app-modal [isOpen]="showModal" [title]="modalTitle" [message]="modalMessage" (confirmed)="handleConfirm($event)"
         (closed)="showModal = false">
     </app-modal>
+
+    <app-paynow [isOpen]="showPayNow" [pharmacyOrderDetails]="currentRequest" (confirmed)="handlePaynow($event)"
+        (closed)="showPayNow = false">
+    </app-paynow>
 </div>

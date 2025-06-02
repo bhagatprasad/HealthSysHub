@@ -1,16 +1,81 @@
 <div class="modal-overlay" *ngIf="isOpen" (click)="close()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>{{ title }}</h3>
-      <button class="close-btn" (click)="close()">&times;</button>
+      <h3>Pay now</h3>
+      <button class="close-btn" (click)="close()">
+        <i class="mdi mdi-close"></i>
+      </button>
     </div>
     <div class="modal-body">
-      <p>{{ message }}</p>
-      <textarea [(ngModel)]="notes" placeholder="Add notes..."></textarea>
-    </div>
-    <div class="modal-footer">
-      <button (click)="close()">Cancel</button>
-      <button (click)="confirm()">Confirm</button>
+      <form [formGroup]="paymentForm" (ngSubmit)="confirm()">
+        <div class="form-group">
+          <label for="paymentMethod">Payment Method*</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="mdi mdi-cash"></i>
+            </span>
+            <select class="form-control" id="paymentMethod" formControlName="paymentMethod" required>
+              <option value="" disabled selected>Select payment method</option>
+              <option value="credit_card">Credit Card</option>
+              <option value="debit_card">Debit Card</option>
+              <option value="upi">UPI (PhonePe/Google Pay/etc.)</option>
+              <option value="net_banking">Net Banking</option>
+              <option value="wallet">Wallet (PayTM, MobiKwik, etc.)</option>
+              <option value="cash">Cash</option>
+            </select>
+          </div>
+          <small class="text-danger"
+            *ngIf="paymentForm.get('paymentMethod')?.invalid && paymentForm.get('paymentMethod')?.touched">
+            Payment method is required
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentAmount">Payment Amount*</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="mdi mdi-currency-inr"></i>
+            </span>
+            <input type="number" class="form-control" id="paymentAmount" formControlName="paymentAmount"
+              placeholder="Enter payment amount" readonly />
+          </div>
+          <small class="text-danger"
+            *ngIf="paymentForm.get('paymentAmount')?.invalid && paymentForm.get('paymentAmount')?.touched">
+            Valid amount is required
+          </small>
+        </div>
+
+        <div class="form-group" *ngIf="showTransactionNumberField">
+          <label for="paymentNumber">Transaction Number*</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="mdi mdi-identifier"></i>
+            </span>
+            <input type="text" class="form-control" id="paymentNumber" formControlName="paymentNumber"
+              placeholder="Enter transaction/reference number" />
+          </div>
+          <small class="text-danger"
+            *ngIf="paymentForm.get('paymentNumber')?.invalid && paymentForm.get('paymentNumber')?.touched">
+            Transaction number is required for online payments
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentNotes">Payment Notes</label>
+          <div class="input-group">
+            <textarea class="form-control" id="paymentNotes" rows="3" formControlName="paymentNotes"
+              placeholder="Enter payment notes"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-secondary" [disabled]="paymentForm.invalid">
+            Submit Payment
+          </button>
+          <button type="button" class="btn btn-primary" (click)="close()">
+            Close
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

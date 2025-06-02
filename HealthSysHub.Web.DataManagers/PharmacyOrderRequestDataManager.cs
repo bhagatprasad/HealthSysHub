@@ -314,7 +314,7 @@ namespace HealthSysHub.Web.DataManagers
                 throw;
             }
 
-            return pharmacyOrderRequestDetails;
+            return pharmacyOrderRequestDetails.OrderByDescending(x => x.ModifiedOn).ToList();
         }
 
         public async Task<ProcessPharmacyOrderRequestResponse> ProcessPharmacyOrderRequestAsync(ProcessPharmacyOrderRequest requestDetails)

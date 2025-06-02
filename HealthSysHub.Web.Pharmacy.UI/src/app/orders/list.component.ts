@@ -8,15 +8,19 @@ import { PharmacyOrderDetails } from '../models/pharmacy-order-details';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../shared/popups/modal.component';
+import { PaynowComponent } from '../shared/popups/paynow.component';
+import { PharmacyPayment } from '../models/pharmacy-payment';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-list',
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, PaynowComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
 export class OrdersListComponent implements OnInit {
   showModal = false;
+  showPayNow = false;
   modalTitle: string = '';
   modalMessage: string = '';
   actionType: string = '';
@@ -27,6 +31,7 @@ export class OrdersListComponent implements OnInit {
 
   constructor(private accountService: AccountService, private notifyService: NotificationService,
     private auditService: AuditFieldsService, private orderService: OrderService,
+    private pharmacyPaymentService: PaymentService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -54,8 +59,10 @@ export class OrdersListComponent implements OnInit {
     const errorMessage = error?.message || 'Failed to fetch orders';
     this.notifyService.showError(errorMessage);
   }
-  handleConfirm(notes: string): void {
 
+  handleConfirm(notes: string): void {
+    this.showModal = false;
+    this.currentRequest = null;
   }
 
   openModal(request: PharmacyOrderDetails, action: string): void {
@@ -67,7 +74,25 @@ export class OrdersListComponent implements OnInit {
   }
 
   requestPayNow(request: PharmacyOrderDetails) {
+    this.currentRequest = request;
+    this.showPayNow = true;
+  }
+  handlePaynow(request: PharmacyPayment): void {
+    console.log('request', request);
+    var payNow = this.auditService.appendAuditFields(request);
+    console.log('payNow', JSON.stringify(payNow));
+    this.pharmacyPaymentService.ProcessPharmacyOrderPaymentAsync(payNow).subscribe({
+      next: (response) => this.handleProcessPharmacyOrderPaymentAsync(response),
+      error: (error) => this.handleAuthError(error)
+    });
 
+
+  }
+  handleProcessPharmacyOrderPaymentAsync(pharmacyPayment: PharmacyPayment): void {
+    this.showPayNow = false;
+    this.notifyService.showSuccess("Payment successfull");
+    if (this.currentUserPharmacy)
+      this.loadPharmacyOrderRequestDetailsAsync(this.currentUserPharmacy.pharmacyId);
   }
   requestToPharmacyOrderDetails(pharmacyOrderDetail: PharmacyOrderDetails): void {
 
