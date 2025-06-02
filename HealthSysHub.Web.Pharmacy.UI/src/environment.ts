@@ -52,7 +52,9 @@ export const environment = {
         ChangePasswordAsync: 'User/ChangePasswordAsync',
         GetPharmacyOrdersListByPharmacyAsync:'Order/GetPharmacyOrdersListByPharmacyAsync',
         ProcessPharmacyOrdersRequestAsync:'Order/ProcessPharmacyOrdersRequestAsync',
-        ProcessPharmacyOrderPaymentAsync:'Order/ProcessPharmacyOrderPaymentAsync'
+        ProcessPharmacyOrderPaymentAsync:'PharmacyPayment/ProcessPharmacyOrderPaymentAsync',
+        GetPharmacyPaymentListAsync:'PharmacyPayment/GetPharmacyPaymentListAsync',
+        GetPharmacyPaymentDetailAsync:'PharmacyPayment/GetPharmacyPaymentDetailAsync'
     },
     Messages: {
         InvalidPassword: "Authentication Failed due to Invalid Password ,Please enter correct password and try again",

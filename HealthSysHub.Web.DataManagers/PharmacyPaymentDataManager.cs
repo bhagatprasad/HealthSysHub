@@ -1,6 +1,7 @@
 ﻿using HealthSysHub.Web.DBConfiguration;
 using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
+using HealthSysHub.Web.Utility.Extemsions;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,9 +31,12 @@ namespace HealthSysHub.Web.DataManagers
                 return pharmacyPayment;
             }
 
+            
             if (IsPaymentValid(order, pharmacyPayment))
             {
                 CompleteOrder(order, orderRequest);
+                pharmacyPayment.PaymentId = Guid.NewGuid();
+                pharmacyPayment.ReferenceNumber = pharmacyPayment.PaymentId.GenerateOrderReference("PAY");
                 await AddPaymentAsync(pharmacyPayment);
             }
 

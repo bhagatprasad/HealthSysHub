@@ -7,7 +7,6 @@ import { ForgotpasswordComponent } from './shared/forgotpassword/forgotpassword.
 import { ResetpasswordComponent } from './shared/resetpassword/resetpassword.component';
 import { AuthGuard } from './gurds/auth.guard';
 import { OrdersListComponent } from './orders/list.component';
-import { SalesListComponent } from './sales/list.component';
 import { UpdateAccountComponent } from './setting/update-account.component';
 import { PasswordChangeComponent } from './setting/password-change.component';
 import { UsersListComponent } from './users/list.component';

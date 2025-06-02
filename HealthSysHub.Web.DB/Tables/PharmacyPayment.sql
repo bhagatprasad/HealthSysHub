@@ -6,10 +6,10 @@
     [PharmacyId]                        UNIQUEIDENTIFIER                NULL,
     [PaymentNumber]     VARCHAR(50)         NOT NULL UNIQUE,
     [PaymentDate]       DATETIMEOFFSET      DEFAULT SYSDATETIMEOFFSET(),
-    [PaymentMethod]     VARCHAR(50)         NOT NULL  CHECK ([PaymentMethod] IN ('Cash', 'Credit Card', 'Debit Card', 'Check', 'Bank Transfer', 'Online', 'Insurance')),
+    [PaymentMethod]     VARCHAR(50)         NOT NULL,
     [PaymentAmount]     DECIMAL(22,11)      NOT NULL,
     [ReferenceNumber]   VARCHAR(100)        NULL, -- Transaction ID, check number, etc.
-    [Status]            VARCHAR(50)         NOT NULL  CHECK ([Status] IN ('Pending', 'Completed', 'Failed', 'Refunded', 'Partially Refunded')),
+    [Status]            VARCHAR(50)         NOT NULL,
     [PaymentGateway]    VARCHAR(100)        NULL, -- For online payments
     [GatewayResponse]   VARCHAR(MAX)        NULL, -- Raw gateway response
     [Notes]             VARCHAR(MAX)        NULL,

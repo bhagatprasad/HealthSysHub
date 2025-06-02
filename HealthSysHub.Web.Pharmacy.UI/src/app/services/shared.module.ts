@@ -10,6 +10,7 @@ import { AuditFieldsService } from './audit-fields.service';
 import { PasswordService } from './password.service';
 import { NotificationService } from './notification.service';
 import { OrderService } from './order.service';
+import { PaymentService } from './payment.service';
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,8 @@ import { OrderService } from './order.service';
     PharmacyOrderRequestService,
     AuditFieldsService,
     PasswordService,
-    OrderService
+    OrderService,
+    PaymentService
   ],
   exports: []
 })
