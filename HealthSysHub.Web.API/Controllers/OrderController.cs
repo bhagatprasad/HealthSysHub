@@ -1,4 +1,5 @@
 ﻿using HealthSysHub.Web.API.CustomFilters;
+using HealthSysHub.Web.DBConfiguration.Models;
 using HealthSysHub.Web.Managers;
 using HealthSysHub.Web.Utility.Models;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +35,7 @@ namespace HealthSysHub.Web.API.Controllers
         }
         [HttpGet]
         [Route("GetPharmacyOrderByIdAsync/{pharmacyId}/{pharmacyOrderId}")]
-        public async Task<IActionResult> GetPharmacyOrderByIdAsync(Guid pharmacyId,Guid pharmacyOrderId)
+        public async Task<IActionResult> GetPharmacyOrderByIdAsync(Guid pharmacyId, Guid pharmacyOrderId)
         {
             try
             {
@@ -61,5 +62,6 @@ namespace HealthSysHub.Web.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
     }
 }
