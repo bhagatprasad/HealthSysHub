@@ -269,6 +269,70 @@ Would you like me to:
                                                          │                               │
                                                          └───────────────────────────────┘
 ```
+Pharmacy Desktop version
+![image](https://github.com/user-attachments/assets/7a563396-7eeb-412e-abc4-090fba4d9a06)
+
+
+![image](https://github.com/user-attachments/assets/cf8b12bf-cb3c-4fda-8eea-5cfb6496eed6)
+
+![image](https://github.com/user-attachments/assets/4ff25c21-e12b-45da-819f-ff258afabfa0)
+
+![image](https://github.com/user-attachments/assets/a5759ee5-71b1-4946-a46a-56bc17e1a5da)
+![image](https://github.com/user-attachments/assets/a8334b8b-2bb8-40a9-828d-21faca55e430)
+![image](https://github.com/user-attachments/assets/31e60dfa-deab-4672-a3b8-b79ae8c157a7)
+
+
+![image](https://github.com/user-attachments/assets/a0f5f89e-cf66-4c7e-8480-98138d8926b9)
+
+![image](https://github.com/user-attachments/assets/a0f55fff-6476-4c7f-b8ac-ce9eb5671dc9)
+
+![image](https://github.com/user-attachments/assets/f7248acb-7b0a-442e-9b0c-cac1b35dd0d5)
+
+![image](https://github.com/user-attachments/assets/f846136e-c406-4cce-bc87-101d617362c9)
+
+![image](https://github.com/user-attachments/assets/072a6af8-6227-41c3-b7ec-b569c47650b4)
+
+![image](https://github.com/user-attachments/assets/f8dc2807-adb5-4777-8679-2343134cd0e6)
+
+![image](https://github.com/user-attachments/assets/32ddc921-b671-4621-a9d6-5f16067cc80c)
+
+![image](https://github.com/user-attachments/assets/27982f0c-d547-4bd7-8103-2b6f2cc6126a)
+
+
+![image](https://github.com/user-attachments/assets/784f54d7-7c51-4c60-8263-64779db54e11)
+
+
+Mobile Pharmacy Application
+
+![image](https://github.com/user-attachments/assets/837dae1b-ab57-4389-8665-a7c72a10ffe0)
+
+
+![image](https://github.com/user-attachments/assets/3a58da9a-a3a5-4a0a-a10b-1ad0f7e1d523)![image](https://github.com/user-attachments/assets/362b853c-c581-4b4a-82ea-bd8d1d423d56)
+
+
+![image](https://github.com/user-attachments/assets/e8ef48fb-1563-49fc-8cbf-c2c1a93894e5)
+
+![image](https://github.com/user-attachments/assets/f82c33cd-c523-4a76-bef9-7a3dbecf456f)
+
+
+
+![image](https://github.com/user-attachments/assets/1f296fef-37fc-4221-8fd5-4442b9841d38)
+
+
+![image](https://github.com/user-attachments/assets/3e13e4e2-f17d-40b3-949d-b8b18cf1e2c8)
+
+
+
+![image](https://github.com/user-attachments/assets/85811608-337f-4ace-aa1f-18a611ea2ba1)
+
+
+![image](https://github.com/user-attachments/assets/a9b13530-c8fc-4f2a-ab82-2d961c4d44c3)
+
+
+![image](https://github.com/user-attachments/assets/69dad386-72da-4165-9743-37465026a513)
+
+
+![Uploading image.png…]()
 
 ### Detailed Workflow Breakdown:
 
