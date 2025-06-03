@@ -18,12 +18,12 @@
             </button>
         </div>
     </div>
-    <div class="row">
+  <div class="row">
         <div class="col-xl-12 stretch-card grid-margin">
             <div class="card">
                 <div class="card-body card-body-padding">
-                    <!-- Desktop Table (hidden on mobile) -->
-                    <div class="d-none d-md-block">
+                    <!-- Desktop Table (shown on lg screens and up) -->
+                    <div class="d-none d-lg-block">
                         <div class="table-responsive" [ngClass]="{'scrollable-table': medicines.length > 50}">
                             <table class="table table-bordered">
                                 <thead class="thead-dark" style="background-color: gray;">
@@ -40,15 +40,67 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of medicines">
-                                        <!-- Your existing table rows remain the same -->
+                                        <!-- Your table cells here -->
+                                        <td>{{item.medicineName}}<br><small class="text-muted">{{item.genericName}}</small></td>
+                                        <td>{{item.dosageForm}} {{item.strength}}</td>
+                                        <td>{{item.manufacturer}}</td>
+                                        <td>{{item.batchNumber}}</td>
+                                        <td>{{item.pricePerUnit | currency}}</td>
+                                        <td>{{item.stockQuantity}}</td>
+                                        <td>
+                                            <span class="badge" [ngClass]="item.isActive ? 'badge-success' : 'badge-danger'">
+                                                {{item.isActive ? 'Active' : 'Inactive'}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-2" (click)="requestMedicineProcess(item)">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-info" (click)="requestGetMedicineSales(item)">
+                                                <i class="mdi mdi-eye"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- Mobile Cards (shown only on mobile) -->
-                    <div class="d-block d-md-none">
+                    <!-- Tablet View (shown on md screens only) -->
+                    <div class="d-none d-md-block d-lg-none">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark" style="background-color: gray;">
+                                    <tr>
+                                        <th>Medicine Name</th>
+                                        <th>Dosage</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of medicines">
+                                        <td>{{item.medicineName}}<br><small class="text-muted">{{item.genericName}}</small></td>
+                                        <td>{{item.dosageForm}} {{item.strength}}</td>
+                                        <td>{{item.pricePerUnit | currency}}</td>
+                                        <td>{{item.stockQuantity}}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-2" (click)="requestMedicineProcess(item)">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-info" (click)="requestGetMedicineSales(item)">
+                                                <i class="mdi mdi-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Cards (shown on sm and xs screens) -->
+                    <div class="d-md-none">
                         <div class="row">
                             <div *ngFor="let item of medicines" class="col-12 mb-3">
                                 <div class="card mobile-medicine-card">
@@ -64,11 +116,11 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <strong>Dosage:</strong><br>
-                                                    {{ item.dosageForm || 'N/A' }}
+                                                    {{ item.dosageForm || 'N/A' }} {{ item.strength || '' }}
                                                 </div>
                                                 <div class="col-6">
-                                                    <strong>Strength:</strong><br>
-                                                    {{ item.strength || 'N/A' }}
+                                                    <strong>Manufacturer:</strong><br>
+                                                    {{ item.manufacturer || 'N/A' }}
                                                 </div>
                                             </div>
 

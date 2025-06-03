@@ -29,46 +29,143 @@
 
   <!-- Charts Row -->
   <div class="row">
+    <!-- Payments Summary - 4 buttons with amounts -->
+    <div class="col-xl-12 stretch-card grid-margin mt-3">
+      <div class="card">
+        <div class="card-header bg-info">
+          <h5>Payments Summary</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-primary w-100" (click)="filterPaymentsByPeriod('All')">
+                <div class="d-flex flex-column p-2">
+                  <div class="d-flex justify-content-between">
+                    <span class="status-label"><i class="mdi mdi-cash-multiple me-2"></i>Total</span>
+                    <span class="status-count">{{paymentCounts.total.count}}</span>
+                  </div>
+                  <div class="amount-sum text-end">{{paymentCounts.total.sum | currency}}</div>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-success w-100" (click)="filterPaymentsByPeriod('Today')">
+                <div class="d-flex flex-column p-2">
+                  <div class="d-flex justify-content-between">
+                    <span class="status-label"><i class="mdi mdi-calendar-today me-2"></i>Today</span>
+                    <span class="status-count">{{paymentCounts.today.count}}</span>
+                  </div>
+                  <div class="amount-sum text-end">{{paymentCounts.today.sum | currency}}</div>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-warning w-100" (click)="filterPaymentsByPeriod('ThisWeek')">
+                <div class="d-flex flex-column p-2">
+                  <div class="d-flex justify-content-between">
+                    <span class="status-label"><i class="mdi mdi-calendar-week me-2"></i>This Week</span>
+                    <span class="status-count">{{paymentCounts.thisWeek.count}}</span>
+                  </div>
+                  <div class="amount-sum text-end">{{paymentCounts.thisWeek.sum | currency}}</div>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-danger w-100" (click)="filterPaymentsByPeriod('ThisYear')">
+                <div class="d-flex flex-column p-2">
+                  <div class="d-flex justify-content-between">
+                    <span class="status-label"><i class="mdi mdi-calendar-year me-2"></i>This Year</span>
+                    <span class="status-count">{{paymentCounts.thisYear.count}}</span>
+                  </div>
+                  <div class="amount-sum text-end">{{paymentCounts.thisYear.sum | currency}}</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Orders Summary - 4 buttons -->
     <div class="col-xl-12 stretch-card grid-margin">
       <div class="card">
         <div class="card-header bg-primary">
           <h5>Order Summary</h5>
         </div>
         <div class="card-body">
-          <div class="col-12 col-sm-6 col-md-3 pb-1">
-            <button class="btn btn-status btn-warning w-100" (click)="filterOrdersByStatus('Pending')">
-              <div class="d-flex justify-content-between align-items-center p-2">
-                <span class="status-label"><i class="mdi mdi-clock-outline me-2"></i>Pending</span>
-                <span class="status-count">{{orderCounts.Pending}}</span>
-              </div>
-            </button>
+          <div class="row g-2">
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-warning w-100" (click)="filterOrdersByStatus('Pending')">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-clock-outline me-2"></i>Pending</span>
+                  <span class="status-count">{{orderCounts.Pending}}</span>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-info w-100" (click)="filterOrdersByStatus('SentForPharmacy')">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-hospital-building me-2"></i>Sent to Pharmacy</span>
+                  <span class="status-count">{{orderCounts.SentForPharmacy}}</span>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-success w-100" (click)="filterOrdersByStatus('Completed')">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-check-circle-outline me-2"></i>Completed</span>
+                  <span class="status-count">{{orderCounts.Completed}}</span>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-3">
+              <button class="btn btn-status btn-danger w-100" (click)="filterOrdersByStatus('Cancelled')">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-close-circle-outline me-2"></i>Cancelled</span>
+                  <span class="status-count">{{orderCounts.Cancelled}}</span>
+                </div>
+              </button>
+            </div>
           </div>
-          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
-            <button class="btn btn-status btn-info w-100" (click)="filterOrdersByStatus('SentForPharmacy')">
-              <div class="d-flex justify-content-between align-items-center p-2">
-                <span class="status-label"><i class="mdi mdi-hospital-building me-2"></i>Sent to Pharmacy</span>
-                <span class="status-count">{{orderCounts.SentForPharmacy}}</span>
-              </div>
-            </button>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
-            <button class="btn btn-status btn-success w-100" (click)="filterOrdersByStatus('Completed')">
-              <div class="d-flex justify-content-between align-items-center p-2">
-                <span class="status-label"><i class="mdi mdi-check-circle-outline me-2"></i>Completed</span>
-                <span class="status-count">{{orderCounts.Completed}}</span>
-              </div>
-            </button>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 pb-1 padding-leftclass">
-            <button class="btn btn-status btn-danger w-100" (click)="filterOrdersByStatus('Cancelled')">
-              <div class="d-flex justify-content-between align-items-center p-2">
-                <span class="status-label"><i class="mdi mdi-close-circle-outline me-2"></i>Cancelled</span>
-                <span class="status-count">{{orderCounts.Cancelled}}</span>
-              </div>
-            </button>
-          </div>
-
         </div>
       </div>
     </div>
+
+    <!-- Sales Summary - 3 buttons -->
+    <div class="col-xl-12 stretch-card grid-margin mt-3">
+      <div class="card">
+        <div class="card-header bg-success">
+          <h5>Sales Summary</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-4">
+              <button class="btn btn-status btn-primary w-100">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-cart-outline me-2"></i>Total Sales</span>
+                  <span class="status-count">{{salesCounts.total}}</span>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-4">
+              <button class="btn btn-status btn-info w-100">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-calendar-today me-2"></i>Today</span>
+                  <span class="status-count">{{salesCounts.today}}</span>
+                </div>
+              </button>
+            </div>
+            <div class="col-6 col-md-4">
+              <button class="btn btn-status btn-warning w-100">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <span class="status-label"><i class="mdi mdi-calendar-month me-2"></i>This Month</span>
+                  <span class="status-count">{{salesCounts.thisMonth}}</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
