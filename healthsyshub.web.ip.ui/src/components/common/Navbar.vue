@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header></Header>
-    <sidebar></sidebar>
-    <div class="pcoded-main-container">
+    <Header v-if="isAuthenticated"></Header>
+    <Sidebar v-if="isAuthenticated"></Sidebar>
+    <div class="pcoded-main-container" :class="{'full-width': !isAuthenticated}">
       <div class="pcoded-content">
         <router-view></router-view>
       </div>
@@ -11,17 +11,31 @@
 </template>
 
 <script>
-import Sidebar from './Sidebar.vue';
-import Header from './Header.vue';
+import { useAuthStore } from '@/stores/auth.store'
+import { computed } from 'vue'
+import Header from './Header.vue'
+import Sidebar from './Sidebar.vue'
+
 export default {
   name: 'Navbar',
   components: {
-    Sidebar,
-    Header
+    Header,
+    Sidebar
+  },
+  setup() {
+    const authStore = useAuthStore()
+    const isAuthenticated = computed(() => authStore.isAuthenticated)
+    
+    return {
+      isAuthenticated
+    }
   }
 }
 </script>
 
 <style scoped>
-/* If you need to add any component-specific styles */
+.full-width {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
 </style>

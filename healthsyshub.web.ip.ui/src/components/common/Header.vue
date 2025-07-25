@@ -176,7 +176,7 @@
                                 <img src="@/assets/images/user/avatar-1.jpg" class="img-radius"
                                     alt="User-Profile-Image">
                                 <span>John Doe</span>
-                                <a href="auth-signin.html" class="dud-logout" title="Logout">
+                                <a @click="handleLogOut" class="dud-logout" title="Logout">
                                     <i class="feather icon-log-out"></i>
                                 </a>
                             </div>
@@ -199,8 +199,25 @@
     </header>
 </template>
 <script>
+import { useAuthStore } from '@/stores/auth.store'
+import { useRouter } from 'vue-router'
+
 export default {
     name: 'Header',
+    setup() {
+        const authStore = useAuthStore()
+        const router = useRouter()
+
+        const handleLogOut = async () => {
+            await authStore.logout()
+            router.push('/login')
+        }
+
+        return {
+            authStore,
+            handleLogOut
+        }
+    }
 }
 </script>
 <style scoped>

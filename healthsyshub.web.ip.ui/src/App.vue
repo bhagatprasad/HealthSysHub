@@ -1,10 +1,5 @@
 <template>
   <Navbar />
-  <div class="pcoded-main-container">
-    <div class="pcoded-content">
-      <router-view></router-view>
-    </div>
-  </div>
 </template>
 
 <script>
