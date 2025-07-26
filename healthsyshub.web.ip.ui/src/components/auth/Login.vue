@@ -10,19 +10,13 @@
               <hr>
               <form @submit.prevent="handleLogin">
                 <div class="form-group mb-3">
-                  <input type="username" class="form-control" id="username"
-                    placeholder="username/phone" v-model="credentials.username" required>
+                  <input type="username" class="form-control" id="username" placeholder="username/phone"
+                    v-model="credentials.username" required>
                 </div>
                 <div class="form-group mb-4">
                   <div class="input-group">
-                    <input 
-                      :type="showPassword ? 'text' : 'password'" 
-                      class="form-control" 
-                      id="Password" 
-                      placeholder="*******"
-                      v-model="credentials.password" 
-                      required
-                    >
+                    <input :type="showPassword ? 'text' : 'password'" class="form-control" id="Password"
+                      placeholder="*******" v-model="credentials.password" required>
                     <div class="input-group-append">
                       <span class="input-group-text" @click="togglePasswordVisibility">
                         <i :class="showPassword ? 'feather icon-eye-off' : 'feather icon-eye'"></i>
@@ -31,8 +25,7 @@
                   </div>
                 </div>
                 <div class="custom-control custom-checkbox text-left mb-4 mt-2">
-                  <input type="checkbox" class="custom-control-input" id="rememberMe"
-                    v-model="rememberMe">
+                  <input type="checkbox" class="custom-control-input" id="rememberMe" v-model="rememberMe">
                   <label class="custom-control-label" for="rememberMe">Remember me</label>
                 </div>
                 <button type="submit" class="btn btn-block btn-primary mb-4" :disabled="loading">
@@ -62,6 +55,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth.store'
+import { showLoader, hideLoader } from '@/components/common/Loader.vue'
 import { ref } from 'vue'
 
 export default {
@@ -80,12 +74,12 @@ export default {
   setup() {
     const authStore = useAuthStore()
     const showPassword = ref(false)
-    
+
     const togglePasswordVisibility = () => {
       showPassword.value = !showPassword.value
     }
-    
-    return { 
+
+    return {
       authStore,
       showPassword,
       togglePasswordVisibility
@@ -93,24 +87,36 @@ export default {
   },
   methods: {
     async handleLogin() {
+      showLoader()
       this.error = ''
       this.loading = true
-      
+
       try {
-        await this.authStore.login(this.credentials)
-        
-        if (this.rememberMe) {
-          localStorage.setItem('rememberedUsername', this.credentials.username)
+        const response = await this.authStore.login(this.credentials)
+        if (response.jwtToken) {
+          var user = await this.authStore.managerUserSession(response);
+
+          console.log(user);
+
+          if (this.rememberMe) {
+            localStorage.setItem('rememberedUsername', this.credentials.username)
+          }
+
+          const redirectPath = this.$route.query.redirect || '/dashboard'
+
+          this.$router.push(redirectPath)
+        } else {
+          this.$toast.error(response.statusMessage)
+          console.log(response)
         }
-        
-        const redirectPath = this.$route.query.redirect || '/dashboard'
-        this.$router.push(redirectPath)
-        
+        hideLoader()
+
       } catch (error) {
         this.error = error.response?.data?.message || 'Login failed. Please try again.'
         console.error('Login error:', error)
       } finally {
         this.loading = false
+        hideLoader()
       }
     }
   },
@@ -153,7 +159,7 @@ export default {
   background-color: #f8f9fa;
 }
 
-.form-control:focus + .input-group-append .input-group-text {
+.form-control:focus+.input-group-append .input-group-text {
   border-color: #80bdff;
 }
 </style>
