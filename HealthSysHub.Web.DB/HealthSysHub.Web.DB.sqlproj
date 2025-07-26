@@ -113,6 +113,8 @@
     <Build Include="Tables\PharmacyInvoice.sql" />
     <Build Include="Tables\PharmacyInvoiceItem.sql" />
     <Build Include="Tables\PharmacyPayment.sql" />
+    <Build Include="Tables\RoomType.sql" />
+    <Build Include="Tables\Room.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />

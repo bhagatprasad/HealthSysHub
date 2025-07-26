@@ -92,6 +92,10 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IPharmacyPaymentManager, PharmacyPaymentDataManager>();
 
+            services.AddScoped<IRoomTypeManager, RoomTypeDataManager>();
+
+            services.AddScoped<IRoomManager, RoomDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/
