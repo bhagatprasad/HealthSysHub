@@ -11,16 +11,21 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(credentials) {
       this.loading = true
-       const authResponse = await accountService.authenticateUser(credentials)
-        const user = await accountService.generateUserClaims(authResponse)
-        
-        this.isAuthenticated = true
-        this.user = user
-        accountService.storeUserSession(user, authResponse.jwtToken)
-        this.loading = false
-        return user
+      const authResponse = await accountService.authenticateUser(credentials)
+      this.loading = false
+      return authResponse
     },
+    async managerUserSession(authResponse) {
+      this.loading = true
 
+      const user = await accountService.generateUserClaims(authResponse)
+
+      this.isAuthenticated = true
+      // this.user = user
+      accountService.storeUserSession(user, authResponse.jwtToken)
+      this.loading = false
+      return user;
+    },
     logout() {
       this.isAuthenticated = false
       this.user = null
@@ -30,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
     initialize() {
       const storedUser = JSON.parse(localStorage.getItem('ApplicationUser'))
       const token = localStorage.getItem('AccessToken')
-      
+
       if (storedUser && token) {
         this.isAuthenticated = true
         this.user = storedUser
