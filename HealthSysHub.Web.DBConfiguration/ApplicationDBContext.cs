@@ -56,5 +56,7 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<PharmacyPayment> pharmacyPayments { get; set; }
         public DbSet<PharmacyInvoice> pharmacyInvoices { get; set; }
         public DbSet<PharmacyInvoiceItem> pharmacyInvoiceItems { get; set; }
+        public DbSet<RoomType> roomTypes { get; set; }
+        public DbSet<Room> rooms { get; set; }
     }
 }
