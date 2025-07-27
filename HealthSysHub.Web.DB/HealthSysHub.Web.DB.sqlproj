@@ -115,6 +115,7 @@
     <Build Include="Tables\PharmacyPayment.sql" />
     <Build Include="Tables\RoomType.sql" />
     <Build Include="Tables\Room.sql" />
+    <Build Include="Tables\Bed.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />

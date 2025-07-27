@@ -96,6 +96,8 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IRoomManager, RoomDataManager>();
 
+            services.AddScoped<IBedManager, BedDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/
