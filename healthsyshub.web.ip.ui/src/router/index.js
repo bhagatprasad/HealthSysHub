@@ -10,6 +10,7 @@ const ChangePassword = () => import('@/components/auth/ChangePassword.vue')
 const ForgotPassword = () => import('@/components/auth/ForgotPassword.vue')
 const SignUp = () => import('@/components/auth/SignUp.vue')
 const Dashboard = () => import('@/views/Dashboard.vue') // Added dashboard route
+const UserProfile = () => import('@/views/user/UserProfile.vue') 
 
 const routes = [
   {
@@ -33,6 +34,15 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: 'Dashboard'
+    }
+  },
+   {
+    path: '/userprofile',
+    name: 'userprofile',
+    component: UserProfile,
+    meta: {
+      requiresAuth: true,
+      title: 'userprofile'
     }
   },
   {
