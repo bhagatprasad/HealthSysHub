@@ -139,12 +139,12 @@ namespace HealthSysHub.Web.API
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                                   builder => builder
-                                  .AllowAnyOrigin()
-                                  .AllowAnyHeader()
-                                  .AllowAnyMethod()
-                                  .WithMethods("GET", "PUT", "DELETE", "POST", "PATCH")
-                                  );
+                    builder => builder
+                        .WithOrigins("http://localhost:8080") // Specific allowed origin
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials() // If you need credentials/cookies
+                );
             });
 
             services.AddSwaggerGen(c =>
@@ -197,11 +197,11 @@ namespace HealthSysHub.Web.API
         {
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

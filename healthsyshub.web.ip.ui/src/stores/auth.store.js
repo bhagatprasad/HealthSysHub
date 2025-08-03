@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import accountService from '@/global/API/auth.service'
+import hospitalService from '@/global/API/hospital.service'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -22,7 +23,15 @@ export const useAuthStore = defineStore('auth', {
 
       this.isAuthenticated = true
       // this.user = user
+
+
+
       accountService.storeUserSession(user, authResponse.jwtToken)
+
+      const hospitalInformation = await hospitalService.getHospitalInformationByIdAsync(user.hospitalId)
+
+      accountService.setHospitalSession(hospitalInformation)
+
       this.loading = false
       return user;
     },

@@ -31,7 +31,7 @@ api.interceptors.request.use(
 
     // Add Authorization header if token exists
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers['Authorization'] = accessToken;
     }
 
     // Log final URL for debugging
