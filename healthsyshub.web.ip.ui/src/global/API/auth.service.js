@@ -11,6 +11,7 @@ export default {
     isAuthenticated: !!localStorage.getItem('AccessToken'),
     user: JSON.parse(localStorage.getItem('ApplicationUser')) || null,
     pharmacy: JSON.parse(localStorage.getItem('ApplicationUserPharmacy')) || null,
+    hospitalInformation: JSON.parse(localStorage.getItem('HospitalInformation')) || null,
     redirectUrl: '/landing'
   },
 
@@ -70,7 +71,10 @@ export default {
     this.state.redirectUrl = '/landing'
     router.push(redirect)
   },
-
+  setHospitalSession(hospitalInformation) {
+    localStorage.setItem('HospitalInformation', JSON.stringify(hospitalInformation))
+    this.state.hospitalInformation = hospitalInformation;
+  },
   storeUserPharmacy(pharmacy) {
     localStorage.setItem('ApplicationUserPharmacy', JSON.stringify(pharmacy))
     this.state.pharmacy = pharmacy
@@ -80,14 +84,17 @@ export default {
     localStorage.removeItem('ApplicationUser')
     localStorage.removeItem('AccessToken')
     localStorage.removeItem('ApplicationUserPharmacy')
+
     this.state.isAuthenticated = false
     this.state.user = null
     this.state.pharmacy = null
+    this.state.hospitalInformation = null
     this.clearInactivityTimer()
 
     const authStore = useAuthStore()
     authStore.isAuthenticated = false
     authStore.user = null
+    authStore.hospitalInformation = null
 
     if (!window.location.pathname.startsWith('/login')) {
       router.push('/login')
