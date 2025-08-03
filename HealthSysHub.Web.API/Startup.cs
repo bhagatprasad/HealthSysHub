@@ -98,6 +98,22 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IBedManager, BedDataManager>();
 
+            services.AddScoped<IBedAssignmentManager, BedAssignmentDataManager>();
+
+            services.AddScoped<IInpatientManager, InpatientDataManager>();
+
+            services.AddScoped<IInpatientAdmissionManager, InpatientAdmissionDataManager>();
+
+            services.AddScoped<IInpatientMedicationManager, InpatientMedicationDataManager>();
+
+            services.AddScoped<IInpatientTreatmentPlanManager, InpatientTreatmentPlanDataManager>();
+
+            services.AddScoped<IInpatientVitalSignsManager, InpatientVitalSignsDataManager>();
+
+            services.AddScoped<IWardManager, WardDataManager>();
+
+            services.AddScoped<IWardBedManager, WardBedDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

@@ -59,5 +59,13 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<RoomType> roomTypes { get; set; }
         public DbSet<Room> rooms { get; set; }
         public DbSet<Bed> beds { get; set; }
+        public DbSet<BedAssignment> bedAssignments { get; set; }
+        public DbSet<Inpatient> inpatients { get; set; }
+        public DbSet<InpatientAdmission> inpatientAdmissions { get; set; }
+        public DbSet<InpatientMedication> inpatientMedications { get; set; }
+        public DbSet<InpatientTreatmentPlan> inpatientTreatmentPlans { get; set; }
+        public DbSet<InpatientVitalSigns> inpatientVitalSigns { get; set; }
+        public DbSet<Ward> wards { get; set; }
+        public DbSet<WardBed> wardBeds { get; set; }
     }
 }

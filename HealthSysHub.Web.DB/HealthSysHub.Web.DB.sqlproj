@@ -116,6 +116,15 @@
     <Build Include="Tables\RoomType.sql" />
     <Build Include="Tables\Room.sql" />
     <Build Include="Tables\Bed.sql" />
+    <Build Include="Tables\InpatientAdmission.sql" />
+    <Build Include="Tables\BedAssignment.sql" />
+    <Build Include="Tables\Inpatient.sql" />
+    <Build Include="Tables\Ward.sql" />
+    <Build Include="Tables\WardBed.sql" />
+    <Build Include="Tables\InpatientTreatmentPlan.sql" />
+    <Build Include="Tables\InpatientVitalSigns.sql" />
+    <Build Include="Tables\InpatientMedication.sql" />
+    <Build Include="Tables\DischargeSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />
