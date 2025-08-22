@@ -111,5 +111,9 @@ export default {
 
   getCurrentPharmacy() {
     return this.state.pharmacy
-  }
+  },
+  
+  getCurrentHospitalInformation() {
+    return this.state.hospitalInformation;
+  },
 }

@@ -63,7 +63,7 @@ export const endpoints = {
         GetAdmissionByIdAsync: 'InPatientAdmission/GetAdmissionByIdAsync',
         InsertOrUpdateAdmissionAsync: 'InPatientAdmission/InsertOrUpdateAdmissionAsync',
         GetAdmissionsByPatientIdAsync: 'InPatientAdmission/GetAdmissionsByPatientIdAsync',
-        GetAdmissionsByHospitalIdAsync: 'InPatientAdmission/GetAdmissionsByHospitalIdAsync',
+        GetAdmissionsByHofspitalIdAsync: 'InPatientAdmission/GetAdmissionsByHospitalIdAsync',
         GetMostRecentAdmissionAsync: 'InPatientAdmission/GetMostRecentAdmissionAsync',
         GetBedAssignmentsAsync: 'BedAssignment/GetBedAssignmentsAsync',
         GetActiveBedAssignmentsAsync: 'BedAssignment/GetActiveBedAssignmentsAsync',
