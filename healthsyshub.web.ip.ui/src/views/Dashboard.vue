@@ -48,7 +48,7 @@
                     <div class="card border-top-class">
                         <gridheader @add="openSidebar" @edit="openSidebarWithData" />
                         <div class="card-body card-body-padding">
-                            <div id="DoctorAppointmentGrid" v-if="apiData">
+                            <div id="InPatientsGrid" v-if="apiData">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>

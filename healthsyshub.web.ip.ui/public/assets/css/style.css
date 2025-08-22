@@ -30759,5 +30759,7 @@ new-task label input[type=checkbox] {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
-
+.border-top-class{
+    border-top: none !important;
+}
 /**====== user card css end ======**/
