@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     isAuthenticated: accountService.state.isAuthenticated,
     user: accountService.state.user,
+    hospitalInformation: accountService.state.hospitalInformation,
     loading: false
   }),
 

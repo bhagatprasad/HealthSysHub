@@ -1,11 +1,12 @@
 import { send } from '@/global/API/api.service'
 import { endpoints } from '@/environment'
-import { useAuthStore } from '@/stores/auth.store'
 
 
 export default {
-    GetInPatientsAsync() {
-        console.log("GetInPatientsAsync")
+    async GetInPatientsAsync(currentHospitalId) {
+        const url = `${endpoints.UrlConstants.GetInPatientsAsync}/${currentHospitalId}`;
+        const response = await send("GET", url);
+        return response;
     },
     GetActiveInPatientsAsync() {
         console.log("GetActiveInPatientsAsync")
