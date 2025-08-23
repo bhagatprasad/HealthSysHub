@@ -125,6 +125,7 @@
     <Build Include="Tables\InpatientVitalSigns.sql" />
     <Build Include="Tables\InpatientMedication.sql" />
     <Build Include="Tables\DischargeSummary.sql" />
+    <Build Include="Tables\PharmacyOrderType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Programmability\Triggers\Script1.sql" />

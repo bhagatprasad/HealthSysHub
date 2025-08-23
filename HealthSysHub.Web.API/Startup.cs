@@ -114,6 +114,8 @@ namespace HealthSysHub.Web.API
 
             services.AddScoped<IWardBedManager, WardBedDataManager>();
 
+            services.AddScoped<IPharmacyPaymentManager, PharmacyPaymentDataManager>();
+
             var tokenKey = _configuration.GetValue<string>("tokenKey");
 
             /*services.AddScoped<IAuthenticationManager>(x=> new AuthenticationDataManager(tokenKey,x.GetRequiredServicere))*/

@@ -3,7 +3,7 @@
         <div class="AddEditInPatientFormSidebar sidebar" :class="{ show: isVisible }" id="sidebar">
             <div class="modal-header">
                 <h5 class="modal-title">{{ patientData ? 'Edit' : 'Add' }} Patient</h5>
-                <button type="button" class="close" @click="$emit('close')" aria-label="Close">
+                <button type="button" class="close" @click="$emit('handleClose')" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -15,10 +15,9 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" id="patientName" v-model="formData.patientName"
                                     placeholder="Choose from search" required :disabled="isPatientSelected"
-                                    @blur="touchedFields.patientName = true"
-                                    :class="{ 
-                                        'is-invalid': !isPatientSelected && (touchedFields.patientName || formSubmitted), 
-                                        'is-valid': isPatientSelected 
+                                    @blur="touchedFields.patientName = true" :class="{
+                                        'is-invalid': !isPatientSelected && (touchedFields.patientName || formSubmitted),
+                                        'is-valid': isPatientSelected
                                     }">
                                 <button type="button" class="btn btn-secondary" @click="openPatientList"
                                     :disabled="isPatientSelected">
@@ -26,7 +25,8 @@
                                     {{ isPatientSelected ? 'Selected' : 'Search' }}
                                 </button>
                             </div>
-                            <div v-if="!isPatientSelected && (touchedFields.patientName || formSubmitted)" class="invalid-feedback">
+                            <div v-if="!isPatientSelected && (touchedFields.patientName || formSubmitted)"
+                                class="invalid-feedback">
                                 Please select a patient
                             </div>
                             <div v-if="isPatientSelected" class="valid-feedback">
@@ -42,11 +42,9 @@
                                     <span class="input-group-text"><i class="fa fa-user-md"></i></span>
                                 </div>
                                 <select class="form-control" id="admittingDoctorId" v-model="formData.admittingDoctorId"
-                                    required 
-                                    @blur="touchedFields.admittingDoctorId = true"
-                                    :class="{ 
+                                    required @blur="touchedFields.admittingDoctorId = true" :class="{
                                         'is-invalid': !formData.admittingDoctorId && (touchedFields.admittingDoctorId || formSubmitted),
-                                        'is-valid': formData.admittingDoctorId 
+                                        'is-valid': formData.admittingDoctorId
                                     }">
                                     <option value="">Select a doctor</option>
                                     <option v-for="doctor in dbDoctorsData" :key="doctor.doctorId"
@@ -54,7 +52,8 @@
                                         {{ doctor.fullName }}
                                     </option>
                                 </select>
-                                <div v-if="!formData.admittingDoctorId && (touchedFields.admittingDoctorId || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.admittingDoctorId && (touchedFields.admittingDoctorId || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select a doctor
                                 </div>
                             </div>
@@ -68,11 +67,9 @@
                                     <span class="input-group-text"><i class="fa fa-home"></i></span>
                                 </div>
                                 <select class="form-control" id="patientWard" v-model="formData.wardId" required
-                                    @change="onWardChange" 
-                                    @blur="touchedFields.wardId = true"
-                                    :class="{ 
+                                    @change="onWardChange" @blur="touchedFields.wardId = true" :class="{
                                         'is-invalid': !formData.wardId && (touchedFields.wardId || formSubmitted),
-                                        'is-valid': formData.wardId 
+                                        'is-valid': formData.wardId
                                     }">
                                     <option value="">Select a ward</option>
                                     <option v-for="ward in dbWardData" :key="ward.wardId" :value="ward.wardId">
@@ -80,7 +77,8 @@
                                             ward.capacity }})
                                     </option>
                                 </select>
-                                <div v-if="!formData.wardId && (touchedFields.wardId || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.wardId && (touchedFields.wardId || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select a ward
                                 </div>
                             </div>
@@ -94,17 +92,17 @@
                                     <span class="input-group-text"><i class="fa fa-bed"></i></span>
                                 </div>
                                 <select class="form-control" id="patientBed" v-model="formData.bedId" required
-                                    @blur="touchedFields.bedId = true"
-                                    :class="{ 
+                                    @blur="touchedFields.bedId = true" :class="{
                                         'is-invalid': !formData.bedId && (touchedFields.bedId || formSubmitted),
-                                        'is-valid': formData.bedId 
+                                        'is-valid': formData.bedId
                                     }">
                                     <option value="">Select a Bed</option>
                                     <option v-for="bed in dbFilteredBeds" :key="bed.bedId" :value="bed.bedId">
                                         {{ bed.bedNumber }} ({{ bed.bedType }})
                                     </option>
                                 </select>
-                                <div v-if="!formData.bedId && (touchedFields.bedId || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.bedId && (touchedFields.bedId || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select a bed
                                 </div>
                             </div>
@@ -118,13 +116,12 @@
                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                 </div>
                                 <input type="date" class="form-control" id="admissionDate" required
-                                    v-model="formData.admissionDate" 
-                                    @blur="touchedFields.admissionDate = true"
-                                    :class="{ 
+                                    v-model="formData.admissionDate" @blur="touchedFields.admissionDate = true" :class="{
                                         'is-invalid': !formData.admissionDate && (touchedFields.admissionDate || formSubmitted),
-                                        'is-valid': formData.admissionDate 
+                                        'is-valid': formData.admissionDate
                                     }">
-                                <div v-if="!formData.admissionDate && (touchedFields.admissionDate || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.admissionDate && (touchedFields.admissionDate || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select an admission date
                                 </div>
                             </div>
@@ -139,13 +136,12 @@
                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                 </div>
                                 <input type="date" class="form-control" id="dischargeDate" required
-                                    v-model="formData.dischargeDate" 
-                                    @blur="touchedFields.dischargeDate = true"
-                                    :class="{ 
+                                    v-model="formData.dischargeDate" @blur="touchedFields.dischargeDate = true" :class="{
                                         'is-invalid': !formData.dischargeDate && (touchedFields.dischargeDate || formSubmitted),
-                                        'is-valid': formData.dischargeDate 
+                                        'is-valid': formData.dischargeDate
                                     }">
-                                <div v-if="!formData.dischargeDate && (touchedFields.dischargeDate || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.dischargeDate && (touchedFields.dischargeDate || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select a discharge date
                                 </div>
                             </div>
@@ -160,10 +156,9 @@
                                 </div>
                                 <input type="number" class="form-control" id="expectedStayDuration" required
                                     v-model="formData.expectedStayDuration" min="1"
-                                    @blur="touchedFields.expectedStayDuration = true"
-                                    :class="{ 
+                                    @blur="touchedFields.expectedStayDuration = true" :class="{
                                         'is-invalid': (!formData.expectedStayDuration || formData.expectedStayDuration < 1) && (touchedFields.expectedStayDuration || formSubmitted),
-                                        'is-valid': formData.expectedStayDuration && formData.expectedStayDuration > 0 
+                                        'is-valid': formData.expectedStayDuration && formData.expectedStayDuration > 0
                                     }">
                                 <div v-if="(!formData.expectedStayDuration || formData.expectedStayDuration < 1) && (touchedFields.expectedStayDuration || formSubmitted)"
                                     class="invalid-feedback">
@@ -181,12 +176,12 @@
                                 </div>
                                 <textarea class="form-control" id="reasonForAdmission" rows="3"
                                     v-model="formData.reasonForAdmission"
-                                    @blur="touchedFields.reasonForAdmission = true"
-                                    :class="{ 
+                                    @blur="touchedFields.reasonForAdmission = true" :class="{
                                         'is-invalid': !formData.reasonForAdmission && (touchedFields.reasonForAdmission || formSubmitted),
-                                        'is-valid': formData.reasonForAdmission 
+                                        'is-valid': formData.reasonForAdmission
                                     }"></textarea>
-                                <div v-if="!formData.reasonForAdmission && (touchedFields.reasonForAdmission || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.reasonForAdmission && (touchedFields.reasonForAdmission || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please provide a reason for admission
                                 </div>
                             </div>
@@ -200,18 +195,17 @@
                                     <span class="input-group-text"><i class="fa fa-signal"></i></span>
                                 </div>
                                 <select class="form-control" id="currentStatus" v-model="formData.currentStatus"
-                                    required 
-                                    @blur="touchedFields.currentStatus = true"
-                                    :class="{ 
+                                    required @blur="touchedFields.currentStatus = true" :class="{
                                         'is-invalid': !formData.currentStatus && (touchedFields.currentStatus || formSubmitted),
-                                        'is-valid': formData.currentStatus 
+                                        'is-valid': formData.currentStatus
                                     }">
                                     <option value="">Select a current status</option>
                                     <option v-for="status in dbStatusData" :key="status.value" :value="status.value">
                                         {{ status.name }}
                                     </option>
                                 </select>
-                                <div v-if="!formData.currentStatus && (touchedFields.currentStatus || formSubmitted)" class="invalid-feedback">
+                                <div v-if="!formData.currentStatus && (touchedFields.currentStatus || formSubmitted)"
+                                    class="invalid-feedback">
                                     Please select a status
                                 </div>
                             </div>
@@ -237,6 +231,8 @@ import PatientsList from './PatientsList.vue';
 import wardService from '@/global/API/ward.service';
 import wardbedService from '@/global/API/wardbed.service';
 import doctorService from '@/global/API/doctor.service';
+import appointmentService from '@/global/API/appointment.service';
+import consultationService from '@/global/API/consultation.service';
 import { useAuthStore } from '@/stores/auth.store';
 export default {
     name: "addEditInPatient",
@@ -259,6 +255,8 @@ export default {
             dbWardBedsData: [],
             dbDoctorsData: [],
             dbFilteredBeds: [],
+            dbDoctorAppointmentsData: [],
+            dbConsultationsData: [],
             dbStatusData: [
                 {
                     "id": 1,
@@ -389,6 +387,7 @@ export default {
             isPatientsListVisible: false,
             currentSelectedDoctorAppointment: Object,
             formSubmitted: false,
+            currentConsulatation: Object,
             touchedFields: {
                 patientName: false,
                 admittingDoctorId: false,
@@ -430,19 +429,32 @@ export default {
                 this.formData.expectedStayDuration > 0 &&
                 !!this.formData.reasonForAdmission &&
                 !!this.formData.currentStatus;
+        },
+        currentuser() {
+            return this.authStore.user?.id;
+        },
+        currentHospital() {
+            return this.authStore.hospitalInformation?.hospitalId;
         }
     },
     methods: {
         submitForm() {
             this.formSubmitted = true;
-            
+            this.formData.hospitalId = this.currentHospital;
+            this.formData.createdBy = this.currentuser;
+            this.formData.createdOn = new Date();
+            this.formData.modifiedOn = new Date();
+            this.formData.modifiedBy = this.currentuser;
+
+            console.log(JSON.stringify(this.formData));
             // Mark all fields as touched to show validation errors
             Object.keys(this.touchedFields).forEach(key => {
                 this.touchedFields[key] = true;
+                console.log(this.touchedFields[key])
             });
-            
+
             if (this.isFormValid) {
-                this.$emit('submit', this.formData);
+                this.$emit('handleSave', this.formData);
             }
         },
         openPatientList() {
@@ -453,10 +465,18 @@ export default {
         },
         handleSelectedDoctorAppointment(selectedDoctorAppointment) {
             this.currentSelectedDoctorAppointment = selectedDoctorAppointment;
-            // Update the form data with the selected patient's information
             this.formData.patientName = selectedDoctorAppointment.patientName;
-            this.formData.patientId = selectedDoctorAppointment.patientId;
+
             this.formData.admittingDoctorId = selectedDoctorAppointment.doctorId;
+
+            const consultationDetails = this.dbConsultationsData.filter(x => x.appointmentId == selectedDoctorAppointment.appointmentId);
+
+            if (consultationDetails) {
+                this.currentConsulatation = consultationDetails[0];
+                this.formData.patientId = this.currentConsulatation.patientDetails.patientId;
+            }
+            // Update the form data with the selected patient's information
+
             // Mark patient name as touched to show validation state
             this.touchedFields.patientName = true;
             // You can also set other fields if needed
@@ -490,6 +510,22 @@ export default {
             this.formData.bedId = '';
             // Mark bed as touched to show validation state
             this.touchedFields.bedId = true;
+        },
+        async fetchDoctorAppointmentsAsync() {
+            const authStore = useAuthStore();
+            const hospitalId = authStore.hospitalInformation?.hospitalId;
+            if (hospitalId) {
+                const appoinemtns = await appointmentService.GetActiveDoctorAppointmentsAsync(hospitalId);
+                this.dbDoctorAppointmentsData = appoinemtns;
+            }
+        },
+        async fetchDoctorConsulatationsAsync() {
+            const authStore = useAuthStore();
+            const hospitalId = authStore.hospitalInformation?.hospitalId;
+            if (hospitalId) {
+                const consultations = await consultationService.GetConsultationsByHospitalAsync(hospitalId);
+                this.dbConsultationsData = consultations;
+            }
         }
     },
     watch: {
@@ -524,6 +560,8 @@ export default {
         this.fetchWardsByHospitalIdAsync();
         this.fetchAllBedsAsync();
         this.fetchDoctorsByHospitalAsync();
+        this.fetchDoctorAppointmentsAsync();
+        this.fetchDoctorConsulatationsAsync();
     }
 }
 </script>

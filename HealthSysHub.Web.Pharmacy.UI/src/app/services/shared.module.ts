@@ -11,6 +11,7 @@ import { PasswordService } from './password.service';
 import { NotificationService } from './notification.service';
 import { OrderService } from './order.service';
 import { PaymentService } from './payment.service';
+import { PharmacyOrderTypeService } from './pharmacy-order-type.service';
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ import { PaymentService } from './payment.service';
     AuditFieldsService,
     PasswordService,
     OrderService,
-    PaymentService
+    PaymentService,
+    PharmacyOrderTypeService
   ],
   exports: []
 })

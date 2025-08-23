@@ -67,5 +67,6 @@ namespace HealthSysHub.Web.DBConfiguration
         public DbSet<InpatientVitalSigns> inpatientVitalSigns { get; set; }
         public DbSet<Ward> wards { get; set; }
         public DbSet<WardBed> wardBeds { get; set; }
+        public DbSet<PharmacyOrderType> pharmacyOrderTypes { get; set; }
     }
 }
