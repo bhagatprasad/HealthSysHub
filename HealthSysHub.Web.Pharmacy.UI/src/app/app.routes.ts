@@ -16,6 +16,7 @@ import { DetailsComponent } from './pharmcy/details.component';
 import { OrderRequestListComponent } from './orders/order-request-list.component';
 import { AddOrderComponent } from './pos/add-order.component';
 import { ProfileComponent } from './shared/profile/profile.component';
+import { PharmacyOrderTypeListComponent } from './pharmacy/pharmacy-order-type-list/pharmacy-order-type-list.component';
 
 export const routes: Routes = [
   { 
@@ -56,6 +57,11 @@ export const routes: Routes = [
   { 
     path: 'pharmcy', 
     component: DetailsComponent,
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'pharmcyOrderType', 
+    component: PharmacyOrderTypeListComponent,
     canActivate: [AuthGuard] 
   },
   { 

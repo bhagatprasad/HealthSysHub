@@ -81,8 +81,8 @@
                     </div>
                 </div>
             </div>
-            <add-edit-in-patient v-if="isSidebarOpen"  :patientData="selectedPatient" :isVisible="isSidebarOpen" @close="closeSidebar"
-                @submit="handleSubmit" />
+            <add-edit-in-patient v-if="isSidebarOpen"  :patientData="selectedPatient" :isVisible="isSidebarOpen" @handleClose="closeSidebar"
+                @handleSave="handleSubmit" />
             <div v-if="isSidebarOpen" class="modal-backdrop fade show" @click="closeSidebar"></div>
         </div>
     </div>

@@ -3,7 +3,7 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, prov
 import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { LoaderService } from './services/loader.service';
 import { LoadingInterceptor } from './intercepters/loading.interceptor';
 import { apiInterceptor } from './intercepters/api.interceptor';
@@ -12,6 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
+      withFetch(), 
       withInterceptors([
         apiInterceptor,
         LoadingInterceptor
