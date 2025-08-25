@@ -200,7 +200,7 @@
                                         'is-valid': formData.currentStatus
                                     }">
                                     <option value="">Select a current status</option>
-                                    <option v-for="status in dbStatusData" :key="status.value" :value="status.value">
+                                    <option v-for="status in dbStatusData" :key="status.value" :value="status.name">
                                         {{ status.name }}
                                     </option>
                                 </select>
@@ -234,6 +234,7 @@ import doctorService from '@/global/API/doctor.service';
 import appointmentService from '@/global/API/appointment.service';
 import consultationService from '@/global/API/consultation.service';
 import { useAuthStore } from '@/stores/auth.store';
+
 export default {
     name: "addEditInPatient",
     components: {
@@ -251,6 +252,8 @@ export default {
     },
     data() {
         return {
+            hospitalId: '',
+            currentUserId: '',
             dbWardData: [],
             dbWardBedsData: [],
             dbDoctorsData: [],
@@ -400,6 +403,7 @@ export default {
                 currentStatus: false
             },
             formData: {
+                inpatientId: this.patientData ? this.patientData.inpatientId : null,
                 patientName: this.patientData ? this.patientData.patientName : '',
                 patientId: this.patientData ? this.patientData.patientId : '',
                 wardId: this.patientData ? this.patientData.wardId : '',
@@ -431,26 +435,28 @@ export default {
                 !!this.formData.currentStatus;
         },
         currentuser() {
-            return this.authStore.user?.id;
+            return this.authStore?.user?.id; // Use optional chaining to prevent errors
         },
         currentHospital() {
-            return this.authStore.hospitalInformation?.hospitalId;
+            return this.authStore?.hospitalInformation?.hospitalId; // Use optional chaining
         }
     },
     methods: {
         submitForm() {
+
             this.formSubmitted = true;
-            this.formData.hospitalId = this.currentHospital;
-            this.formData.createdBy = this.currentuser;
+            this.formData.inpatientId = this.patientData ? this.patientData.inpatientId : null;
+            this.formData.hospitalId = this.hospitalId;
+            this.formData.createdBy = this.currentUserId;
+            this.formData.modifiedBy = this.currentUserId;
             this.formData.createdOn = new Date();
             this.formData.modifiedOn = new Date();
-            this.formData.modifiedBy = this.currentuser;
+            this.formData.isActive = true;
 
             console.log(JSON.stringify(this.formData));
             // Mark all fields as touched to show validation errors
             Object.keys(this.touchedFields).forEach(key => {
                 this.touchedFields[key] = true;
-                console.log(this.touchedFields[key])
             });
 
             if (this.isFormValid) {
@@ -465,7 +471,13 @@ export default {
         },
         handleSelectedDoctorAppointment(selectedDoctorAppointment) {
             this.currentSelectedDoctorAppointment = selectedDoctorAppointment;
-            this.formData.patientName = selectedDoctorAppointment.patientName;
+
+
+            const appointmentDetails = this.dbDoctorAppointmentsData.filter(x => x.appointmentId == selectedDoctorAppointment.appointmentId);
+            if (appointmentDetails) {
+                const appointmentDetail = appointmentDetails[0];
+                this.formData.patientName = appointmentDetail.patientName;
+            }
 
             this.formData.admittingDoctorId = selectedDoctorAppointment.doctorId;
 
@@ -534,6 +546,7 @@ export default {
             handler(newVal) {
                 if (newVal) {
                     this.formData = {
+                        inpatientId: newVal.inpatientId,
                         patientName: newVal.patientName,
                         patientId: newVal.patientId,
                         wardId: newVal.wardId,
@@ -557,6 +570,18 @@ export default {
         }
     },
     mounted() {
+        const authStore = useAuthStore();
+        const hospitalId = authStore.hospitalInformation?.hospitalId;
+
+        if (hospitalId) {
+            this.hospitalId = hospitalId;
+            console.log("hospitalid..", this.hospitalId)
+        }
+        const userId = authStore?.user?.id;
+        if (userId) {
+            this.currentUserId = userId;
+            console.log("userid..", this.currentUserId)
+        }
         this.fetchWardsByHospitalIdAsync();
         this.fetchAllBedsAsync();
         this.fetchDoctorsByHospitalAsync();

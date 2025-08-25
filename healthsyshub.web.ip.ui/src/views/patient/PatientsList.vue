@@ -17,12 +17,13 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="searchInput" v-model="searchQuery" placeholder="Search by patient name or phone..." @input="filterPatients">
+                                    <input type="text" class="form-control" id="searchInput" v-model="searchQuery"
+                                        placeholder="Search by patient name or phone..." @input="filterPatients">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="table-container">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -35,20 +36,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(appointment, index) in filteredAppointments" :key="appointment.appointmentId">
+                                <tr v-for="(consultation, index) in filteredDoctorConsultation"
+                                    :key="consultation.consultationId">
                                     <td>{{ index + 1 }}</td>
-                                    <td>{{ appointment.patientName }}<br/>{{ appointment.patientPhone }}</td>
-                                    <td>{{ appointment.appointmentDate ? formatDate(appointment.appointmentDate) : 'N/A' }}</td>
-                                    <td>{{ appointment.status || 'N/A' }}</td>
+                                    <td>{{ consultation.patientDetails.name }}<br />{{ consultation.patientDetails.phone }}</td>
+                                    <td>{{ consultation.createdOn ? formatDate(consultation.createdOn) : 'N/A' }}</td>
+                                    <td>{{ consultation.patientDetails.healthIssue || 'N/A' }}</td>
                                     <td>
-                                        <button @click="selectAppointment(appointment)" class="btn btn-primary btn-sm">
+                                        <button @click="selectConsultation(consultation)" class="btn btn-primary btn-sm">
                                             Select
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div v-if="filteredAppointments.length === 0" class="text-center py-4">
+                        <div v-if="filteredDoctorConsultation.length === 0" class="text-center py-4">
                             <p>No patients found</p>
                         </div>
                     </div>
@@ -62,8 +64,9 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth.store';
-import { showLoader,hideLoader } from '@/components/common/Loader.vue';
+import { showLoader, hideLoader } from '@/components/common/Loader.vue';
 import doctorAppointmentService from '@/global/API/appointment.service';
+import consultationService from '@/global/API/consultation.service';
 
 export default {
     name: "PatientsList",
@@ -76,6 +79,7 @@ export default {
     data() {
         return {
             doctorAppointments: [],
+            consultationData: [],
             searchQuery: ''
         }
     },
@@ -84,12 +88,28 @@ export default {
             if (!this.searchQuery) {
                 return this.doctorAppointments;
             }
-            
+
             const query = this.searchQuery.toLowerCase();
-            return this.doctorAppointments.filter(appointment => 
+            return this.doctorAppointments.filter(appointment =>
                 appointment.PatientName?.toLowerCase().includes(query) ||
                 appointment.PatientPhone?.includes(query)
             );
+        },
+        filteredDoctorConsultation() {
+            if (!this.searchQuery) {
+                return this.consultationData;
+            }
+
+            const query = this.searchQuery.toLowerCase();
+            return this.consultationData.filter(consultation => {
+                const name = consultation.patientDetails?.name || '';
+                const phone = consultation.patientDetails?.phone || '';
+                const healthIssue = consultation.patientDetails?.healthIssue || '';
+                
+                return name.toLowerCase().includes(query) || 
+                       phone.includes(query) ||
+                       healthIssue.toLowerCase().includes(query);
+            });
         }
     },
     methods: {
@@ -97,29 +117,41 @@ export default {
             showLoader();
             const authStore = useAuthStore();
             const hospitalId = authStore.hospitalInformation?.hospitalId;
-            
+
             if (hospitalId) {
                 const response = await doctorAppointmentService.GetActiveDoctorAppointmentsAsync(hospitalId);
                 this.doctorAppointments = response || [];
             }
             hideLoader();
         },
-        selectAppointment(appointment) {
-            this.$emit('submit', appointment); // Emit the selected appointment
-            this.closePatientsList(); // Close the modal
+        selectConsultation(consultation) {
+            this.$emit('submit', consultation);
+            this.closePatientsList();
         },
         closePatientsList() {
-            this.$emit('close'); // Emit close event to parent
-            this.searchQuery = ''; // Reset search query
+            this.$emit('close');
+            this.searchQuery = '';
         },
         formatDate(dateString) {
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString();
+        },
+        async fetchDoctorConsultationAsync() {
+            showLoader();
+            const authStore = useAuthStore();
+            const hospitalId = authStore.hospitalInformation?.hospitalId;
+
+            if (hospitalId) {
+                const response = await consultationService.GetConsultationsByHospitalAsync(hospitalId);
+                this.consultationData = response || [];
+            }
+            hideLoader();
         }
     },
     mounted() {
         this.fetchDoctorAppointments();
+        this.fetchDoctorConsultationAsync();
     }
 }
 </script>
@@ -167,12 +199,6 @@ export default {
     flex: 1;
 }
 
-.modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #dee2e6;
-    background: #f8f9fa;
-}
-
 /* Table container */
 .table-container {
     max-height: 300px;
@@ -215,7 +241,7 @@ export default {
         width: 95%;
         margin: 1rem;
     }
-    
+
     .table-container {
         max-height: 250px;
     }

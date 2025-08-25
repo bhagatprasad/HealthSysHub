@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-3">
                             <button type="button" class="btn btn-primary form-control" style="margin-top: 28px;"
-                                id="searchButton">Search</button>
+                                @click="handleSearchOnGird" id="searchButton">Search</button>
                         </div>
                     </div>
                 </div>
@@ -48,23 +48,37 @@
                     <div class="card border-top-class">
                         <gridheader @add="openSidebar" @edit="openSidebarWithData" />
                         <div class="card-body card-body-padding">
-                            <div id="InPatientsGrid" v-if="apiData">
+                            <div id="InPatientsGrid" v-if="filteredInPatientsData">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
+                                                <th>Patient Name</th>
+                                                <th>Phone</th>
+                                                <th>Age</th>
+                                                <th>Gender</th>
+                                                <th>Address</th>
+                                                <th>Health Issue</th>
+                                                <th>Admission Date</th>
+                                                <th>Discharge Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(patient, index) in apiData" :key="patient.id">
+                                            <tr v-for="(patient, index) in filteredInPatientsData"
+                                                :key="patient.inpatientId">
                                                 <td>{{ index + 1 }}</td>
-                                                <td>{{ patient.firstName }}</td>
-                                                <td>{{ patient.lastName }}</td>
-                                                <td>{{ patient.username }}</td>
+                                                <td>{{ patient.patientName }}</td>
+                                                <td>{{ patient.patientPhone }}</td>
+                                                <td>{{ patient.patientAge }}</td>
+                                                <td>{{ patient.patientGender }}</td>
+                                                <td>{{ patient.patientAddress }}</td>
+                                                <td>{{ patient.healthIssue }}</td>
+                                                <td>{{ patient.admissionDate }}</td>
+                                                <td>{{ patient.dischargeDate }}</td>
+                                                <td>{{ patient.currentStatus }}</td>
                                                 <td>
                                                     <button @click="openSidebarWithData(patient)"
                                                         class="btn btn-primary">Edit</button>
@@ -72,6 +86,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                             <div v-else class="card-header text-center">
@@ -81,8 +96,8 @@
                     </div>
                 </div>
             </div>
-            <add-edit-in-patient v-if="isSidebarOpen"  :patientData="selectedPatient" :isVisible="isSidebarOpen" @handleClose="closeSidebar"
-                @handleSave="handleSubmit" />
+            <add-edit-in-patient v-if="isSidebarOpen" :patientData="selectedPatient" :isVisible="isSidebarOpen"
+                @handleClose="closeSidebar" @handleSave="handleSubmit" />
             <div v-if="isSidebarOpen" class="modal-backdrop fade show" @click="closeSidebar"></div>
         </div>
     </div>
@@ -92,6 +107,7 @@
 import { showLoader, hideLoader } from '@/components/common/Loader.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import inpatientService from '@/global/API/inpatient.service'
+import consultationService from '@/global/API/consultation.service'
 import gridheader from '@/components/common/GridHeader.vue'
 import AddEditInPatient from '@/views/patient/AddEditInPatient.vue'
 
@@ -105,35 +121,56 @@ export default {
         return {
             apiData: null,
             isSidebarOpen: false,
-            selectedPatient: null
+            selectedPatient: null,
+            dbDoctorConsultationsData: [],
+            dbInPatientsData: [],
+            combinedPatientData: [],
+            searchQuery: '' // Added for search functionality
         }
     },
     computed: {
         applicationUser() {
-            return this.authStore.user?.name || 'User  '
+            return this.authStore.user?.name || 'User ';
         },
         userId() {
-            return this.authStore.user?.id
+            return this.authStore.user?.id;
         },
         currentHospital() {
-            return this.authStore.hospitalInformation?.hospitalId
+            return this.authStore.hospitalInformation?.hospitalId;
+        },
+        filteredInPatientsData() {
+            // Implement search and filter logic
+            return this.combinedPatientData.filter(patient => {
+                return (
+                    patient.patientName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                    patient.patientPhone.includes(this.searchQuery) ||
+                    patient.healthIssue.toLowerCase().includes(this.searchQuery.toLowerCase())
+                );
+            });
         }
     },
     setup() {
-        const authStore = useAuthStore()
-        return { authStore }
+        const authStore = useAuthStore();
+        return { authStore };
     },
     async created() {
-        await this.fetchData()
+        await this.fetchData();
     },
     methods: {
         async fetchData() {
             showLoader();
             try {
                 const response = await inpatientService.GetInPatientsAsync(this.currentHospital);
-                this.apiData = response.data;
+                this.dbInPatientsData = response || [];
+
+                if (this.currentHospital) {
+                    const consultationResponse = await consultationService.GetConsultationsByHospitalAsync(this.currentHospital);
+                    this.dbDoctorConsultationsData = consultationResponse || [];
+                }
+
+                this.combineData();
             } catch (error) {
-                console.error('Error fetching data:', error)
+                console.error('Error fetching data:', error);
             } finally {
                 hideLoader();
             }
@@ -153,23 +190,79 @@ export default {
         async handleSubmit(patientData) {
             showLoader();
             try {
-                if (this.selectedPatient) {
-                    // Update existing patient
-                    await inpatientService.UpdatePatientAsync(patientData);
-                } else {
-                    // Add new patient
-                    await inpatientService.AddPatientAsync(patientData);
-                }
+                await inpatientService.InsertOrUpdateInpatientAsync(patientData);
                 this.closeSidebar(); // Close sidebar after submission
             } catch (error) {
                 console.error('Error submitting data:', error);
             } finally {
                 hideLoader();
             }
+        },
+        combineData() {
+            // Combine the consultation and inpatient data
+            this.combinedPatientData = this.dbInPatientsData.map(inpatient => {
+                // Find matching consultation data
+                const consultation = this.dbDoctorConsultationsData.find(
+                    consult => consult.patientDetails.patientId === inpatient.patientId
+                );
+
+                // If consultation found, extract patient details
+                let healthIssue = null;
+                let patientName = null;
+                let patientPhone = null;
+                let patientAge = null;
+                let patientGender = null;
+                let patientAddress = null;
+                let patientVitals = null;
+
+                if (consultation && consultation.patientDetails) {
+                    healthIssue = consultation.patientDetails.healthIssue;
+                    patientName = consultation.patientDetails.name;
+                    patientPhone = consultation.patientDetails.phone;
+                    patientAge = consultation.patientDetails.age;
+                    patientGender = consultation.patientDetails.gender;
+                    patientAddress = consultation.patientDetails.address;
+                    patientVitals = consultation.patientDetails.patientVitalDetails;
+                }
+
+                // Return combined data object
+                return {
+                    inpatientId: inpatient.inpatientId,
+                    patientId: inpatient.patientId,
+                    hospitalId: inpatient.hospitalId,
+                    admissionDate: inpatient.admissionDate,
+                    dischargeDate: inpatient.dischargeDate,
+                    wardId: inpatient.wardId,
+                    bedId: inpatient.bedId,
+                    admittingDoctorId: inpatient.admittingDoctorId,
+                    currentStatus: inpatient.currentStatus,
+                    reasonForAdmission: inpatient.reasonForAdmission,
+                    expectedStayDuration: inpatient.expectedStayDuration,
+                    createdBy: inpatient.createdBy,
+                    createdOn: inpatient.createdOn,
+                    modifiedBy: inpatient.modifiedBy,
+                    modifiedOn: inpatient.modifiedOn,
+                    isActive: inpatient.isActive,
+                    healthIssue: healthIssue,
+                    patientName: patientName,
+                    patientPhone: patientPhone,
+                    patientAge: patientAge,
+                    patientGender: patientGender,
+                    patientAddress: patientAddress,
+                    patientVitals: patientVitals
+                };
+            });
+
+            console.log('combinedPatientData..', JSON.stringify(this.combinedPatientData));
+        },
+        handleSearchOnGrid() {
+            // This method can be used to trigger search/filter if needed
+            this.combineData(); // Re-combine data if necessary
         }
     }
 }
 </script>
+
 
 <style scoped>
 /* Sidebar styles */
